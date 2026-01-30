@@ -1,0 +1,242 @@
+═══════════════════════════════════════════════════════════════
+  ÍNDICE DE ARCHIVOS - SISTEMA WEB ESCOLAR SAN MARINO
+═══════════════════════════════════════════════════════════════
+
+📁 ESTRUCTURA DEL PROYECTO
+═══════════════════════════════════════════════════════════════
+
+ARCHIVOS RAÍZ:
+--------------
+📄 index.html                    Página principal pública del sitio
+📄 README.md                     Documentación completa del proyecto
+📄 INSTALACION.md                Guía de instalación paso a paso
+📄 favicon.ico                   Ícono del sitio (crear)
+
+📁 CSS/ (Estilos)
+-----------------
+📄 styles.css                    Estilos globales del sistema
+📄 home.css                      Estilos página principal
+📄 login.css                     Estilos página de login
+📄 dashboard.css                 Estilos dashboards (todos los roles)
+📄 padre.css                     Estilos específicos panel padre
+
+📁 JS/ (JavaScript)
+-------------------
+📄 config.js                     Configuración global y endpoints API
+📄 api.js                        Utilidades para API y autenticación
+📄 home.js                       JavaScript página principal
+📄 login.js                      JavaScript página de login
+📄 alumno-dashboard.js           Dashboard del alumno
+📄 padre-dashboard.js            Dashboard del padre (pendiente)
+📄 mock-data.js                  Datos de ejemplo para testing
+
+📁 IMAGES/ (Imágenes)
+---------------------
+📁 images/institucional/         Logo, frente del colegio, hero
+  └─ logo.png                    Logo del instituto (crear)
+  └─ frente-colegio.jpg          Foto del frente (crear)
+  └─ hero-bg.jpg                 Fondo hero section (crear)
+
+📁 images/noticias/              Imágenes de noticias
+  └─ default.jpg                 Imagen por defecto (crear)
+  └─ inicio-ciclo.jpg            Noticia inicio ciclo (crear)
+  └─ olimpiadas.jpg              Noticia olimpíadas (crear)
+  └─ sala-informatica.jpg        Noticia sala de informática (crear)
+
+📁 images/cursos/                Imágenes de niveles
+  └─ nivel-inicial.jpg           Imagen nivel inicial (crear)
+  └─ nivel-primario.jpg          Imagen nivel primario (crear)
+  └─ nivel-secundario.jpg        Imagen nivel secundario (crear)
+
+📁 PAGES/ (Páginas HTML)
+------------------------
+
+📁 pages/auth/                   Autenticación
+  └─ login.html                  Página de login
+
+📁 pages/alumno/                 Panel Alumno
+  └─ dashboard.html              Dashboard alumno ✅
+
+📁 pages/padre/                  Panel Padre
+  └─ dashboard.html              Dashboard padre ✅
+
+📁 pages/docente/                Panel Docente
+  └─ dashboard.html              Dashboard docente (pendiente)
+
+📁 pages/preceptor/              Panel Preceptor
+  └─ dashboard.html              Dashboard preceptor (pendiente)
+
+📁 pages/admin/                  Panel Administración
+  └─ dashboard.html              Dashboard admin (pendiente)
+
+📁 pages/niveles/                Páginas de niveles
+  └─ inicial.html                Página nivel inicial ✅
+  └─ primario.html               Página nivel primario (pendiente)
+  └─ secundario.html             Página nivel secundario (pendiente)
+
+═══════════════════════════════════════════════════════════════
+  ARCHIVOS COMPLETADOS
+═══════════════════════════════════════════════════════════════
+
+✅ ESTRUCTURA BASE:
+  ✓ index.html
+  ✓ README.md
+  ✓ INSTALACION.md
+
+✅ CSS COMPLETO:
+  ✓ styles.css (estilos globales profesionales)
+  ✓ home.css (página principal)
+  ✓ login.css (página de login)
+  ✓ dashboard.css (dashboards)
+  ✓ padre.css (panel padre)
+
+✅ JAVASCRIPT COMPLETO:
+  ✓ config.js (configuración API)
+  ✓ api.js (utilidades y autenticación)
+  ✓ home.js (página principal)
+  ✓ login.js (sistema de login)
+  ✓ alumno-dashboard.js (dashboard alumno completo)
+  ✓ mock-data.js (datos de prueba)
+
+✅ PÁGINAS HTML:
+  ✓ index.html (página principal completa)
+  ✓ pages/auth/login.html (login completo)
+  ✓ pages/alumno/dashboard.html (dashboard alumno completo)
+  ✓ pages/padre/dashboard.html (dashboard padre completo)
+  ✓ pages/niveles/inicial.html (página nivel inicial)
+
+═══════════════════════════════════════════════════════════════
+  CARACTERÍSTICAS IMPLEMENTADAS
+═══════════════════════════════════════════════════════════════
+
+🎨 DISEÑO:
+  ✓ Paleta de colores institucional
+  ✓ Tipografía elegante (Crimson Text + Lato)
+  ✓ Diseño responsive (móvil, tablet, desktop)
+  ✓ Animaciones suaves
+  ✓ Gradientes y sombras
+  ✓ Iconos emoji para UX
+
+🔐 AUTENTICACIÓN:
+  ✓ Login con DNI y contraseña
+  ✓ Validación de formularios
+  ✓ JWT en localStorage
+  ✓ Redirección por rol
+  ✓ "Recordarme"
+  ✓ Logout seguro
+
+👨‍🎓 PANEL ALUMNO:
+  ✓ Visualización de perfil
+  ✓ Consulta de notas por trimestre
+  ✓ Lectura de comunicados
+  ✓ Inbox de mensajes
+  ✓ Estadísticas de rendimiento
+  ✓ Promedio general y por materia
+
+👨‍👩‍👧 PANEL PADRE:
+  ✓ Listado de hijos
+  ✓ Gestión de cuotas
+  ✓ Estados de pago
+  ✓ Integración Mercado Pago (estructura)
+  ✓ Subida de comprobantes
+  ✓ Descarga de libretas
+  ✓ Notificaciones de vencimiento
+
+🌐 PÁGINA PÚBLICA:
+  ✓ Hero section atractivo
+  ✓ Sección de noticias
+  ✓ Información de niveles
+  ✓ Valores institucionales
+  ✓ Formulario de contacto
+  ✓ Footer completo
+
+📱 RESPONSIVE:
+  ✓ Menú hamburguesa móvil
+  ✓ Sidebar colapsable
+  ✓ Cards adaptativas
+  ✓ Tablas con scroll
+  ✓ Breakpoints: 480px, 768px, 1024px
+
+🔒 SEGURIDAD:
+  ✓ Validación de inputs
+  ✓ Manejo de tokens
+  ✓ Verificación de roles
+  ✓ Timeouts de sesión
+  ✓ Limpieza de datos en logout
+
+═══════════════════════════════════════════════════════════════
+  ARCHIVOS PENDIENTES (Completar siguiendo los ejemplos)
+═══════════════════════════════════════════════════════════════
+
+📝 PARA COMPLETAR:
+
+1. JAVASCRIPT:
+   - padre-dashboard.js (usar alumno-dashboard.js como base)
+   - docente-dashboard.js
+   - preceptor-dashboard.js
+   - admin-dashboard.js
+
+2. HTML:
+   - pages/docente/dashboard.html (copiar estructura de alumno)
+   - pages/preceptor/dashboard.html
+   - pages/admin/dashboard.html
+   - pages/niveles/primario.html (copiar inicial.html)
+   - pages/niveles/secundario.html (copiar inicial.html)
+
+3. IMÁGENES:
+   - Todas las imágenes institucionales
+   - Favicon.ico
+
+═══════════════════════════════════════════════════════════════
+  PRÓXIMOS PASOS
+═══════════════════════════════════════════════════════════════
+
+1. ✅ CONFIGURACIÓN INICIAL:
+   - Editar js/config.js con URL de tu API
+   - Agregar imágenes institucionales
+   - Crear favicon.ico
+
+2. ✅ TESTING LOCAL:
+   - Abrir index.html en navegador
+   - Probar login con datos mock
+   - Verificar navegación
+
+3. ✅ DEPLOYMENT:
+   - Subir a repositorio GitHub
+   - Activar GitHub Pages
+   - Configurar CORS en API
+
+4. ✅ COMPLETAR FALTANTES:
+   - Crear dashboards restantes (docente, preceptor, admin)
+   - Completar páginas de niveles
+   - Agregar más funcionalidades según necesidad
+
+═══════════════════════════════════════════════════════════════
+  USUARIOS DE PRUEBA
+═══════════════════════════════════════════════════════════════
+
+Ver archivo js/mock-data.js para usuarios completos:
+
+Alumno:   DNI: 12345678 | Pass: alumno123
+Padre:    DNI: 87654321 | Pass: padre123
+Docente:  DNI: 11223344 | Pass: docente123
+Admin:    DNI: 99887766 | Pass: admin123
+
+═══════════════════════════════════════════════════════════════
+  CONTACTO Y SOPORTE
+═══════════════════════════════════════════════════════════════
+
+Para dudas sobre el sistema:
+📧 Email: soporte@institutosanmarino.edu.ar
+📞 Teléfono: +54 (266) 4XX-XXXX
+
+Para documentación adicional:
+📖 README.md
+📖 INSTALACION.md
+
+═══════════════════════════════════════════════════════════════
+
+💙 Desarrollado con dedicación para el Instituto Privado San Marino
+   Sistema Web Escolar v1.0 - Enero 2025
+
+═══════════════════════════════════════════════════════════════

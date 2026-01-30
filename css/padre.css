@@ -1,0 +1,297 @@
+/**
+ * Estilos específicos para Panel de Padres
+ */
+
+/* Cuotas Grid */
+.cuotas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.cuota-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--gray-300);
+    transition: all var(--transition-normal);
+}
+
+.cuota-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+}
+
+.cuota-card.pendiente {
+    border-left-color: var(--warning-color);
+}
+
+.cuota-card.pagado {
+    border-left-color: var(--success-color);
+}
+
+.cuota-card.vencido {
+    border-left-color: var(--error-color);
+}
+
+.cuota-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.cuota-mes {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.cuota-info {
+    margin-bottom: var(--spacing-md);
+}
+
+.cuota-info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.cuota-label {
+    color: var(--gray-600);
+}
+
+.cuota-value {
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.cuota-monto {
+    font-size: var(--text-2xl);
+    color: var(--primary-color);
+}
+
+.cuota-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+/* Hijo Cards */
+.hijo-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.hijo-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--gray-200);
+    margin-bottom: var(--spacing-lg);
+}
+
+.hijo-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-3xl);
+    color: white;
+}
+
+.hijo-info h3 {
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-dark);
+}
+
+.hijo-detalles {
+    color: var(--gray-600);
+}
+
+.hijo-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.hijo-stat {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-md);
+}
+
+.hijo-stat-value {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.hijo-stat-label {
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+    margin-top: var(--spacing-xs);
+}
+
+/* Libretas */
+.libretas-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.libreta-item {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--transition-fast);
+}
+
+.libreta-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.libreta-info h4 {
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-dark);
+}
+
+.libreta-info p {
+    color: var(--gray-600);
+    margin: 0;
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius-xl);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--primary-dark);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: var(--text-3xl);
+    cursor: pointer;
+    color: var(--gray-500);
+    transition: color var(--transition-fast);
+}
+
+.modal-close:hover {
+    color: var(--error-color);
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+/* Pago Options */
+.pago-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.pago-option {
+    padding: var(--spacing-lg);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.pago-option:hover {
+    border-color: var(--primary-color);
+    background: var(--gray-50);
+}
+
+.pago-option h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-dark);
+}
+
+.pago-option p {
+    color: var(--gray-600);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cuotas-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hijo-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hijo-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso al Sistema - Instituto San Marino</title>
+    
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/login.css">
+</head>
+<body class="login-page">
+    <!-- Header simplificado -->
+    <header class="header-simple">
+        <div class="container">
+            <div class="header-content">
+                <a href="../../index.html" class="logo-link">
+                    <img src="../../images/institucional/logo.png" alt="Logo Instituto San Marino" class="logo">
+                    <span class="site-title-simple">Instituto San Marino</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor de Login -->
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>Acceso al Sistema</h1>
+                <p>Ingrese sus credenciales para continuar</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="dni">DNI</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="dni" 
+                        placeholder="12345678"
+                        required
+                        maxlength="8"
+                        pattern="[0-9]{7,8}"
+                        autocomplete="username"
+                    >
+                    <div class="form-help">Ingrese su DNI sin puntos</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Contraseña</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            id="password" 
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar contraseña">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Recordar mis datos</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-login">
+                    Ingresar
+                </button>
+
+                <div class="login-help">
+                    <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+
+            <div class="login-footer">
+                <p>¿Problemas para acceder?</p>
+                <p>Comuníquese con secretaría:<br>
+                <strong>+54 (266) 4XX-XXXX</strong> | <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7910171f163910170a0d100d0c0d160a181714180b101716571c1d0c57180b">[email&#160;protected]</a></strong></p>
+            </div>
+        </div>
+
+        <div class="login-info">
+            <div class="info-card">
+                <h3>👨‍🎓 Alumnos</h3>
+                <p>Accede a tus notas, comunicados y mensajes</p>
+            </div>
+            <div class="info-card">
+                <h3>👨‍👩‍👧 Padres</h3>
+                <p>Consulta el progreso de tus hijos, cuotas y libretas</p>
+            </div>
+            <div class="info-card">
+                <h3>👨‍🏫 Docentes</h3>
+                <p>Gestiona tus cursos, carga notas y comunícate</p>
+            </div>
+            <div class="info-card">
+                <h3>⚙️ Administración</h3>
+                <p>Gestión completa del sistema escolar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script data-cfa

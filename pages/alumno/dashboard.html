@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Alumno - Instituto San Marino</title>
+    
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+</head>
+<body class="dashboard-page">
+    <!-- Header Dashboard -->
+    <header class="header-dashboard">
+        <div class="container-fluid">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="../../images/institucional/logo.png" alt="Logo" class="logo">
+                    <span class="site-title">Instituto San Marino</span>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Cargando...</span>
+                        <span class="user-role">Alumno</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline" id="logoutBtn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-section="inicio">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Inicio</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="perfil">
+                    <span class="sidebar-icon">👤</span>
+                    <span>Mi Perfil</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="notas">
+                    <span class="sidebar-icon">📊</span>
+                    <span>Mis Notas</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="comunicados">
+                    <span class="sidebar-icon">📢</span>
+                    <span>Comunicados</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="mensajes">
+                    <span class="sidebar-icon">✉️</span>
+                    <span>Mensajes</span>
+                    <span class="badge badge-error" id="mensajesBadge" style="display: none;">0</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="dashboard-content">
+            <!-- Sección Inicio -->
+            <div class="content-section active" id="section-inicio">
+                <h1 class="page-title">Panel de Alumno</h1>
+                
+                <div class="welcome-message">
+                    <h2>¡Bienvenido/a, <span id="welcomeName">Alumno</span>!</h2>
+                    <p>Aquí puedes consultar tus notas, comunicados y mensajes del instituto.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statMaterias">-</div>
+                            <div class="stat-label">Materias</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statPromedio">-</div>
+                            <div class="stat-label">Promedio</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statAsistencia">-</div>
+                            <div class="stat-label">Asistencia</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✉️</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statMensajes">-</div>
+                            <div class="stat-label">Mensajes nuevos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-xl">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Últimas Notas</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="ultimasNotasContainer">
+                                    <!-- Se carga dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Comunicados Recientes</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="comunicadosRecentesContainer">
+                                    <!-- Se carga dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Perfil -->
+            <div class="content-section" id="section-perfil">
+                <h1 class="page-title">Mi Perfil</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Información Personal</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="perfilContainer">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Notas -->
+            <div class="content-section" id="section-notas">
+                <h1 class="page-title">Mis Notas</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Calificaciones por Materia</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="notasContainer">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Comunicados -->
+            <div class="content-section" id="section-comunicados">
+                <h1 class="page-title">Comunicados</h1>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="comunicadosContainer">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Mensajes -->
+            <div class="content-section" id="section-mensajes">
+                <h1 class="page-title">Mensajes</h1>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="mensajesContainer">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/alumno-dashboard.js"></script>
+</body>
+</html>

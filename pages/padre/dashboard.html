@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Padre - Instituto San Marino</title>
+    
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/padre.css">
+</head>
+<body class="dashboard-page">
+    <!-- Header Dashboard -->
+    <header class="header-dashboard">
+        <div class="container-fluid">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="../../images/institucional/logo.png" alt="Logo" class="logo">
+                    <span class="site-title">Instituto San Marino</span>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Cargando...</span>
+                        <span class="user-role">Padre/Madre</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline" id="logoutBtn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-section="inicio">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Inicio</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="hijos">
+                    <span class="sidebar-icon">👨‍👩‍👧‍👦</span>
+                    <span>Mis Hijos</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="cuotas">
+                    <span class="sidebar-icon">💳</span>
+                    <span>Cuotas</span>
+                    <span class="badge badge-warning" id="cuotasPendientesBadge" style="display: none;">0</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="libretas">
+                    <span class="sidebar-icon">📖</span>
+                    <span>Libretas</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="comunicados">
+                    <span class="sidebar-icon">📢</span>
+                    <span>Comunicados</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="dashboard-content">
+            <!-- Sección Inicio -->
+            <div class="content-section active" id="section-inicio">
+                <h1 class="page-title">Panel de Padre/Madre</h1>
+                
+                <div class="welcome-message">
+                    <h2>¡Bienvenido/a, <span id="welcomeName">Padre/Madre</span>!</h2>
+                    <p>Aquí puede consultar información sobre sus hijos, gestionar cuotas y descargar libretas.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👨‍👩‍👧‍👦</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statHijos">-</div>
+                            <div class="stat-label">Hijos inscriptos</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statCuotasPendientes">-</div>
+                            <div class="stat-label">Cuotas pendientes</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statCuotasAlDia">-</div>
+                            <div class="stat-label">Pagos al día</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statPromedioGeneral">-</div>
+                            <div class="stat-label">Promedio general</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-xl">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Resumen de Hijos</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="resumenHijosContainer">
+                                    <!-- Se carga dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Hijos -->
+            <div class="content-section" id="section-hijos">
+                <h1 class="page-title">Mis Hijos</h1>
+                
+                <div id="hijosContainer">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección Cuotas -->
+            <div class="content-section" id="section-cuotas">
+                <h1 class="page-title">Gestión de Cuotas</h1>
+                
+                <div class="cuotas-filters mb-lg">
+                    <label for="hijoSelect">Seleccionar hijo:</label>
+                    <select id="hijoSelect" class="form-control" style="max-width: 300px;">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+                
+                <div id="cuotasContainer">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección Libretas -->
+            <div class="content-section" id="section-libretas">
+                <h1 class="page-title">Libretas de Calificaciones</h1>
+                
+                <div class="libretas-filters mb-lg">
+                    <label for="hijoLibretaSelect">Seleccionar hijo:</label>
+                    <select id="hijoLibretaSelect" class="form-control" style="max-width: 300px;">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+                
+                <div id="libretasContainer">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección Comunicados -->
+            <div class="content-section" id="section-comunicados">
+                <h1 class="page-title">Comunicados</h1>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="comunicadosContainer">
+                            <!-- Se carga dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para pago de cuota -->
+    <div id="pagoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pagar Cuota</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="pagoModalBody">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para subir comprobante -->
+    <div id="comprobanteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Subir Comprobante de Pago</h3>
+                <button class="modal-close" id="closeComprobanteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="comprobanteForm">
+                    <div class="form-group">
+                        <label class="form-label" for="comprobanteFile">Seleccionar comprobante</label>
+                        <input type="file" class="form-control" id="comprobanteFile" accept="image/*,.pdf" required>
+                        <div class="form-help">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="comprobanteNumero">Número de operación</label>
+                        <input type="text" class="form-control" id="comprobanteNumero" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Subir comprobante</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/padre-dashboard.js"></script>
+</body>
+</html>
