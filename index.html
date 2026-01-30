@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instituto Privado San Marino - Educación de excelencia desde inicial hasta secundario">
+    <meta name="keywords" content="escuela, instituto, educación, San Marino, inicial, primario, secundario">
+    <title>Instituto Privado San Marino - Inicio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="images/institucional/logo.png" alt="Logo Instituto San Marino" class="logo">
+                    <div>
+                        <h1 class="site-title">Instituto Privado San Marino</h1>
+                        <p class="site-subtitle">Educación con valores desde 1985</p>
+                    </div>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                    ☰
+                </button>
+                
+                <nav class="nav" id="mainNav">
+                    <a href="index.html" class="nav-link active">Inicio</a>
+                    <a href="#noticias" class="nav-link">Noticias</a>
+                    <a href="#niveles" class="nav-link">Niveles</a>
+                    <a href="#contacto" class="nav-link">Contacto</a>
+                    <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Formando el futuro con excelencia académica</h2>
+                <p class="hero-subtitle">Más de 35 años educando con compromiso, innovación y valores</p>
+                <div class="hero-buttons">
+                    <a href="#niveles" class="btn btn-primary btn-lg">Conocer niveles</a>
+                    <a href="pages/auth/login.html" class="btn btn-outline btn-lg">Acceso Sistema</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Bienvenida -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h2>Bienvenidos al Instituto San Marino</h2>
+                    <p>Somos una institución educativa privada con más de 35 años de trayectoria en la formación integral de nuestros estudiantes. Nuestro compromiso es brindar educación de calidad desde nivel inicial hasta secundario.</p>
+                    <p>Contamos con un equipo docente altamente capacitado, infraestructura moderna y una propuesta pedagógica que integra valores tradicionales con innovación educativa.</p>
+                    <a href="#niveles" class="btn btn-primary">Ver nuestros niveles</a>
+                </div>
+                <div class="col-6">
+                    <img src="images/institucional/frente-colegio.jpg" alt="Frente del Instituto San Marino" class="welcome-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Noticias -->
+    <section id="noticias" class="noticias-section">
+        <div class="container">
+            <h2 class="section-title text-center">Últimas Noticias</h2>
+            <p class="section-subtitle text-center">Mantente informado sobre las actividades y logros de nuestra comunidad educativa</p>
+            
+            <div class="noticias-grid" id="noticiasContainer">
+                <!-- Las noticias se cargarán dinámicamente desde la API -->
+            </div>
+            
+            <div class="text-center mt-xl">
+                <a href="pages/noticias.html" class="btn btn-primary">Ver todas las noticias</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Niveles -->
+    <section id="niveles" class="niveles-section">
+        <div class="container">
+            <h2 class="section-title text-center">Nuestros Niveles Educativos</h2>
+            
+            <div class="niveles-grid">
+                <!-- Nivel Inicial -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="images/cursos/nivel-inicial.jpg" alt="Nivel Inicial">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Inicial</h3>
+                        <p>Sala de 3, 4 y 5 años</p>
+                        <p>Estimulamos el desarrollo integral de los más pequeños en un ambiente seguro y estimulante, promoviendo el juego como herramienta principal de aprendizaje.</p>
+                        <a href="pages/niveles/inicial.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+
+                <!-- Nivel Primario -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="images/cursos/nivel-primario.jpg" alt="Nivel Primario">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Primario</h3>
+                        <p>1° a 6° grado</p>
+                        <p>Formación académica sólida con énfasis en competencias fundamentales: lectoescritura, matemática, ciencias y desarrollo de habilidades sociales.</p>
+                        <a href="pages/niveles/primario.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+
+                <!-- Nivel Secundario -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="images/cursos/nivel-secundario.jpg" alt="Nivel Secundario">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Secundario</h3>
+                        <p>1° a 6° año</p>
+                        <p>Preparación integral para la vida universitaria y profesional, con orientaciones específicas y desarrollo de pensamiento crítico.</p>
+                        <a href="pages/niveles/secundario.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Valores -->
+    <section class="valores-section">
+        <div class="container">
+            <h2 class="section-title text-center">Nuestros Valores</h2>
+            
+            <div class="valores-grid">
+                <div class="valor-item">
+                    <div class="valor-icon">📚</div>
+                    <h3>Excelencia Académica</h3>
+                    <p>Compromiso con la calidad educativa y la actualización constante</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🤝</div>
+                    <h3>Respeto y Convivencia</h3>
+                    <p>Promovemos el respeto mutuo y la construcción de vínculos saludables</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">💡</div>
+                    <h3>Innovación</h3>
+                    <p>Incorporamos nuevas metodologías y tecnologías educativas</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🌱</div>
+                    <h3>Desarrollo Integral</h3>
+                    <p>Formación completa: intelectual, emocional, social y física</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="contacto-section">
+        <div class="container">
+            <h2 class="section-title text-center">Contacto</h2>
+            
+            <div class="row">
+                <div class="col-6">
+                    <div class="contacto-info">
+                        <h3>Información de Contacto</h3>
+                        
+                        <div class="contacto-item">
+                            <strong>📍 Dirección:</strong>
+                            <p>Colon 168, San Luis, Argentina</p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <strong>📞 Teléfono:</strong>
+                            <p>+54 (266) 443-1659</p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <strong>✉️ Email:</strong>
+                            <p>institutosanmarino.direccion@gmail.com</p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <strong>🕐 Horario de atención:</strong>
+                            <p>Lunes a Viernes: 8:00 - 14:00hs</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <form class="contacto-form" id="contactoForm">
+                        <div class="form-group">
+                            <label class="form-label" for="nombre">Nombre completo</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="mensaje">Mensaje</label>
+                            <textarea class="form-control" id="mensaje" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Enviar mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto San Marino</h3>
+                    <p>Educación de excelencia desde 1985</p>
+                    <p>Formando ciudadanos responsables y comprometidos con la sociedad</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="index.html">Inicio</a><br>
+                    <a href="#noticias">Noticias</a><br>
+                    <a href="#niveles">Niveles</a><br>
+                    <a href="#contacto">Contacto</a><br>
+                    <a href="pages/auth/login.html">Acceso Sistema</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Niveles</h3>
+                    <a href="pages/niveles/inicial.html">Nivel Inicial</a><br>
+                    <a href="pages/niveles/primario.html">Nivel Primario</a><br>
+                    <a href="pages/niveles/secundario.html">Nivel Secundario</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📍 Colon 168, San Luis</p>
+                    <p>📞 +54 (266) 443-1659</p>
+                    <p>✉️ institutosanmarino.direccion@gmail.com </p>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
