@@ -6,6 +6,22 @@
 /* ============================================
    VARIABLES CSS
    ============================================ */
+
+   /* ===============================
+   VARIABLES GLOBALES – SAN MARINO
+   =============================== */
+:root {
+    --secondary-color: #0066cc;
+    --accent-hover: #FFC700;
+    --text-dark: #1a1a1a;
+    --text-light: #666666;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+}
+
 :root {
     --primary-color: #18276a;
     --primary-dark: #101218;

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reglamento - Instituto San Marino</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pdf-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .pdf-placeholder {
+            background: var(--bg-light);
+            border: 3px dashed var(--accent-color);
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-placeholder i {
+            font-size: 5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .pdf-placeholder h3 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .pdf-placeholder p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/logo.png" alt="Instituto San Marino">
+                <span>Instituto San Marino</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="inicial.html" class="nav-link">Nivel Inicial</a></li>
+                <li><a href="primaria.html" class="nav-link">Primaria</a></li>
+                <li><a href="secundaria.html" class="nav-link">Secundaria</a></li>
+                <li><a href="reglamento.html" class="nav-link">Reglamento</a></li>
+                <li><a href="../login.html" class="nav-link">Ingresar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="section" style="background: linear-gradient(135deg, #f0f8ff, #e6f3ff);">
+        <div class="container">
+            <h1 class="section-title">Reglamento Institucional</h1>
+            <p style="text-align: center; font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
+                Aquí encontrarás todas las normas, derechos y obligaciones que rigen nuestra institución educativa.
+            </p>
+        </div>
+    </section>
+
+    <!-- PDF VIEWER SECTION -->
+    <section class="section">
+        <div class="pdf-container">
+            <!-- Botones de acción -->
+            <div class="pdf-actions">
+                <button class="btn btn-primary" onclick="descargarPDF()">
+                    <i class="fas fa-download"></i> Descargar Reglamento
+                </button>
+                <button class="btn btn-accent" onclick="imprimirPDF()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <a href="#" class="btn btn-whatsapp" onclick="consultarPorWhatsApp(); return false;">
+                    <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+                </a>
+            </div>
+
+            <!-- Visor de PDF -->
+            <div id="pdf-content">
+                <!-- PLACEHOLDER: Aquí se cargará el PDF cuando esté disponible -->
+                <div class="pdf-placeholder">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Reglamento Institucional</h3>
+                    <p>El documento del reglamento será agregado próximamente.</p>
+                    <p style="font-size: 1rem; margin-top: 1rem; color: var(--primary-color);">
+                        Para cargar el PDF, coloque el archivo en: <strong>/documents/reglamento.pdf</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFORMACIÓN ADICIONAL -->
+    <section class="section" style="background: var(--bg-light);">
+        <div class="container">
+            <h2 class="section-title">Aspectos Destacados</h2>
+            <div class="niveles-grid">
+                <div class="card">
+                    <i class="fas fa-gavel" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+                    <h3>Normas de Convivencia</h3>
+                    <p>Reglas claras que promueven un ambiente de respeto y colaboración entre todos los miembros de la comunidad educativa.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+                    <h3>Derechos y Deberes</h3>
+                    <p>Conocé los derechos y responsabilidades de estudiantes, familias y personal de la institución.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clipboard-check" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+                    <h3>Evaluación y Promoción</h3>
+                    <p>Sistema de evaluación transparente y criterios de promoción para cada nivel educativo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Instituto San Marino</h3>
+                <p>Educación de calidad desde 1990</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@institutosanmarino.edu.ar</p>
+                <p><i class="fas fa-map-marker-alt"></i> Dirección del Instituto</p>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Instituto San Marino. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Ruta del PDF - REEMPLAZAR cuando se suba el documento
+        const PDF_PATH = '../documents/reglamento.pdf';
+
+        // Cargar PDF cuando esté disponible
+        window.addEventListener('DOMContentLoaded', function() {
+            cargarPDF();
+        });
+
+        function cargarPDF() {
+            // Verificar si existe el PDF
+            fetch(PDF_PATH, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // Si existe el PDF, mostrarlo
+                        document.getElementById('pdf-content').innerHTML = `
+                            <iframe 
+                                src="${PDF_PATH}" 
+                                class="pdf-viewer"
+                                title="Reglamento Institucional"
+                                type="application/pdf">
+                                <p>Su navegador no puede mostrar PDFs. 
+                                <a href="${PDF_PATH}" download>Haga clic aquí para descargar el documento.</a></p>
+                            </iframe>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    // Si no existe, mantener el placeholder
+                    console.log('PDF no encontrado aún');
+                });
+        }
+
+        function descargarPDF() {
+            // Verificar si existe el PDF
+            fetch(PDF_PATH, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // Descargar PDF
+                        const link = document.createElement('a');
+                        link.href = PDF_PATH;
+                        link.download = 'reglamento-instituto-san-marino.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
+                    }
+                })
+                .catch(error => {
+                    alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
+                });
+        }
+
+        function imprimirPDF() {
+            fetch(PDF_PATH, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        window.open(PDF_PATH, '_blank');
+                    } else {
+                        alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
+                    }
+                })
+                .catch(error => {
+                    alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
+                });
+        }
+
+        function consultarPorWhatsApp() {
+            const mensaje = `Hola, tengo una consulta sobre el reglamento institucional del Instituto San Marino.
+
+Mi consulta es: _____________________
+
+Muchas gracias.`;
+
+            const numeroWhatsApp = '549266400'; // REEMPLAZAR con el número real
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+</body>
+</html>
