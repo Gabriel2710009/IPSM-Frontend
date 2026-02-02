@@ -242,7 +242,7 @@ img {
 
 .social-icon:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px) scale(1.1);
+    transform: translateY(-2px);
     color: var(--accent-color);
 }
 
@@ -258,6 +258,9 @@ img {
     min-height: 600px;
     display: flex;
     align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero-carousel {
