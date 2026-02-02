@@ -3,101 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Nivel Inicial - Instituto Privado San Marino">
     <title>Nivel Inicial - Instituto San Marino</title>
     
-    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../css/styles.css">
-    <link rel="stylesheet" href="../../css/home.css">
-    <link rel="stylesheet" href="../../css/styles-fixed.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/styles-mejorado.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- HEADER -->
     <header class="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <img src="../../images/institucional/logo.png" alt="Logo Instituto San Marino" class="logo">
+                    <img src="https://i.imgur.com/2QZ8kXL.png" alt="Logo Instituto San Marino" class="logo">
                     <div>
                         <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Educación con valores desde 1985</p>
+                        <p class="site-subtitle">Barquito de Papel</p>
                     </div>
                 </div>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-                    ☰
-                </button>
-                
-                <nav class="nav" id="mainNav">
-                    <a href="../../index.html" class="nav-link">Inicio</a>
-                    <a href="../../index.html#noticias" class="nav-link">Noticias</a>
-                    <a href="../../index.html#niveles" class="nav-link active">Niveles</a>
-                    <a href="../../index.html#contacto" class="nav-link">Contacto</a>
-                    <a href="../auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                </nav>
+
+                <div style="display: flex; align-items: center; gap: 2rem;">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <nav class="nav" id="mainNav">
+                        <a href="../../index.html" class="nav-link">Quienes somos</a>
+                        <a href="../niveles.html" class="nav-link">Niveles</a>
+                        <a href="../valores.html" class="nav-link">Valores y Aranceles</a>
+                        <a href="../contacto.html" class="nav-link">Contacto</a>
+                        
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/institutosanmarino" target="_blank" class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.instagram.com/institutosanmarino" target="_blank" class="social-icon">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@institutosanmarino" target="_blank" class="social-icon">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a href="https://open.spotify.com/user/institutosanmarino" target="_blank" class="social-icon">
+                                <i class="fab fa-spotify"></i>
+                            </a>
+                            <a href="https://wa.me/5492664004015" target="_blank" class="social-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Nivel -->
-    <section class="hero" style="padding: var(--spacing-2xl) 0;">
+    <!-- HERO SECTION -->
+    <section class="hero" style="min-height: 400px;">
+        <div class="hero-carousel">
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1587653915936-5623ea0b949a?w=1920');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1920');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1576495199011-eb94736d05d6?w=1920');"></div>
+        </div>
+
         <div class="container">
             <div class="hero-content">
-                <h2 class="hero-title">Nivel Inicial</h2>
-                <p class="hero-subtitle">Sala de 3, 4 y 5 años | Educación temprana con amor y dedicación</p>
+                <h1 class="hero-title">
+                    <i class="fas fa-baby"></i> Nivel Inicial
+                </h1>
+                <p class="hero-subtitle">
+                    Donde cada día es una aventura de aprendizaje y descubrimiento
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Contenido Principal -->
-    <section class="welcome-section">
+    <!-- CONTENIDO PRINCIPAL -->
+    <section style="padding: 4rem 0; background: white;">
         <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h2>Nuestro Nivel Inicial</h2>
-                    <p>Nuestra propuesta académica para el Nivel Inicial se distingue por ofrecer un <strong>cuerpo docente altamente especializado</strong> en todas las áreas, garantizando una enseñanza personalizada que potencie el desarrollo integral de cada niño.</p>
-                    
-                    <p>Integramos actividades prácticas como la participación en una <strong>huerta educativa</strong>, clases de <strong>inglés y computación</strong>, así como experiencias en <strong>música y expresión corporal</strong>.</p>
-                    
-                    <h3>Pilares de Nuestra Educación</h3>
-                    <ul>
-                        <li>✅ Cuerpo docente especializado</li>
-                        <li>✅ Enseñanza personalizada</li>
-                        <li>✅ Huerta educativa</li>
-                        <li>✅ Inglés y computación</li>
-                        <li>✅ Música y expresión corporal</li>
-                        <li>✅ Educación física como pilar fundamental</li>
-                        <li>✅ Educación vial</li>
-                        <li>✅ Jornada extendida opcional (8 a 15hs)</li>
-                    </ul>
-                    
-                    <p class="mt-md"><strong>La educación física</strong> se considera un pilar fundamental en nuestro enfoque pedagógico, promoviendo la actividad física y el bienestar desde temprana edad.</p>
+            <div class="row" style="gap: 3rem; align-items: center;">
+                <div class="col col-6 animate-in">
+                    <h2 class="section-title" style="text-align: left;">Un Comienzo Especial</h2>
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: #4b5563; margin-bottom: 1.5rem;">
+                        En nuestro <strong>Nivel Inicial</strong> acompañamos a los más pequeños en sus primeros pasos en la educación formal, 
+                        creando un ambiente seguro, cálido y estimulante que promueve el desarrollo integral.
+                    </p>
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: #4b5563; margin-bottom: 1.5rem;">
+                        A través del <strong>juego</strong>, la <strong>exploración</strong> y la <strong>creatividad</strong>, 
+                        nuestros alumnos desarrollan habilidades cognitivas, sociales y emocionales fundamentales para su futuro.
+                    </p>
+
+                    <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem;">
+                        <h3 style="color: #18276a; margin-bottom: 1rem; font-size: 1.25rem;">
+                            <i class="fas fa-users"></i> Salas Disponibles
+                        </h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; color: #4b5563; font-size: 1.125rem;">
+                                <i class="fas fa-check-circle" style="color: #22c55e;"></i> Sala de 3 años
+                            </li>
+                            <li style="padding: 0.5rem 0; color: #4b5563; font-size: 1.125rem;">
+                                <i class="fas fa-check-circle" style="color: #22c55e;"></i> Sala de 4 años
+                            </li>
+                            <li style="padding: 0.5rem 0; color: #4b5563; font-size: 1.125rem;">
+                                <i class="fas fa-check-circle" style="color: #22c55e;"></i> Sala de 5 años
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="https://wa.me/5492664004015?text=Hola!%20Me%20gustaría%20solicitar%20una%20entrevista%20para%20inscripción%20en%20Nivel%20Inicial.%0A%0ANombre%20del%20niño/a:%20%0AEdad:%20%0ASala%20a%20inscribir:%20%0ANombre%20del%20padre/madre:%20%0ATeléfono:%20" 
+                       class="btn btn-success btn-lg">
+                        <i class="fab fa-whatsapp"></i> Solicitar Entrevista
+                    </a>
                 </div>
-                
-                <div class="col-6">
-                    <img src="../../images/cursos/nivel-inicial.jpg" alt="Nivel Inicial" class="welcome-image">
-                    
-                    <div class="card mt-lg">
-                        <div class="card-header">
-                            <h3 class="card-title">Salas Disponibles</h3>
-                        </div>
-                        <div class="card-body">
-                            <div style="padding: var(--spacing-md) 0; border-bottom: 1px solid var(--gray-200);">
-                                <strong>Sala de 3 años</strong>
-                                <p>Primera experiencia escolar. Juego y socialización como eje principal del aprendizaje.</p>
+
+                <div class="col col-6 animate-in animate-delay-1">
+                    <img src="https://images.unsplash.com/photo-1587653915936-5623ea0b949a?w=800" 
+                         alt="Niños en Nivel Inicial" 
+                         style="width: 100%; border-radius: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS -->
+    <section style="padding: 4rem 0; background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2 class="section-title">¿Qué Ofrecemos?</h2>
+            </div>
+
+            <div class="row" style="gap: 2rem;">
+                <div class="col col-4 animate-in">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-palette"></i>
                             </div>
-                            <div style="padding: var(--spacing-md) 0; border-bottom: 1px solid var(--gray-200);">
-                                <strong>Sala de 4 años</strong>
-                                <p>Desarrollo de autonomía y habilidades básicas. Exploración del entorno.</p>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Educación Artística</h3>
+                            <p style="color: #6b7280;">Música, plástica y expresión corporal para desarrollar la creatividad</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-4 animate-in animate-delay-1">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-language"></i>
                             </div>
-                            <div style="padding: var(--spacing-md) 0;">
-                                <strong>Sala de 5 años</strong>
-                                <p>Preparación para primaria. Iniciación en lecto-escritura y matemática.</p>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Inglés</h3>
+                            <p style="color: #6b7280;">Iniciación al idioma inglés de forma lúdica y natural</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-4 animate-in animate-delay-2">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-running"></i>
                             </div>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Educación Física</h3>
+                            <p style="color: #6b7280;">Desarrollo psicomotriz y hábitos de vida saludable</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-4 animate-in animate-delay-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Tecnología</h3>
+                            <p style="color: #6b7280;">Primeros contactos con herramientas digitales educativas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-4 animate-in animate-delay-1">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Iniciación a la Lectoescritura</h3>
+                            <p style="color: #6b7280;">Proceso gradual y respetuoso de los tiempos de cada niño</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-4 animate-in animate-delay-2">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div style="font-size: 3rem; color: #18276a; margin-bottom: 1rem;">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h3 style="color: #18276a; margin-bottom: 0.75rem;">Valores y Convivencia</h3>
+                            <p style="color: #6b7280;">Formación en respeto, solidaridad y trabajo en equipo</p>
                         </div>
                     </div>
                 </div>
@@ -105,251 +213,166 @@
         </div>
     </section>
 
-    <!-- Actividades -->
-    <section class="valores-section">
+    <!-- GALERÍA DE FOTOS -->
+    <section style="padding: 4rem 0; background: white;">
         <div class="container">
-            <h2 class="section-title text-center">Actividades Curriculares</h2>
-            
-            <div class="valores-grid">
-                <div class="valor-item">
-                    <div class="valor-icon">🌱</div>
-                    <h3>Huerta Educativa</h3>
-                    <p>Actividades prácticas que conectan a los niños con la naturaleza</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">🇬🇧</div>
-                    <h3>Inglés</h3>
-                    <p>Introducción al idioma de forma lúdica y natural</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">💻</div>
-                    <h3>Computación</h3>
-                    <p>Primeros acercamientos a la tecnología educativa</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">🎵</div>
-                    <h3>Música</h3>
-                    <p>Desarrollo del sentido rítmico y musical</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">🩰</div>
-                    <h3>Expresión Corporal</h3>
-                    <p>Movimiento, creatividad y expresión artística</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">⚽</div>
-                    <h3>Educación Física</h3>
-                    <p>Pilar fundamental para el desarrollo físico y motor</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">🚦</div>
-                    <h3>Educación Vial</h3>
-                    <p>Formación en seguridad y normas de tránsito</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">🎨</div>
-                    <h3>Arte</h3>
-                    <p>Estimulación de la creatividad y expresión plástica</p>
-                </div>
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2 class="section-title">Nuestra Galería</h2>
+                <p style="font-size: 1.125rem; color: #6b7280;">Momentos especiales de nuestro Nivel Inicial</p>
             </div>
-        </div>
-    </section>
 
-    <!-- Jornada Extendida -->
-    <section class="contacto-section">
-        <div class="container">
-            <h2 class="section-title text-center">Jornada Extendida</h2>
-            <p class="text-center mb-xl" style="font-size: var(--text-lg);">
-                Para brindar una experiencia educativa más completa, ofrecemos jornada extendida opcional
-            </p>
-            
-            <div class="card" style="max-width: 900px; margin: 0 auto;">
-                <div class="card-header">
-                    <h3 class="card-title">📅 Horario: 8:00 a 15:00 hs - Lunes a Jueves</h3>
+            <div class="gallery">
+                <div class="gallery-item animate-in">
+                    <img src="https://images.unsplash.com/photo-1587653915936-5623ea0b949a?w=600&h=400&fit=crop" alt="Actividad en sala">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Actividades en Sala</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p><strong>Fecha de Inicio:</strong> Lunes 8 de abril</p>
-                    <p>Proporcionando un entorno enriquecido y equitativo que favorece el desarrollo pleno de cada niño.</p>
-                    
-                    <h4 class="mt-lg mb-md">Actividades Incluidas:</h4>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong>⚽ Taller de Deportes para niños</strong>
-                        <p>Sumérgete en un mundo de diversión y movimiento, donde cada salto, carrera y golpe de balón se convierte en una lección de trabajo en equipo y superación personal. Nuestro taller de deportes no solo fortalece el cuerpo, sino también los valores de compañerismo, disciplina y perseverancia.</p>
+
+                <div class="gallery-item animate-in animate-delay-1">
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=400&fit=crop" alt="Juego libre">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Juego y Aprendizaje</p>
                     </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong>📚 Apoyo escolar para tareas y refuerzo de contenidos</strong>
-                        <p>Descubre el placer de aprender y dominar nuevos conocimientos de manera divertida y efectiva. Nuestro apoyo escolar transforma las tareas en desafíos emocionantes y los contenidos en aventuras intelectuales que estimulan la curiosidad y el pensamiento crítico.</p>
+                </div>
+
+                <div class="gallery-item animate-in animate-delay-2">
+                    <img src="https://images.unsplash.com/photo-1576495199011-eb94736d05d6?w=600&h=400&fit=crop" alt="Arte y creatividad">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Arte y Creatividad</p>
                     </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong>👨‍🍳 Taller de Cocina para niños</strong>
-                        <p>¡Conviértete en un chef en miniatura y descubre el fascinante mundo de la gastronomía! En nuestro taller de cocina, los pequeños exploradores aprenderán a mezclar colores, sabores y texturas mientras desarrollan habilidades culinarias, creatividad y autonomía.</p>
+                </div>
+
+                <div class="gallery-item animate-in">
+                    <img src="https://images.unsplash.com/photo-1560785496-3c9d27877182?w=600&h=400&fit=crop" alt="Educación física">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Educación Física</p>
                     </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong>🎨 Taller de Arte</strong>
-                        <p>Despierta tu lado más creativo y libera tu imaginación en nuestro taller de arte. Desde la pintura hasta la escultura, pasando por la danza y el teatro, cada sesión es un viaje emocionante hacia la expresión personal, la sensibilidad estética y la apreciación del arte en todas sus formas.</p>
+                </div>
+
+                <div class="gallery-item animate-in animate-delay-1">
+                    <img src="https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?w=600&h=400&fit=crop" alt="Actos escolares">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Actos Escolares</p>
                     </div>
-                    
-                    <div>
-                        <strong>🏊 Clases de Natación (una vez por semana)</strong>
-                        <p>Las clases de natación no solo enseñan técnicas de nado, sino también habilidades acuáticas, confianza en uno mismo y conciencia del cuidado del cuerpo.</p>
-                    </div>
-                    
-                    <div class="text-center mt-xl">
-                        <a href="../auth/login.html" class="btn btn-primary btn-lg">¡Inscríbete ya!</a>
-                        <p class="mt-md" style="font-style: italic;">Ofrece a tus hijos una experiencia educativa completa y enriquecedora</p>
+                </div>
+
+                <div class="gallery-item animate-in animate-delay-2">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop" alt="Trabajo en equipo">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">Trabajo en Equipo</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Horarios -->
-    <section class="welcome-section">
-        <div class="container">
-            <h2 class="section-title text-center">Horarios y Modalidades</h2>
-            
-            <div class="row">
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">🌅 Turno Mañana</h3>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: var(--text-2xl); font-weight: 700; color: var(--primary-color); text-align: center; margin: var(--spacing-lg) 0;">
-                                8:00 - 12:00hs
-                            </p>
-                            <p>Ideal para actividades en horario matinal.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">🌇 Turno Tarde</h3>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: var(--text-2xl); font-weight: 700; color: var(--primary-color); text-align: center; margin: var(--spacing-lg) 0;">
-                                13:00 - 17:00hs
-                            </p>
-                            <p>Alternativa para familias con horarios vespertinos.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">☀️ Jornada Completa</h3>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: var(--text-2xl); font-weight: 700; color: var(--primary-color); text-align: center; margin: var(--spacing-lg) 0;">
-                                8:00 - 17:00hs
-                            </p>
-                            <p><strong>Opcional.</strong> Incluye almuerzo y actividades extendidas.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Inscripción -->
-    <section class="noticias-section">
-        <div class="container">
-            <h2 class="section-title text-center">Información de Inscripción</h2>
-            
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">📋 Requisitos</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul>
-                                <li>DNI del alumno</li>
-                                <li>DNI de ambos padres/tutores</li>
-                                <li>Certificado de nacimiento</li>
-                                <li>Constancia de domicilio</li>
-                                <li>Carnet de vacunación completo</li>
-                                <li>2 fotos 4x4</li>
-                                <li>Apto médico</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">📞 Contacto</h3>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Período de inscripción:</strong><br>
-                            Septiembre a Diciembre</p>
-                            
-                            <p><strong>Secretaría:</strong><br>
-                            Lunes a Viernes: 8:00 - 18:00hs</p>
-                            
-                            <p><strong>Teléfono:</strong><br>
-                            +54 (266) 4XX-XXXX</p>
-                            
-                            <p><strong>Email:</strong><br>
-                            inicial@institutosanmarino.edu.ar</p>
-                            
-                            <a href="../auth/login.html" class="btn btn-primary btn-block mt-md">Solicitar entrevista</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Instituto San Marino</h3>
-                    <p>Educación de excelencia desde 1985</p>
+            <div class="row" style="margin-bottom: 2rem;">
+                <div class="col col-4 footer-section">
+                    <h3><i class="fas fa-school"></i> Instituto San Marino</h3>
+                    <p style="color: rgba(255,255,255,0.8); line-height: 1.8;">
+                        Formando ciudadanos responsables con excelencia académica.
+                    </p>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <a href="../../index.html">Inicio</a><br>
-                    <a href="inicial.html">Nivel Inicial</a><br>
-                    <a href="primario.html">Nivel Primario</a><br>
-                    <a href="secundario.html">Nivel Secundario</a>
+
+                <div class="col col-4 footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Contacto</h3>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        <i class="fas fa-location-dot"></i> 
+                        <a href="https://www.google.com/maps/search/?api=1&query=Instituto+Privado+San+Marino+Colon+168+San+Luis" target="_blank">
+                            Colón 168, San Luis
+                        </a>
+                    </p>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        <i class="fas fa-phone"></i> 
+                        <a href="tel:+542664431659">+54 (266) 4431659</a>
+                    </p>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        <i class="fas fa-envelope"></i> 
+                        <a href="mailto:institutosanmarino.direccion@gmail.com">institutosanmarino.direccion@gmail.com</a>
+                    </p>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Contacto</h3>
-                    <p>📍 Av. Principal 1234, San Luis</p>
-                    <p>📞 +54 (266) 4XX-XXXX</p>
-                    <p>✉️ info@institutosanmarino.edu.ar</p>
+
+                <div class="col col-4 footer-section">
+                    <h3><i class="fas fa-share-nodes"></i> Redes Sociales</h3>
+                    <div class="social-icons" style="justify-content: flex-start;">
+                        <a href="https://www.facebook.com/institutosanmarino" target="_blank" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/institutosanmarino" target="_blank" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@institutosanmarino" target="_blank" class="social-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://open.spotify.com/user/institutosanmarino" target="_blank" class="social-icon">
+                            <i class="fab fa-spotify"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.5rem; text-align: center;">
+                <p style="color: rgba(255,255,255,0.7); margin: 0;">
+                    © 2026 Instituto Privado San Marino. Todos los derechos reservados.
+                </p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="../../js/config.js"></script>
-    <script src="../../js/api.js"></script>
-    <script src="../../js/home.js"></script>
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/5492664004015?text=Hola!%20Me%20gustaría%20solicitar%20información%20sobre%20Nivel%20Inicial" 
+       class="whatsapp-float" 
+       target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Carrusel automático
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000);
+
+        // Animaciones al scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
