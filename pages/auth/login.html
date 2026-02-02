@@ -8,7 +8,10 @@
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="../../css/login.css">
@@ -19,7 +22,7 @@
         <div class="container">
             <div class="header-content">
                 <a href="../../index.html" class="logo-link">
-                    <img src="../../images/institucional/logo.png" alt="Logo Instituto San Marino" class="logo">
+                    <img src="https://i.imgur.com/2QZ8kXL.png" alt="Logo Instituto San Marino" class="logo">
                     <span class="site-title-simple">Instituto San Marino</span>
                 </a>
             </div>
@@ -47,7 +50,7 @@
                         pattern="[0-9]{7,8}"
                         autocomplete="username"
                     >
-                    <div class="form-help">Ingrese su DNI sin puntos</div>
+                    <small class="form-help" style="color: var(--gray-500); font-size: var(--text-sm);">Ingrese su DNI sin puntos</small>
                 </div>
 
                 <div class="form-group">
@@ -62,7 +65,7 @@
                             autocomplete="current-password"
                         >
                         <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar contraseña">
-                            👁️
+                            <i class="far fa-eye"></i>
                         </button>
                     </div>
                 </div>
@@ -86,26 +89,7 @@
             <div class="login-footer">
                 <p>¿Problemas para acceder?</p>
                 <p>Comuníquese con secretaría:<br>
-                <strong>+54 (266) 4XX-XXXX</strong> | <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7910171f163910170a0d100d0c0d160a181714180b101716571c1d0c57180b">[email&#160;protected]</a></strong></p>
-            </div>
-        </div>
-
-        <div class="login-info">
-            <div class="info-card">
-                <h3>👨‍🎓 Alumnos</h3>
-                <p>Accede a tus notas, comunicados y mensajes</p>
-            </div>
-            <div class="info-card">
-                <h3>👨‍👩‍👧 Padres</h3>
-                <p>Consulta el progreso de tus hijos, cuotas y libretas</p>
-            </div>
-            <div class="info-card">
-                <h3>👨‍🏫 Docentes</h3>
-                <p>Gestiona tus cursos, carga notas y comunícate</p>
-            </div>
-            <div class="info-card">
-                <h3>⚙️ Administración</h3>
-                <p>Gestión completa del sistema escolar</p>
+                <strong>+54 (266) 4431659</strong> | <strong>institutosanmarino.direccion@gmail.com</strong></p>
             </div>
         </div>
     </div>
@@ -116,4 +100,8 @@
     </div>
 
     <!-- Scripts -->
-    <script data-cfa
+    <script src="../../js/config.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/login.js"></script>
+</body>
+</html>

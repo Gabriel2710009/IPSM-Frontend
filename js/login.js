@@ -63,8 +63,13 @@ async function performLogin(dni, password) {
     try {
         Utils.showLoader();
         
+        console.log('Intentando login con:', { dni, password: '***' });
+        console.log('URL de API:', CONFIG.API_BASE_URL);
+        
         // Llamar a la API de autenticación
         const response = await Auth.login(dni, password);
+        
+        console.log('Respuesta de login:', response);
         
         Utils.showSuccess('¡Bienvenido/a al sistema!');
         
@@ -86,10 +91,12 @@ async function performLogin(dni, password) {
         // Mostrar error específico
         let errorMessage = 'Error al iniciar sesión. Verifique sus credenciales.';
         
-        if (error.message.includes('401') || error.message.includes('credenciales')) {
-            errorMessage = 'DNI o contraseña incorrectos. Por favor, verifique sus datos.';
-        } else if (error.message.includes('conexión') || error.message.includes('network')) {
-            errorMessage = 'No se pudo conectar con el servidor. Verifique su conexión.';
+        if (error.message) {
+            if (error.message.includes('401') || error.message.includes('credenciales')) {
+                errorMessage = 'DNI o contraseña incorrectos. Por favor, verifique sus datos.';
+            } else if (error.message.includes('conexión') || error.message.includes('network') || error.message.includes('Failed to fetch')) {
+                errorMessage = 'No se pudo conectar con el servidor. Verifique que el backend esté corriendo en: ' + CONFIG.API_BASE_URL;
+            }
         }
         
         Utils.showError(errorMessage);
@@ -117,7 +124,12 @@ function initPasswordToggle() {
         passwordInput.type = type;
         
         // Cambiar icono
-        toggleBtn.textContent = type === 'password' ? '👁️' : '🙈';
+        const icon = toggleBtn.querySelector('i');
+        if (type === 'password') {
+            icon.className = 'far fa-eye';
+        } else {
+            icon.className = 'far fa-eye-slash';
+        }
     });
 }
 
@@ -165,7 +177,7 @@ function initForgotPassword() {
         e.preventDefault();
         
         // Mostrar modal o redirigir a página de recuperación
-        Utils.showWarning('Por favor, comuníquese con secretaría para restablecer su contraseña: +54 (266) 4XX-XXXX', 8000);
+        Utils.showWarning('Por favor, comuníquese con secretaría para restablecer su contraseña: +54 (266) 4431659', 8000);
     });
 }
 
