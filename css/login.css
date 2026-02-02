@@ -36,7 +36,6 @@
     align-items: center;
     justify-content: center;
     padding: var(--spacing-2xl) var(--spacing-lg);
-    gap: var(--spacing-2xl);
 }
 
 .login-box {
@@ -80,8 +79,38 @@
     margin-bottom: var(--spacing-xl);
 }
 
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--border-radius-md);
+    font-size: var(--text-base);
+    transition: all var(--transition-fast);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(24, 39, 106, 0.1);
+}
+
 .password-input-wrapper {
     position: relative;
+}
+
+.password-input-wrapper .form-control {
+    padding-right: 45px;
 }
 
 .toggle-password {
@@ -92,14 +121,22 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: var(--text-lg);
     padding: var(--spacing-xs);
-    opacity: 0.6;
-    transition: opacity var(--transition-fast);
+    color: var(--gray-500);
+    transition: color var(--transition-fast);
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .toggle-password:hover {
-    opacity: 1;
+    color: var(--gray-700);
+}
+
+.toggle-password i {
+    font-size: 20px;
 }
 
 .checkbox-label {
@@ -121,6 +158,12 @@
     padding: var(--spacing-md) var(--spacing-xl);
     font-size: var(--text-lg);
     font-weight: 600;
+    width: 100%;
+}
+
+.btn-block {
+    width: 100%;
+    display: block;
 }
 
 .login-help {
@@ -145,71 +188,73 @@
     margin-bottom: var(--spacing-sm);
 }
 
-.login-info {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg);
-    max-width: 500px;
+/* Loader */
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
 }
 
-.info-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
-    text-align: center;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.loader.active {
+    display: flex;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-xl);
+    z-index: 10001;
+    opacity: 0;
+    transform: translateY(-20px);
     transition: all var(--transition-normal);
-    animation: fadeIn 0.8s ease-out backwards;
+    max-width: 400px;
 }
 
-.info-card:nth-child(1) { animation-delay: 0.1s; }
-.info-card:nth-child(2) { animation-delay: 0.2s; }
-.info-card:nth-child(3) { animation-delay: 0.3s; }
-.info-card:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.info-card:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-5px);
+.notification-success {
+    background: var(--success-color);
+    color: white;
 }
 
-.info-card h3 {
-    color: var(--accent-color);
-    font-size: var(--text-lg);
-    margin-bottom: var(--spacing-sm);
+.notification-error {
+    background: var(--error-color);
+    color: white;
 }
 
-.info-card p {
-    font-size: var(--text-sm);
-    line-height: 1.5;
-    opacity: 0.9;
+.notification-warning {
+    background: var(--warning-color);
+    color: white;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .login-container {
-        flex-direction: column;
-    }
-    
-    .login-info {
-        grid-template-columns: 1fr;
-        max-width: 450px;
-        width: 100%;
-    }
-}
-
 @media (max-width: 480px) {
     .login-box {
         padding: var(--spacing-xl);
@@ -217,9 +262,5 @@
     
     .login-header h1 {
         font-size: var(--text-2xl);
-    }
-    
-    .info-card {
-        padding: var(--spacing-md);
     }
 }
