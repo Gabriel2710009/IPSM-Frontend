@@ -17,31 +17,37 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="../../images/institucional/logo.png" alt="Logo Instituto San Marino" class="logo">
-                    <div>
-                        <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Educación con valores desde 1985</p>
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/logo-nuevo-San-Marino-fondo-blanco.ico" alt="Logo Instituto San Marino" class="logo">
+                        <div>
+                            <h1 class="site-title">Instituto Privado San Marino</h1>
+                            <p class="site-subtitle">Educación con valores desde 1990</p>
+                        </div>
                     </div>
+                    
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                        ☰
+                    </button>
+                    
+                    <nav class="nav" id="mainNav">
+                        <a href="index.html" class="nav-link active">Inicio</a>
+                        <a href="#noticias" class="nav-link">Noticias</a>
+                        <a href="#niveles" class="nav-link">Niveles</a>
+                        <a href="#contacto" class="nav-link">Contacto</a>
+                        <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                        </div>
+                    </nav>
                 </div>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-                    ☰
-                </button>
-                
-                <nav class="nav" id="mainNav">
-                    <a href="../../index.html" class="nav-link">Inicio</a>
-                    <a href="../../index.html#noticias" class="nav-link">Noticias</a>
-                    <a href="../../index.html#niveles" class="nav-link active">Niveles</a>
-                    <a href="../../index.html#contacto" class="nav-link">Contacto</a>
-                    <a href="../auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                </nav>
             </div>
-        </div>
-    </header>
+        </header>
 
     <!-- Hero Nivel -->
     <section class="hero" style="padding: var(--spacing-2xl) 0;">

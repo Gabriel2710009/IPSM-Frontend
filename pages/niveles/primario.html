@@ -3,311 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nivel Primario - Instituto Privado San Marino">
     <title>Nivel Primario - Instituto San Marino</title>
     
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <link rel="stylesheet" href="../../css/styles-mejorado.css">
-    
-    <style>
-        .nivel-hero {
-            background: linear-gradient(135deg, #18276a 0%, #2d4a9e 100%);
-            padding: 120px 0 80px;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nivel-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(255,255,255,0.1)"></path></svg>') bottom center no-repeat;
-            background-size: cover;
-            opacity: 0.2;
-        }
-        
-        .nivel-hero-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .nivel-hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .nivel-hero .icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-        
-        .nivel-hero p {
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-        
-        .descripcion-section {
-            padding: 80px 0;
-            background: white;
-        }
-        
-        .descripcion-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .descripcion-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: #18276a;
-        }
-        
-        .descripcion-content p {
-            font-size: 1.125rem;
-            color: #4b5563;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-        
-        .destacados-section {
-            background: #f9fafb;
-            padding: 80px 0;
-        }
-        
-        .destacados-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .destacado-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .destacado-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-        }
-        
-        .destacado-card .icon {
-            font-size: 2.5rem;
-            color: #18276a;
-            margin-bottom: 1rem;
-        }
-        
-        .destacado-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #18276a;
-        }
-        
-        .destacado-card p {
-            color: #6b7280;
-            line-height: 1.6;
-            margin: 0;
-        }
-        
-        .contacto-section {
-            background: linear-gradient(135deg, #18276a 0%, #2d4a9e 100%);
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-        }
-        
-        .contacto-section h2 {
-            color: white;
-            margin-bottom: 2rem;
-        }
-        
-        .contacto-section p {
-            font-size: 1.125rem;
-            margin-bottom: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .nivel-hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nivel-hero p {
-                font-size: 1rem;
-            }
-            
-            .descripcion-content h2 {
-                font-size: 2rem;
-            }
-            
-            .destacados-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/home.css">
+    <link rel="stylesheet" href="../../css/styles-fixed.css">
 </head>
 <body>
-    <!-- Header -->
+   <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <a href="../../index.html">
-                        <img src="https://i.imgur.com/2QZ8kXL.png" alt="Logo Instituto San Marino" class="logo">
-                    </a>
+                    <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/logo-nuevo-San-Marino-fondo-blanco.ico" alt="Logo Instituto San Marino" class="logo">
                     <div>
                         <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Búsqueda de Papel</p>
+                        <p class="site-subtitle">Educación con valores desde 1990</p>
                     </div>
                 </div>
                 
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
+                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                    ☰
                 </button>
                 
                 <nav class="nav" id="mainNav">
-                    <a href="../../index.html" class="nav-link">Quienes somos</a>
-                    <a href="../niveles.html" class="nav-link active">Niveles</a>
-                    <a href="../valores.html" class="nav-link">Valores y Aranceles</a>
-                    <a href="../contacto.html" class="nav-link">Contacto</a>
-                    
+                    <a href="index.html" class="nav-link active">Inicio</a>
+                    <a href="#noticias" class="nav-link">Noticias</a>
+                    <a href="#niveles" class="nav-link">Niveles</a>
+                    <a href="#contacto" class="nav-link">Contacto</a>
+                    <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
                     <div class="social-icons">
-                        <a href="https://www.facebook.com/InstitutoSanMarino" target="_blank" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/institutosanmarino" target="_blank" class="social-icon">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@institutosanmarino" target="_blank" class="social-icon">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://wa.me/5492664431659" target="_blank" class="social-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
+                        <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
                     </div>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="nivel-hero">
+    <!-- Hero Nivel -->
+    <section class="hero" style="padding: var(--spacing-2xl) 0;">
         <div class="container">
-            <div class="nivel-hero-content">
-                <div class="icon">📚</div>
-                <h1>Nivel Primario</h1>
-                <p>1° a 6° grado | Formación académica sólida con valores</p>
+            <div class="hero-content">
+                <h2 class="hero-title">Nivel Primario</h2>
+                <p class="hero-subtitle">1° a 6° grado | Formación académica sólida con valores</p>
             </div>
         </div>
     </section>
 
-    <!-- Descripción Section -->
-    <section class="descripcion-section">
+    <!-- Contenido Principal -->
+    <section class="welcome-section">
         <div class="container">
-            <div class="descripcion-content">
-                <h2>Nuestro Nivel Primario</h2>
-                <p>
-                    En el marco de nuestra oferta educativa para el Nivel Primario, nos enorgullece presentar 
-                    un equipo docente altamente calificado, comprometido con la excelencia educativa y la 
-                    formación integral de cada estudiante.
-                </p>
-                <p>
-                    La <strong>enseñanza personalizada</strong> constituye un pilar fundamental de nuestro 
-                    enfoque pedagógico, garantizando un acompañamiento individualizado que potencia el 
-                    desarrollo cognitivo y emocional de cada niño.
-                </p>
+            <div class="row">
+                <div class="col-6">
+                    <h2>Nuestro Nivel Primario</h2>
+                    <p>En el marco de nuestra oferta educativa para el Nivel Primario, nos enorgullece presentar un equipo docente altamente calificado, comprometido con la excelencia educativa y la formación integral de cada estudiante.</p>
+                    
+                    <p>La enseñanza personalizada constituye un pilar fundamental de nuestro enfoque pedagógico, garantizando un acompañamiento individualizado que potencia el desarrollo cognitivo y emocional de cada niño.</p>
+                    
+                    <h3>Características Destacadas</h3>
+                    <ul>
+                        <li>✅ Equipo docente altamente calificado</li>
+                        <li>✅ Enseñanza personalizada</li>
+                        <li>✅ Proyectos educativos innovadores</li>
+                        <li>✅ Inglés y computación curricular</li>
+                        <li>✅ Robótica y programación</li>
+                        <li>✅ Ajedrez y yoga</li>
+                        <li>✅ Talleres optativos variados</li>
+                    </ul>
+                </div>
+                
+                <div class="col-6">
+                    <img src="../../images/cursos/nivel-primario.jpg" alt="Nivel Primario" class="welcome-image">
+                    
+                    <div class="card mt-lg">
+                        <div class="card-header">
+                            <h3 class="card-title">Grados Disponibles</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="padding: var(--spacing-md) 0; border-bottom: 1px solid var(--gray-200);">
+                                <strong>Primer Ciclo (1° a 3°)</strong>
+                                <p>Alfabetización inicial, matemática básica y hábitos de estudio.</p>
+                            </div>
+                            <div style="padding: var(--spacing-md) 0;">
+                                <strong>Segundo Ciclo (4° a 6°)</strong>
+                                <p>Profundización de contenidos y preparación para secundaria.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Características Destacadas -->
-    <section class="destacados-section">
+    <!-- Innovación Educativa -->
+    <section class="noticias-section">
         <div class="container">
-            <div class="text-center">
-                <h2 class="section-title">Características Destacadas</h2>
-            </div>
+            <h2 class="section-title text-center">Innovación Educativa</h2>
             
-            <div class="destacados-grid">
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Equipo Docente Calificado</h3>
-                    <p>Maestros con formación actualizada y experiencia en metodologías pedagógicas innovadoras</p>
+            <div class="row mt-xl">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🤖 Robótica y Programación</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Introducimos a los estudiantes en el fascinante mundo de la robótica y programación, estimulando el pensamiento lógico y la creatividad.</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Enseñanza Personalizada</h3>
-                    <p>Atención individualizada que respeta los ritmos de aprendizaje de cada estudiante</p>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">♟️ Ajedrez</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>El ajedrez desarrolla habilidades cognitivas, memoria, concentración y toma de decisiones estratégicas.</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Proyectos Educativos Innovadores</h3>
-                    <p>Metodologías activas que fomentan el pensamiento crítico y la creatividad</p>
-                </div>
-                
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Inglés y Computación Curricular</h3>
-                    <p>Formación bilingüe y alfabetización digital integradas al programa educativo</p>
-                </div>
-                
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Robótica y Programación</h3>
-                    <p>Desarrollo de habilidades STEM para preparar a los estudiantes para el futuro</p>
-                </div>
-                
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Ajedrez y Yoga</h3>
-                    <p>Actividades que promueven la concentración, el bienestar físico y emocional</p>
-                </div>
-                
-                <div class="destacado-card">
-                    <div class="icon">✅</div>
-                    <h3>Talleres Optativos Variados</h3>
-                    <p>Amplia oferta de actividades extracurriculares para desarrollar talentos diversos</p>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">🧘 Yoga</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Promovemos el bienestar físico y mental a través del yoga, enseñando técnicas de relajación y autoconocimiento.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contacto Section -->
+    <!-- Talleres Optativos -->
+    <section class="valores-section">
+        <div class="container">
+            <h2 class="section-title text-center">Talleres Optativos</h2>
+            <p class="text-center" style="color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-2xl);">
+                Ofrecemos una variedad de talleres que permiten a los estudiantes explorar sus intereses
+            </p>
+            
+            <div class="valores-grid">
+                <div class="valor-item">
+                    <div class="valor-icon">🎤</div>
+                    <h3>Oratoria</h3>
+                    <p>Desarrollo de habilidades de expresión oral y comunicación efectiva</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🎪</div>
+                    <h3>Acrobacia en Tela</h3>
+                    <p>Actividad física artística que desarrolla fuerza y flexibilidad</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🎭</div>
+                    <h3>Teatro</h3>
+                    <p>Expresión artística, trabajo en equipo y desarrollo de la creatividad</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🎶</div>
+                    <h3>Folklore</h3>
+                    <p>Conexión con nuestras raíces culturales a través de la danza</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">👨‍🍳</div>
+                    <h3>Cocina</h3>
+                    <p>Habilidades culinarias, creatividad y autonomía personal</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🌱</div>
+                    <h3>Huerta y Jardinería</h3>
+                    <p>Conexión con la naturaleza y educación ambiental</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">🏊</div>
+                    <h3>Natación</h3>
+                    <p>Desarrollo de habilidades acuáticas y confianza en el agua</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jornada Extendida -->
     <section class="contacto-section">
         <div class="container">
-            <h2>¿Querés conocer más sobre nuestro Nivel Primario?</h2>
-            <p>Solicitá una entrevista y descubrí todo lo que tenemos para ofrecer</p>
-            <div class="hero-buttons">
-                <a href="../contacto.html" class="btn btn-accent btn-lg">
-                    <i class="fas fa-paper-plane"></i>
-                    Solicitar Entrevista
-                </a>
-                <a href="https://wa.me/5492664431659?text=Hola!%20Quisiera%20información%20sobre%20el%20Nivel%20Primario" 
-                   target="_blank" 
-                   class="btn btn-success btn-lg">
-                    <i class="fab fa-whatsapp"></i>
-                    Consultar por WhatsApp
-                </a>
+            <h2 class="section-title text-center">Jornada Extendida</h2>
+            
+            <div class="card" style="max-width: 900px; margin: 0 auto;">
+                <div class="card-header">
+                    <h3 class="card-title">📅 Horario Ampliado - Lunes a Jueves hasta las 15:00 hs</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Fecha de Inicio:</strong> Lunes 8 de abril</p>
+                    
+                    <h4 class="mt-lg mb-md">Actividades Incluidas:</h4>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <strong>⚽ Taller de Deportes</strong>
+                        <p>Diversión y movimiento donde cada actividad se convierte en una lección de trabajo en equipo y superación personal.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <strong>📚 Apoyo Escolar</strong>
+                        <p>Refuerzo de contenidos y asistencia con tareas, transformando el aprendizaje en desafíos emocionantes.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <strong>👨‍🍳 Taller de Cocina</strong>
+                        <p>Los pequeños chefs aprenderán a mezclar colores, sabores y texturas mientras desarrollan habilidades culinarias y creatividad.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <strong>🎨 Taller de Arte</strong>
+                        <p>Desde la pintura hasta la escultura, cada sesión es un viaje hacia la expresión personal y la apreciación del arte.</p>
+                    </div>
+                    
+                    <div>
+                        <strong>🏊 Clases de Natación (una vez por semana)</strong>
+                        <p>Enseñanza de técnicas de nado, habilidades acuáticas, confianza y conciencia del cuidado del cuerpo.</p>
+                    </div>
+                    
+                    <div class="text-center mt-xl">
+                        <a href="../auth/login.html" class="btn btn-primary btn-lg">¡Inscríbete ya!</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -315,65 +250,36 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-4 footer-section">
-                    <h3>Contacto</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Dirección del Instituto</p>
-                    <p><i class="fas fa-phone"></i> +54 (266) 4431659</p>
-                    <p><i class="fas fa-envelope"></i> institutosanmarino.direccion@gmail.com</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto San Marino</h3>
+                    <p>Educación de excelencia desde 1985</p>
                 </div>
                 
-                <div class="col-4 footer-section">
+                <div class="footer-section">
                     <h3>Enlaces Rápidos</h3>
-                    <p><a href="../../index.html">Inicio</a></p>
-                    <p><a href="../niveles.html">Niveles</a></p>
-                    <p><a href="../valores.html">Valores y Aranceles</a></p>
-                    <p><a href="../contacto.html">Contacto</a></p>
+                    <a href="../../index.html">Inicio</a><br>
+                    <a href="inicial.html">Nivel Inicial</a><br>
+                    <a href="primario.html">Nivel Primario</a><br>
+                    <a href="secundario.html">Nivel Secundario</a>
                 </div>
                 
-                <div class="col-4 footer-section">
-                    <h3>Síguenos</h3>
-                    <div class="social-icons">
-                        <a href="https://www.facebook.com/InstitutoSanMarino" target="_blank" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/institutosanmarino" target="_blank" class="social-icon">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@institutosanmarino" target="_blank" class="social-icon">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
+                <div class="footer-section">
+                    <p>📍 <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
+                    <p>📞 <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
+                    <p>✉️ <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
                 </div>
             </div>
             
-            <div class="text-center mt-xl">
-                <p style="opacity: 0.8;">© 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/5492664431659" target="_blank" class="whatsapp-float">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
     <!-- Scripts -->
-    <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const mainNav = document.getElementById('mainNav');
-        
-        menuToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !mainNav.contains(e.target)) {
-                mainNav.classList.remove('active');
-            }
-        });
-    </script>
+    <script src="../../js/config.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/home.js"></script>
 </body>
 </html>
