@@ -5,7 +5,7 @@
 
 const CONFIG = {
     // URL Base de la API (FastAPI)
-    API_BASE_URL: 'https://api.institutosanmarino.edu.ar/api/v1',
+    API_BASE_URL: 'https://ipsm-backend.onrender.com',
     
     // Endpoints principales
     ENDPOINTS: {
