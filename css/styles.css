@@ -295,8 +295,8 @@ img {
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(236, 229, 213, 0.85),
-    rgba(230, 220, 230, 0.85)
+    rgba(58, 56, 53, 0.85),
+    rgba(68, 63, 68, 0.85)
   );
   z-index: 2;
 }
