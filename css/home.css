@@ -350,8 +350,18 @@
 
 /* Botón "Niveles" */
 .dropdown-toggle {
+  background: transparent;
+  border: none;
   color: var(--white);
-  transition: color var(--transition-fast);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .dropdown-toggle:hover {
@@ -361,20 +371,25 @@
 /* Panel */
 .dropdown-menu {
   background: var(--white);
-  border-top: 4px solid var(--primary-color); /* azul institucional */
+  border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-lg);
+  border-top: 4px solid var(--primary-color);
+  min-width: 200px;
+  padding: 0.25rem 0;
 }
+
 
 /* Links */
 .dropdown-link {
+  padding: 0.65rem 1rem;
+  font-size: var(--text-sm);
   color: var(--primary-color);
   font-weight: 500;
-  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .dropdown-link:hover {
-  background: var(--accent-color); /* amarillo */
-  color: var(--primary-dark);      /* contraste */
+  background: var(--accent-color);
+  color: var(--primary-dark);
 }
 
 /* Estado activo (si lo querés marcar) */
@@ -382,4 +397,16 @@
   background: var(--secondary-color); /* rojo */
   color: var(--white);
 }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-item.dropdown {
+  display: flex;
+  align-items: center;
+}
+
 

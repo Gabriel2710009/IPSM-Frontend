@@ -271,7 +271,8 @@ img {
     padding: var(--spacing-3xl) 0;
     text-align: center;
     overflow: hidden;
-    min-height: 600px;
+    min-height: 100vh;
+;
     display: flex;
     align-items: center;
     background-size: cover;
@@ -289,17 +290,6 @@ img {
   z-index: 1;
 }
 
-/* Degradado / blur */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(58, 56, 53, 0.85),
-    rgba(68, 63, 68, 0.85)
-  );
-  z-index: 2;
-}
 
 .hero-carousel {
     position: absolute;
@@ -327,14 +317,16 @@ img {
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(16, 18, 24, 0.85) 0%, rgba(24, 39, 106, 0.75) 100%);
-    z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.4) 35%,
+    rgba(0, 0, 0, 0.1) 65%
+  );
+  z-index: 1;
 }
 
 .hero-content {
@@ -404,7 +396,7 @@ img {
 }
 
 .btn-secondary {
-    background: linear-gradient(135deg, var(--secondary-color), #e31837);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
     color: white;
     box-shadow: var(--shadow-md);
 }
@@ -794,8 +786,18 @@ img {
 
 /* Botón "Niveles" */
 .dropdown-toggle {
+  background: transparent;
+  border: none;
   color: var(--white);
-  transition: color var(--transition-fast);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .dropdown-toggle:hover {
@@ -805,24 +807,40 @@ img {
 /* Panel */
 .dropdown-menu {
   background: var(--white);
-  border-top: 4px solid var(--primary-color); /* azul institucional */
+  border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-lg);
+  border-top: 4px solid var(--primary-color);
+  min-width: 200px;
+  padding: 0.25rem 0;
 }
+
 
 /* Links */
 .dropdown-link {
+  padding: 0.65rem 1rem;
+  font-size: var(--text-sm);
   color: var(--primary-color);
   font-weight: 500;
-  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .dropdown-link:hover {
-  background: var(--accent-color); /* amarillo */
-  color: var(--primary-dark);      /* contraste */
+  background: var(--accent-color);
+  color: var(--primary-dark);
 }
 
 /* Estado activo (si lo querés marcar) */
 .dropdown-link.active {
   background: var(--secondary-color); /* rojo */
   color: var(--white);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-item.dropdown {
+  display: flex;
+  align-items: center;
 }
