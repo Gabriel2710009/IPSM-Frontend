@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Instituto San Marino</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .pending-users-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        .notification-badge {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .users-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #ffc107;
+        }
+
+        .user-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .user-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 1.25rem;
+        }
+
+        .user-info p {
+            margin: 0.25rem 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .user-info .info-label {
+            font-weight: 600;
+            color: #495057;
+            margin-right: 0.5rem;
+        }
+
+        .registration-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .role-select {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #c82333;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notes-section {
+            margin-top: 1rem;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="pending-users-container">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-user-clock"></i>
+                Usuarios Pendientes de Aprobación
+                <span id="pendingBadge" class="notification-badge" style="display: none;">0</span>
+            </h1>
+            <button onclick="window.location.href='admin-dashboard.html'" class="btn" style="background: #6c757d; color: white;">
+                <i class="fas fa-arrow-left"></i> Volver al Panel
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-spinner">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem; color: #666;">Cargando usuarios pendientes...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <h2>¡Todo al día!</h2>
+            <p>No hay usuarios pendientes de aprobación en este momento.</p>
+        </div>
+
+        <!-- Users Grid -->
+        <div id="usersGrid" class="users-grid" style="display: none;"></div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button onclick="closeModal()" class="btn" style="background: #6c757d; color: white;">Cancelar</button>
+                <button id="confirmBtn" class="btn"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        let pendingUsers = [];
+
+        // Cargar usuarios pendientes al iniciar
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadPendingUsers();
+        });
+
+        async function loadPendingUsers() {
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+            const usersGrid = document.getElementById('usersGrid');
+            const pendingBadge = document.getElementById('pendingBadge');
+
+            try {
+                const token = localStorage.getItem('token');
+                
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE_URL}/api/v1/auth/pending-users`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        alert('No tienes permisos para acceder a esta página');
+                        window.location.href = 'admin-dashboard.html';
+                        return;
+                    }
+                    throw new Error('Error al cargar usuarios');
+                }
+
+                pendingUsers = await response.json();
+                console.log('📋 Usuarios pendientes cargados:', pendingUsers);
+
+                // Ocultar loading
+                loadingState.style.display = 'none';
+
+                if (pendingUsers.length === 0) {
+                    emptyState.style.display = 'block';
+                    usersGrid.style.display = 'none';
+                    pendingBadge.style.display = 'none';
+                } else {
+                    emptyState.style.display = 'none';
+                    usersGrid.style.display = 'grid';
+                    pendingBadge.textContent = pendingUsers.length;
+                    pendingBadge.style.display = 'inline';
+                    renderUsers();
+                }
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                loadingState.innerHTML = `
+                    <p style="color: #dc3545;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Error al cargar los usuarios. Por favor, recarga la página.
+                    </p>
+                `;
+            }
+        }
+
+        function renderUsers() {
+            const usersGrid = document.getElementById('usersGrid');
+            
+            usersGrid.innerHTML = pendingUsers.map(user => `
+                <div class="user-card" data-user-id="${user.id}">
+                    <div class="user-card-header">
+                        <div class="user-info">
+                            <h3>${user.nombre} ${user.apellido}</h3>
+                            <p><span class="info-label">DNI:</span>${user.dni}</p>
+                            <p><span class="info-label">Email:</span>${user.email}</p>
+                            ${user.telefono ? `<p><span class="info-label">Teléfono:</span>${user.telefono}</p>` : ''}
+                            <p class="registration-date">
+                                <i class="fas fa-calendar"></i>
+                                Registrado: ${new Date(user.fecha_creacion).toLocaleDateString('es-AR', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="notes-section">
+                        <label for="notes-${user.id}"><strong>Notas (opcional):</strong></label>
+                        <textarea 
+                            id="notes-${user.id}" 
+                            class="notes-textarea" 
+                            placeholder="Agrega notas sobre este usuario..."
+                        ></textarea>
+                    </div>
+
+                    <div class="user-actions">
+                        <select id="role-${user.id}" class="role-select">
+                            <option value="usuario">Usuario Regular</option>
+                            <option value="docente">Docente</option>
+                            <option value="preceptor">Preceptor</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                        <button 
+                            onclick="approveUser('${user.id}', '${user.nombre} ${user.apellido}')" 
+                            class="btn btn-approve"
+                        >
+                            <i class="fas fa-check"></i> Aprobar
+                        </button>
+                        <button 
+                            onclick="rejectUser('${user.id}', '${user.nombre} ${user.apellido}')" 
+                            class="btn btn-reject"
+                        >
+                            <i class="fas fa-times"></i> Rechazar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function approveUser(userId, userName) {
+            const roleSelect = document.getElementById(`role-${userId}`);
+            const notesTextarea = document.getElementById(`notes-${userId}`);
+            const selectedRole = roleSelect.value;
+            const notes = notesTextarea.value.trim();
+
+            if (confirm(`¿Confirmar aprobación de ${userName} como ${selectedRole}?`)) {
+                await processUserAction(userId, 'aprobar', selectedRole, notes);
+            }
+        }
+
+        async function rejectUser(userId, userName) {
+            const notesTextarea = document.getElementById(`notes-${userId}`);
+            const notes = notesTextarea.value.trim();
+
+            if (confirm(`¿Confirmar rechazo de ${userName}?`)) {
+                await processUserAction(userId, 'rechazar', null, notes);
+            }
+        }
+
+        async function processUserAction(userId, action, role, notes) {
+            try {
+                const token = localStorage.getItem('token');
+                
+                const response = await fetch(`${API_BASE_URL}/api/v1/auth/approve-user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        accion: action,
+                        role: role,
+                        notas_admin: notes || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('✅ Usuario procesado:', data);
+                    alert(data.message);
+                    
+                    // Recargar lista de usuarios
+                    await loadPendingUsers();
+                } else {
+                    console.error('❌ Error:', data);
+                    alert(data.detail || 'Error al procesar el usuario');
+                }
+
+            } catch (error) {
+                console.error('❌ Error en la solicitud:', error);
+                alert('Error de conexión con el servidor');
+            }
+        }
+    </script>
+</body>
+</html>

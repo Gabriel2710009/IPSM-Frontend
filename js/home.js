@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadNoticias();
     initContactForm();
     initSmoothScroll();
+    initNivelesDropdown();
 });
 
 /**
@@ -217,3 +218,38 @@ window.addEventListener('scroll', function() {
         }
     });
 });
+
+/**
+ * Dropdown Niveles (hover en PC / click en móvil)
+ */
+function initNivelesDropdown() {
+    const btn = document.getElementById('nivelesBtn');
+    const menu = document.getElementById('nivelesMenu');
+
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', function (e) {
+        // Solo móvil
+        if (window.innerWidth < 768) {
+            e.preventDefault();
+            e.stopPropagation();
+            menu.classList.toggle('open');
+        }
+    });
+
+    // Cerrar al tocar una opción (móvil)
+    menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('open');
+        });
+    });
+
+    // Cerrar si tocás fuera (móvil)
+    document.addEventListener('click', function (e) {
+        if (window.innerWidth < 768) {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        }
+    });
+}

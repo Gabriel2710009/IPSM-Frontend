@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Instituto Privado San Marino</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <style>
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .password-requirements ul {
+            margin: 0.5rem 0 0 1.5rem;
+            padding: 0;
+        }
+
+        .password-requirements li {
+            margin: 0.25rem 0;
+        }
+
+        .requirement-met {
+            color: #28a745;
+        }
+
+        .requirement-unmet {
+            color: #dc3545;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
+
+        .success-message h3 {
+            margin: 0 0 0.5rem 0;
+            color: #155724;
+        }
+
+        .success-message p {
+            margin: 0.5rem 0;
+        }
+
+        .back-to-login {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-to-login:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="school-header">
+                <div class="school-logo">
+                    <span class="logo-text">IPSM</span>
+                </div>
+                <h1>Instituto Privado San Marino</h1>
+                <p class="subtitle">Registro de Nuevo Usuario</p>
+            </div>
+
+            <!-- Mensaje de éxito (oculto por defecto) -->
+            <div id="successMessage" class="success-message" style="display: none;">
+                <h3>✅ Registro Exitoso</h3>
+                <p>Tu solicitud de registro ha sido enviada correctamente.</p>
+                <p>Un administrador revisará tu información y te notificará cuando tu cuenta sea aprobada.</p>
+                <a href="login.html" class="back-to-login">← Volver al Login</a>
+            </div>
+
+            <!-- Formulario de registro -->
+            <form id="registerForm" class="login-form">
+                <h3 style="margin-bottom: 1.5rem; color: #333;">Información Personal</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">
+                            <i class="fas fa-user"></i>
+                            Nombre *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nombre" 
+                            name="nombre" 
+                            required 
+                            minlength="2"
+                            placeholder="Ej: Juan"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido">
+                            <i class="fas fa-user"></i>
+                            Apellido *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="apellido" 
+                            name="apellido" 
+                            required 
+                            minlength="2"
+                            placeholder="Ej: Pérez"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dni">
+                            <i class="fas fa-id-card"></i>
+                            DNI *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="dni" 
+                            name="dni" 
+                            required 
+                            pattern="[0-9]{7,9}"
+                            placeholder="Ej: 12345678"
+                        >
+                        <small>Solo números, entre 7 y 9 dígitos</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">
+                            <i class="fas fa-phone"></i>
+                            Teléfono
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="telefono" 
+                            name="telefono" 
+                            placeholder="Ej: 3884123456"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email *
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="ejemplo@correo.com"
+                    >
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem 0; color: #333;">Contraseña</h3>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Contraseña *
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        minlength="8"
+                        placeholder="Mínimo 8 caracteres"
+                    >
+                    
+                    <div class="password-requirements">
+                        <strong>La contraseña debe contener:</strong>
+                        <ul>
+                            <li id="req-length" class="requirement-unmet">✗ Mínimo 8 caracteres</li>
+                            <li id="req-uppercase" class="requirement-unmet">✗ Al menos una letra mayúscula</li>
+                            <li id="req-lowercase" class="requirement-unmet">✗ Al menos una letra minúscula</li>
+                            <li id="req-number" class="requirement-unmet">✗ Al menos un número</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i>
+                        Confirmar Contraseña *
+                    </label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        required 
+                        minlength="8"
+                        placeholder="Repite tu contraseña"
+                    >
+                    <small id="passwordMatch" style="display: none;"></small>
+                </div>
+
+                <div id="errorMessage" class="error-message"></div>
+
+                <button type="submit" class="login-btn" id="submitBtn">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+
+                <div class="register-link">
+                    ¿Ya tienes cuenta? 
+                    <a href="login.html">Inicia sesión aquí</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/register.js"></script>
+</body>
+</html>

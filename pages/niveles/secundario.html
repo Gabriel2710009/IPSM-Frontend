@@ -39,7 +39,17 @@
                     <nav class="nav" id="mainNav">
                         <a href="index.html" class="nav-link active">Inicio</a>
                         <a href="#noticias" class="nav-link">Noticias</a>
-                        <a href="#niveles" class="nav-link">Niveles</a>
+                        <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">
+                            Niveles
+                        </button>
+                        <div class="dropdown-menu" id="nivelesMenu">
+                            <a href="/IPSM-Frontend/pages/niveles/inicial.html" class="dropdown-link">Inicial</a>
+                            <a href="/IPSM-Frontend/pages/niveles/primario.html" class="dropdown-link">Primario</a>
+                            <a href="/IPSM-Frontend/pages/niveles/secundario.html" class="dropdown-link">Secundario</a>
+                        </div>
+                        </div>
+
                         <a href="reglamento.html" class="nav-link">Reglamento</a>
                         <a href="#contacto" class="nav-link">Contacto</a>
                         <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
@@ -390,6 +400,8 @@ Muchas gracias.`;
             const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
             window.open(urlWhatsApp, '_blank');
         }
+
+        
     </script>
 </body>
 </html>
