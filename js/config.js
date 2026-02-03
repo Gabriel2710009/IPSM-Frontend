@@ -8,46 +8,51 @@ const CONFIG = {
     API_BASE_URL: 'https://ipsm-backend.onrender.com',
     
     // Endpoints principales
+    // Endpoints principales (con prefijo /api/v1 del backend)
     ENDPOINTS: {
         AUTH: {
-            LOGIN: '/auth/login',
-            LOGOUT: '/auth/logout',
-            REFRESH: '/auth/refresh',
-            VERIFY: '/auth/verify'
+            LOGIN: '/api/v1/auth/login',
+            LOGOUT: '/api/v1/auth/logout',
+            REFRESH: '/api/v1/auth/refresh',
+            VERIFY: '/api/v1/auth/verify',
+            ME: '/api/v1/auth/me',
+            CHANGE_PASSWORD: '/api/v1/auth/change-password'
         },
         ALUMNOS: {
-            PROFILE: '/alumnos/perfil',
-            NOTAS: '/alumnos/notas',
-            COMUNICADOS: '/alumnos/comunicados',
-            MENSAJES: '/alumnos/mensajes'
+            PROFILE: '/api/v1/alumnos/perfil',
+            NOTAS: '/api/v1/alumnos/notas',
+            COMUNICADOS: '/api/v1/alumnos/comunicados',
+            MENSAJES: '/api/v1/alumnos/mensajes'
         },
         PADRES: {
-            PROFILE: '/padres/perfil',
-            HIJOS: '/padres/hijos',
-            CUOTAS: '/padres/cuotas',
-            LIBRETA: '/padres/libreta'
+            PROFILE: '/api/v1/padres/perfil',
+            HIJOS: '/api/v1/padres/hijos',
+            CUOTAS: '/api/v1/padres/cuotas',
+            PAGAR_CUOTA: '/api/v1/padres/cuotas/{id}/pagar',
+            SUBIR_COMPROBANTE: '/api/v1/padres/cuotas/{id}/comprobante',
+            LIBRETA: '/api/v1/padres/libreta/{hijo_id}/{trimestre}'
         },
         DOCENTES: {
-            PROFILE: '/docentes/perfil',
-            CURSOS: '/docentes/cursos',
-            NOTAS: '/docentes/notas',
-            MENSAJES: '/docentes/mensajes'
+            PROFILE: '/api/v1/docentes/perfil',
+            CURSOS: '/api/v1/docentes/cursos',
+            NOTAS: '/api/v1/docentes/notas',
+            MENSAJES: '/api/v1/docentes/mensajes'
         },
         PRECEPTORES: {
-            PROFILE: '/preceptores/perfil',
-            CURSOS: '/preceptores/cursos',
-            COMUNICADOS: '/preceptores/comunicados'
+            PROFILE: '/api/v1/preceptores/perfil',
+            CURSOS: '/api/v1/preceptores/cursos',
+            COMUNICADOS: '/api/v1/preceptores/comunicados'
         },
         ADMIN: {
-            USUARIOS: '/admin/usuarios',
-            CUOTAS: '/admin/cuotas',
-            COMUNICADOS: '/admin/comunicados',
-            PAGOS: '/admin/pagos'
+            USUARIOS: '/api/v1/admin/usuarios',
+            CUOTAS_CONFIG: '/api/v1/admin/cuotas/configuracion',
+            COMUNICADOS: '/api/v1/admin/comunicados',
+            PAGOS: '/api/v1/admin/pagos'
         },
         PUBLICO: {
-            NOTICIAS: '/publico/noticias',
-            CURSOS: '/publico/cursos',
-            CONTACTO: '/publico/contacto'
+            NOTICIAS: '/api/v1/publico/noticias',
+            CURSOS: '/api/v1/publico/cursos',
+            CONTACTO: '/api/v1/publico/contacto'
         }
     },
     

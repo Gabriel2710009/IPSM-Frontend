@@ -24,51 +24,53 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/logo-nuevo-San-Marino-fondo-blanco.ico" alt="Logo Instituto San Marino" class="logo">
-                    <div>
-                        <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Educación con valores desde 1990</p>
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/logo-nuevo-San-Marino-fondo-blanco.ico" alt="Logo Instituto San Marino" class="logo">
+                        <div>
+                            <h1 class="site-title">Instituto Privado San Marino</h1>
+                            <p class="site-subtitle">Educación con valores desde 1990</p>
+                        </div>
                     </div>
+                    
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                        ☰
+                    </button>
+                    
+                    <nav class="nav" id="mainNav">
+                        <a href="index.html" class="nav-link active">Inicio</a>
+                        <a href="#noticias" class="nav-link">Noticias</a>
+                        <a href="#niveles" class="nav-link">Niveles</a>
+                        <a href="reglamento.html" class="nav-link">Reglamento</a>
+                        <a href="#contacto" class="nav-link">Contacto</a>
+                        <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                        </div>
+                    </nav>
                 </div>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-                    ☰
-                </button>
-                
-                <nav class="nav" id="mainNav">
-                    <a href="index.html" class="nav-link active">Inicio</a>
-                    <a href="#noticias" class="nav-link">Noticias</a>
-                    <a href="#niveles" class="nav-link">Niveles</a>
-                    <a href="#contacto" class="nav-link">Contacto</a>
-                    <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-                    </div>
-                </nav>
             </div>
-        </div>
-    </header>
+        </header>
 
     <!-- Hero Section -->
-    <section class="hero" style="background-image: url('https://placehold.co/1920x600?text=Hero+Image');">
-        <div class="container">
+    <section class="hero">
+         <video class="hero-bg" autoplay muted loop playsinline>
+             <source src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/video.mp4" type="video/mp4">
+               </video>
+
+             <div class="hero-overlay"></div>
+
             <div class="hero-content">
-                <h2 class="hero-title">Formando el futuro con excelencia académica</h2>
-                <p class="hero-subtitle">Más de 35 años educando con compromiso, innovación y valores</p>
-                <div class="hero-buttons">
-                    <a href="#niveles" class="btn btn-primary btn-lg">Conocer niveles</a>
-                    <a href="pages/auth/login.html" class="btn btn-outline btn-lg">Acceso Sistema</a>
-                </div>
-            </div>
+         <h1>Formando el futuro con excelencia académica</h1>
+          <p>Más de 35 años educando con compromiso, innovación y valores</p>
         </div>
     </section>
+
 
     <!-- Sección Bienvenida -->
     <section class="welcome-section">
@@ -245,6 +247,24 @@
         </div>
     </section>
 
+    <!-- INSCRIPCIONES -->
+    <section class="section">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">¡Inscribí a tu hijo/a!</h2>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+                Completá el formulario de WhatsApp y nos pondremos en contacto a la brevedad.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-contacto" onclick="enviarWhatsAppInicial(); return false;">
+                    <i class="fab fa-whatsapp"></i> Solicitar Entrevista
+                </a>
+                <a href="#" class="btn btn-entrevista" onclick="enviarWhatsAppInicial(); return false;">
+                    <i class="fas fa-calendar-check"></i> Contactar
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -294,3 +314,25 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/home.js"></script>
+     <script>
+        function enviarWhatsAppInicial() {
+            const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor).
+
+Solicito una entrevista para mi hijo/a:
+- Nombre completo del niño/a: ___________
+- DNI del niño/a: ___________
+- Fecha de nacimiento: ___________
+- Nivel solicitado: (Inicial / Primario / Secundario)
+- Turno preferido: ___________ (Normal / Jornada Completa)
+
+Contacto:
+- Teléfono: ___________
+- Email: ___________
+
+Muchas gracias.`;
+
+            const numeroWhatsApp = '5492664004015'; 
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
