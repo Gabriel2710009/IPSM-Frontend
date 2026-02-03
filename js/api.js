@@ -282,18 +282,20 @@ class Auth {
             }
             
             // Crear FormData para el login (FastAPI espera form-data para OAuth2)
-            const formData = new URLSearchParams();
-            formData.append('username', dni);
-            formData.append('password', password);
+            const requestBody = {
+                dni: dni,
+                password: password
+                    };
             
-            console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/token`);
             
-            const response = await fetch(`${CONFIG.API_BASE_URL}/token`, {
+            console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/api/v1/auth/login`);
+            
+            const response = await fetch(`${CONFIG.API_BASE_URL}/api/v1/auth/login`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: formData.toString()
+                body: JSON.stringify(requestBody)
             });
             
             console.log('📥 Login response received:', {
