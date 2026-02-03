@@ -13,17 +13,24 @@
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(247, 179, 43, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(200, 16, 46, 0.1) 0%, transparent 50%);
-    pointer-events: none;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42); /* dark suave */
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
+  z-index: 1;
 }
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 
 .hero-content {
     position: relative;

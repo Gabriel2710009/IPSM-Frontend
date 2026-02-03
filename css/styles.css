@@ -271,7 +271,7 @@ img {
     padding: var(--spacing-3xl) 0;
     text-align: center;
     overflow: hidden;
-    min-height: 100vh;
+    min-height: 600px;
 ;
     display: flex;
     align-items: center;
@@ -287,8 +287,9 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
+  z-index: 0;
 }
+
 
 
 .hero-carousel {
@@ -316,18 +317,15 @@ img {
     opacity: 1;
 }
 
-.hero::before {
-  content: "";
+.hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.4) 35%,
-    rgba(0, 0, 0, 0.1) 65%
-  );
+  background: rgba(0, 0, 0, 0.42); /* dark suave */
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
   z-index: 1;
 }
+
 
 .hero-content {
     position: relative;
@@ -784,39 +782,61 @@ img {
 }
 
 
-/* Botón "Niveles" */
+/* ===== CONTENEDOR ===== */
+.nav-item.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== BOTÓN ===== */
 .dropdown-toggle {
-  background: transparent;
-  border: none;
+  all: unset;
   color: var(--white);
   font-family: var(--font-primary);
   font-size: var(--text-base);
   font-weight: 500;
-  padding: 0.5rem 0.75rem;
   cursor: pointer;
+  padding: 0.5rem 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  transition: color var(--transition-fast), background var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 .dropdown-toggle:hover {
-  color: var(--accent-color); /* amarillo San Marino */
+  color: var(--accent-color);
 }
 
-/* Panel */
+/* Flechita ▼ */
+.dropdown-toggle::after {
+  content: "▼";
+  font-size: 0.6rem;
+  margin-left: 0.25rem;
+  transition: transform var(--transition-fast);
+}
+
+/* ===== PANEL ===== */
 .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
   background: var(--white);
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-lg);
   border-top: 4px solid var(--primary-color);
+  box-shadow: var(--shadow-lg);
+
   min-width: 200px;
   padding: 0.25rem 0;
+
+  display: none;
+  z-index: 2000;
 }
 
-
-/* Links */
+/* ===== LINKS ===== */
 .dropdown-link {
+  display: block;
   padding: 0.65rem 1rem;
   font-size: var(--text-sm);
   color: var(--primary-color);
@@ -828,19 +848,27 @@ img {
   color: var(--primary-dark);
 }
 
-/* Estado activo (si lo querés marcar) */
-.dropdown-link.active {
-  background: var(--secondary-color); /* rojo */
-  color: var(--white);
+/* ===== PC: HOVER ===== */
+@media (min-width: 768px) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
+  }
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+/* ===== MÓVIL ===== */
+@media (max-width: 767px) {
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border-top: none;
+    padding-left: 1rem;
+  }
 
-.nav-item.dropdown {
-  display: flex;
-  align-items: center;
+  .dropdown-menu.open {
+    display: block;
+  }
 }
