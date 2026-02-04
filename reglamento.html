@@ -61,26 +61,44 @@
     </style>
 </head>
 <body>
-    <!-- HEADER -->
+    <!-- Header -->
     <header class="header">
-        <nav class="nav-container">
-            <a href="../index.html" class="logo">
-                <img src="../images/logo.png" alt="Instituto San Marino">
-                <span>Instituto San Marino</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="../index.html" class="nav-link">Inicio</a></li>
-                <li><a href="inicial.html" class="nav-link">Nivel Inicial</a></li>
-                <li><a href="primaria.html" class="nav-link">Primaria</a></li>
-                <li><a href="secundaria.html" class="nav-link">Secundaria</a></li>
-                <li><a href="reglamento.html" class="nav-link">Reglamento</a></li>
-                <li><a href="../login.html" class="nav-link">Ingresar</a></li>
-            </ul>
-        </nav>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <a href="../../index.html" class="logo-link">
+                            <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/sign/LOGOS%20IPSM/logo%20nuevo%20San%20Marino%20fondo%20blanco.svg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80OTZmYTRhMy1hMjExLTQ2YTYtYjM1Zi1jMGE1OGY5MTdlN2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMT0dPUyBJUFNNL2xvZ28gbnVldm8gU2FuIE1hcmlubyBmb25kbyBibGFuY28uc3ZnIiwiaWF0IjoxNzcwMDE1NzQyLCJleHAiOjQ2MDgyNTU3NDJ9.HtsbQuQZQKE-2QpmkrVoWycJI9sqAm2-55UaXuRsqC8" alt="Logo Instituto San Marino" class="logo">
+                        </a>
+                        <div>
+                            <h1 class="site-title">Instituto Privado San Marino</h1>
+                            <p class="site-subtitle">Educación con valores desde 1990</p>
+                        </div>
+                    </div>
+                    
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                        ☰
+                    </button>
+                    
+                    <nav class="nav" id="mainNav">
+                        <a href="../../index.html" class="nav-link active">Inicio</a>
+                        <a href="../../index.html#noticias" class="nav-link">Noticias</a>
+                        <a href="../../index.html#niveles" class="nav-link">Niveles</a>
+                        <a href="reglamento.html" class="nav-link">Reglamento</a>
+                        <a href="../../index.html#contacto" class="nav-link">Contacto</a>
+                        <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
     </header>
 
     <!-- HERO SECTION -->
-    <section class="section" style="background: linear-gradient(135deg, #f0f8ff, #e6f3ff);">
+    <section class="section" style="background: var(--primary-color);">
         <div class="container">
             <h1 class="section-title">Reglamento Institucional</h1>
             <p style="text-align: center; font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
@@ -121,7 +139,7 @@
     </section>
 
     <!-- INFORMACIÓN ADICIONAL -->
-    <section class="section" style="background: var(--bg-light);">
+    <section class="section" style="background: var(--primary-color);">
         <div class="container">
             <h2 class="section-title">Aspectos Destacados</h2>
             <div class="niveles-grid">
@@ -144,27 +162,36 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+       <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Instituto San Marino</h3>
-                <p>Educación de calidad desde 1990</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto San Marino</h3>
+                    <p>Educación de excelencia desde 1985</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="../../index.html">Inicio</a><br>
+                    <a href="inicial.html">Nivel Inicial</a><br>
+                    <a href="primario.html">Nivel Primario</a><br>
+                    <a href="secundario.html">Nivel Secundario</a><br>
+                    <a href="reglamento.html">Reglamento</a><br>
+                    <a href="../../index.html#contacto">Contacto</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📍 <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
+                    <p>📞 <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
+                    <p>✉️ <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
+                </div>
             </div>
-            <div class="footer-section">
-                <h3>Contacto</h3>
-                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
-                <p><i class="fas fa-envelope"></i> info@institutosanmarino.edu.ar</p>
-                <p><i class="fas fa-map-marker-alt"></i> Dirección del Instituto</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
             </div>
-            <div class="footer-section">
-                <h3>Síguenos</h3>
-                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Instituto San Marino. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -243,7 +270,7 @@ Mi consulta es: _____________________
 
 Muchas gracias.`;
 
-            const numeroWhatsApp = '549266400'; // REEMPLAZAR con el número real
+            const numeroWhatsApp = '5492664004015'; // REEMPLAZAR con el número real
             const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
             window.open(urlWhatsApp, '_blank');
         }

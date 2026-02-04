@@ -44,7 +44,7 @@
     font-weight: 700;
     margin-bottom: var(--spacing-lg);
     color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.945);
     animation: fadeInUp 0.8s ease-out;
 }
 
