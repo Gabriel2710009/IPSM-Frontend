@@ -412,13 +412,13 @@ class Auth {
                         window.location.href = '../../pages/dashboards/director.html';
                         break;
                     case 'preceptor':
-                        window.location.href = '../../pages/dashboards/preceptor.html';
+                        window.location.href = '../../pages/preceptor/dashboard.html';
                         break;
                     case 'profesor':
-                        window.location.href = '../../pages/dashboards/profesor.html';
+                        window.location.href = '../../pages/profesor/dashboard.html';
                         break;
                     case 'alumno':
-                        window.location.href = '../../pages/dashboards/alumno.html';
+                        window.location.href = '../../pages/alumno/dashboard.html';
                         break;
                     default:
                         console.warn('⚠️ Unknown role, redirecting to default dashboard');
