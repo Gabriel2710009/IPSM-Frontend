@@ -369,7 +369,7 @@ class Auth {
         }
     }
 
-    }
+    
     
     /**
      * Cierra sesión
@@ -447,8 +447,8 @@ class Auth {
             window.location.href = '../../pages/alumno/dashboard.html';
         }
     }
-}
 
+}
 // Clase de utilidades
 class Utils {
     /**
