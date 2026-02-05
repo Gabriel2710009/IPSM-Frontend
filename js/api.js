@@ -406,6 +406,28 @@ class Auth {
     static getToken() {
         return localStorage.getItem('access_token');
     }
+
+    /**
+     * Obtiene los datos del usuario desde localStorage
+     */
+    static getUser() {
+        const userDataStr = localStorage.getItem('user_data');
+        if (!userDataStr) return null;
+        try {
+            return JSON.parse(userDataStr);
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Verifica si el usuario tiene un rol especifico
+     */
+    static hasRole(role) {
+        const user = this.getUser();
+        return !!(user && user.role === role);
+    }
     
     /**
      * Redirige al dashboard según el rol del usuario
@@ -429,7 +451,11 @@ class Auth {
                         window.location.href = '../../pages/preceptor/dashboard.html';
                         break;
                     case 'profesor':
+                    case 'docente':
                         window.location.href = '../../pages/profesor/dashboard.html';
+                        break;
+                    case 'admin':
+                        window.location.href = '../../pages/admin/dashboard.html';
                         break;
                     case 'alumno':
                         window.location.href = '../../pages/alumno/dashboard.html';
