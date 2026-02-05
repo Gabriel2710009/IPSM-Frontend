@@ -348,7 +348,7 @@ class Auth {
         console.log('👤 Fetching current user data...');
         
         try {
-            const userData = await API.get('/users/me');
+            const userData = await API.get('/api/v1/auth/me');
             console.log('✅ User data retrieved:', userData);
             return userData;
         } catch (error) {
@@ -422,15 +422,15 @@ class Auth {
                         break;
                     default:
                         console.warn('⚠️ Unknown role, redirecting to default dashboard');
-                        window.location.href = '../../pages/dashboards/alumno.html';
+                        window.location.href = '../../pages/alumno/dashboard.html';
                 }
             } catch (error) {
                 console.error('❌ Error parsing user data:', error);
-                window.location.href = '../../pages/dashboards/alumno.html';
+                window.location.href = '../../pages/alumno/dashboard.html';
             }
         } else {
             console.warn('⚠️ No user data found, redirecting to default dashboard');
-            window.location.href = '../../pages/dashboards/alumno.html';
+            window.location.href = '../../pages/alumno/dashboard.html';
         }
     }
 }
