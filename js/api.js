@@ -345,16 +345,30 @@ class Auth {
      * Obtiene los datos del usuario actual
      */
     static async getCurrentUser() {
-        console.log('👤 Fetching current user data...');
+        console.log('Fetching current user data...');
         
         try {
             const userData = await API.get('/api/v1/auth/me');
-            console.log('✅ User data retrieved:', userData);
+            console.log('User data retrieved:', userData);
             return userData;
         } catch (error) {
-            console.error('❌ Error fetching user data:', error);
+            // Fallback para compatibilidad con backends antiguos
+            if (error && (error.status === 404 || /not found/i.test(error.message || ''))) {
+                try {
+                    console.warn('/api/v1/auth/me not found, trying /users/me');
+                    const legacyUserData = await API.get('/users/me');
+                    console.log('User data retrieved (legacy):', legacyUserData);
+                    return legacyUserData;
+                } catch (legacyError) {
+                    console.error('Error fetching user data (legacy):', legacyError);
+                    throw legacyError;
+                }
+            }
+            console.error('Error fetching user data:', error);
             throw error;
         }
+    }
+
     }
     
     /**
