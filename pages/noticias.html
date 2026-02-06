@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Noticias y novedades del Instituto Privado San Marino">
+    <title>Noticias - Instituto Privado San Marino</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/logo-nuevo-San-Marino-fondo-blanco.ico">
+   
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/noticias.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <a href="../index.html" class="logo-link">
+                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/sign/LOGOS%20IPSM/logo%20nuevo%20San%20Marino%20fondo%20blanco.svg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80OTZmYTRhMy1hMjExLTQ2YTYtYjM1Zi1jMGE1OGY5MTdlN2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMT0dPUyBJUFNNL2xvZ28gbnVldm8gU2FuIE1hcmlubyBmb25kbyBibGFuY28uc3ZnIiwiaWF0IjoxNzcwMDE1NzQyLCJleHAiOjQ2MDgyNTU3NDJ9.HtsbQuQZQKE-2QpmkrVoWycJI9sqAm2-55UaXuRsqC8" alt="Logo Instituto San Marino" class="logo">
+                    </a>
+                    <div>
+                        <h1 class="site-title">Instituto Privado San Marino</h1>
+                        <p class="site-subtitle">Educación con valores desde 1990</p>
+                    </div>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                    ☰
+                </button>
+                
+                <nav class="nav" id="mainNav">
+                    <a href="../index.html" class="nav-link">Inicio</a>
+                    <a href="../index.html#noticias" class="nav-link active">Noticias</a>
+                    <a href="../index.html#niveles" class="nav-link">Niveles</a>
+                    <a href="../reglamento.html" class="nav-link">Reglamento</a>
+                    <a href="../index.html#contacto" class="nav-link">Contacto</a>
+                    <a href="auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero hero-noticias">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Noticias y Novedades</h1>
+            <p class="hero-subtitle">Mantente informado sobre todo lo que sucede en nuestra comunidad educativa</p>
+        </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="filtros-section">
+        <div class="container">
+            <div class="filtros-wrapper">
+                <div class="filtro-item">
+                    <label for="filtroCategoria" class="filtro-label">
+                        <i class="fas fa-filter"></i> Categoría
+                    </label>
+                    <select id="filtroCategoria" class="filtro-select">
+                        <option value="">Todas</option>
+                        <option value="academico">Académico</option>
+                        <option value="deportes">Deportes</option>
+                        <option value="eventos">Eventos</option>
+                        <option value="institucional">Institucional</option>
+                    </select>
+                </div>
+                
+                <div class="filtro-item">
+                    <label for="filtroBusqueda" class="filtro-label">
+                        <i class="fas fa-search"></i> Buscar
+                    </label>
+                    <input type="text" id="filtroBusqueda" class="filtro-input" placeholder="Buscar noticia...">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noticia Destacada -->
+    <section class="noticia-destacada-section" id="noticiaDestacadaSection">
+        <!-- Se carga dinámicamente -->
+    </section>
+
+    <!-- Grid de Noticias -->
+    <section class="noticias-grid-section">
+        <div class="container">
+            <div class="noticias-grid" id="noticiasGrid">
+                <!-- Se cargan dinámicamente -->
+            </div>
+            
+            <!-- Botón Cargar Más -->
+            <div class="load-more-container" id="loadMoreContainer">
+                <button class="btn btn-primary btn-lg" id="btnLoadMore">
+                    <i class="fas fa-plus-circle"></i> Cargar más noticias
+                </button>
+            </div>
+            
+            <!-- Mensaje Sin Resultados -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">📰</div>
+                <h3>No se encontraron noticias</h3>
+                <p>Intenta con otros filtros de búsqueda</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto San Marino</h3>
+                    <p>Educación de excelencia desde 1990</p>
+                    <p>Formando ciudadanos responsables y comprometidos con la sociedad</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="../index.html">Inicio</a><br>
+                    <a href="noticias.html">Noticias</a><br>
+                    <a href="../index.html#niveles">Niveles</a><br>
+                    <a href="../index.html#contacto">Contacto</a><br>
+                    <a href="../reglamento.html">Reglamento</a><br>
+                    <a href="auth/login.html">Acceso Sistema</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Niveles</h3>
+                    <a href="niveles/inicial.html">Nivel Inicial</a><br>
+                    <a href="niveles/primario.html">Nivel Primario</a><br>
+                    <a href="niveles/secundario.html">Nivel Secundario</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📍 <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
+                    <p>📞 <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
+                    <p>✉️ <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/5492664004015" class="whatsapp-float" target="_blank" aria-label="Chat en WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/noticias.js"></script>
+</body>
+</html>

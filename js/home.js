@@ -44,27 +44,61 @@ function initMobileMenu() {
  * Carga las noticias desde la API
  */
 async function loadNoticias() {
-    const container = document.getElementById('noticiasContainer');
-    
-    if (!container) return;
-    
     try {
-        Utils.showLoader();
+        const noticiasContainer = document.getElementById('noticias-container');
         
-        // Llamada a la API para obtener las últimas noticias
-        const noticias = await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS + '?limit=3');
+        let noticias;
+        
+        try {
+            noticias = await API.get('/api/v1/publico/noticias?limit=3');
+        } catch (error) {
+            console.warn('API no disponible, usando datos de respaldo');
+            
+            // Datos de respaldo
+            noticias = [
+                {
+                    id: 1,
+                    titulo: 'Inauguración de Nueva Sala de Informática',
+                    resumen: 'El IPSM estrena modernas instalaciones.',
+                    imagen_url: './images/placeholder.jpg',
+                    fecha_publicacion: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    titulo: 'Inicio del Ciclo Lectivo 2026',
+                    resumen: 'Bienvenidos al nuevo año académico.',
+                    imagen_url: './images/placeholder.jpg',
+                    fecha_publicacion: new Date().toISOString()
+                },
+                {
+                    id: 3,
+                    titulo: 'Olimpiadas Deportivas',
+                    resumen: 'Excelentes resultados de nuestros estudiantes.',
+                    imagen_url: './images/placeholder.jpg',
+                    fecha_publicacion: new Date().toISOString()
+                }
+            ];
+        }
         
         if (noticias && noticias.length > 0) {
-            container.innerHTML = noticias.map(noticia => createNoticiaCard(noticia)).join('');
-        } else {
-            container.innerHTML = '<p class="text-center">No hay noticias disponibles en este momento.</p>';
+            noticiasContainer.innerHTML = noticias.map(noticia => `
+                <article class="noticia-card">
+                    <img src="${noticia.imagen_url}" 
+                         alt="${noticia.titulo}"
+                         onerror="this.src='./images/placeholder.jpg'">
+                    <div class="noticia-content">
+                        <h3>${noticia.titulo}</h3>
+                        <p>${noticia.resumen || noticia.contenido?.substring(0, 150) + '...'}</p>
+                        <span class="fecha">${new Date(noticia.fecha_publicacion).toLocaleDateString('es-AR')}</span>
+                    </div>
+                </article>
+            `).join('');
         }
+        
     } catch (error) {
         console.error('Error al cargar noticias:', error);
-        // Mostrar noticias de ejemplo si falla la API
-        mostrarNoticiasEjemplo(container);
-    } finally {
-        Utils.hideLoader();
+        document.getElementById('noticias-container').innerHTML = 
+            '<p>Las noticias se cargarán próximamente.</p>';
     }
 }
 
@@ -85,36 +119,6 @@ function createNoticiaCard(noticia) {
     `;
 }
 
-/**
- * Muestra noticias de ejemplo
- */
-function mostrarNoticiasEjemplo(container) {
-    const noticiasEjemplo = [
-        {
-            id: 1,
-            titulo: 'Inicio del Ciclo Lectivo 2025',
-            resumen: 'Este lunes 4 de marzo damos inicio al nuevo ciclo lectivo con renovadas energías y proyectos innovadores.',
-            fecha: '2025-02-28',
-            imagen: 'images/noticias/inicio-ciclo.jpg'
-        },
-        {
-            id: 2,
-            titulo: 'Nuestros alumnos destacados en las Olimpíadas de Matemática',
-            resumen: 'Felicitamos a nuestros estudiantes por su excelente desempeño en las Olimpíadas Provinciales de Matemática.',
-            fecha: '2025-02-20',
-            imagen: 'images/noticias/olimpiadas.jpg'
-        },
-        {
-            id: 3,
-            titulo: 'Nueva Sala de Informática',
-            resumen: 'Inauguramos nuestra nueva sala de informática equipada con tecnología de última generación.',
-            fecha: '2025-02-15',
-            imagen: 'images/noticias/sala-informatica.jpg'
-        }
-    ];
-    
-    container.innerHTML = noticiasEjemplo.map(noticia => createNoticiaCard(noticia)).join('');
-}
 
 /**
  * Redirige a la página de detalle de noticia
