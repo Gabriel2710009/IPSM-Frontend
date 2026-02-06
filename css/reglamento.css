@@ -668,6 +668,13 @@ img {
     box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
 }
 
+/* Ocultar WhatsApp cuando el menú mobile está abierto */
+.menu-open .whatsapp-float {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */

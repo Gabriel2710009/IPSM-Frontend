@@ -17,28 +17,95 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
-    
-    if (menuToggle && mainNav) {
-        menuToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('active');
+    const overlay = document.querySelector('.menu-overlay');
+
+    if (!menuToggle || !mainNav) return;
+
+    const dropdowns = mainNav.querySelectorAll('.dropdown');
+
+    function openMenu() {
+        mainNav.classList.add('active');
+        document.body.classList.add('menu-open');
+        menuToggle.textContent = '✕';
+    }
+
+    function closeMenu() {
+        mainNav.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        menuToggle.textContent = '☰';
+
+        // cerrar dropdowns al cerrar menú
+        dropdowns.forEach(d => d.classList.remove('open'));
+    }
+
+    /* =========================
+       TOGGLE MENÚ
+       ========================= */
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        mainNav.classList.contains('active') ? closeMenu() : openMenu();
+    });
+
+    /* =========================
+       DROPDOWNS (NIVELES)
+       ========================= */
+    dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // cerrar otros dropdowns
+            dropdowns.forEach(d => {
+                if (d !== dropdown) d.classList.remove('open');
+            });
+
+            // abrir/cerrar este
+            dropdown.classList.toggle('open');
         });
-        
-        // Cerrar menú al hacer clic en un enlace
-        const navLinks = mainNav.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                mainNav.classList.remove('active');
+    });
+
+    /* =========================
+       CERRAR AL TOCAR LINKS
+       ========================= */
+    mainNav
+        .querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-link')
+        .forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
             });
         });
-        
-        // Cerrar menú al hacer clic fuera
-        document.addEventListener('click', function(event) {
-            if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
-                mainNav.classList.remove('active');
-            }
-        });
-    }
+
+    /* =========================
+       OVERLAY
+       ========================= */
+    overlay?.addEventListener('click', closeMenu);
+
+    /* =========================
+       CLICK FUERA
+       ========================= */
+    document.addEventListener('click', function (event) {
+        if (
+            mainNav.classList.contains('active') &&
+            !mainNav.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
+            closeMenu();
+        }
+    });
+
+    /* =========================
+       ESC
+       ========================= */
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+            closeMenu();
+        }
+    });
 }
+
+
 
 /**
  * Carga las noticias desde la API

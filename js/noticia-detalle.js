@@ -35,16 +35,29 @@ function initMobileMenu() {
     
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('active');
+            const isOpen = mainNav.classList.toggle('active');
+            document.body.classList.toggle('menu-open', isOpen);
         });
         
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = mainNav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+        });
+        
+        // Cerrar menú al hacer clic fuera
         document.addEventListener('click', function(event) {
             if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
                 mainNav.classList.remove('active');
+                document.body.classList.remove('menu-open');
             }
         });
     }
 }
+
 
 /**
  * Carga la noticia desde la URL

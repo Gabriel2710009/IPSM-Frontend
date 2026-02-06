@@ -234,6 +234,23 @@ img {
     background: rgba(255, 255, 255, 0.2);
 }
 
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1100;
+}
+
+.menu-open .menu-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
 /* ============================================
    SOCIAL ICONS
    ============================================ */
@@ -612,6 +629,14 @@ img {
     box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
 }
 
+/* Ocultar WhatsApp cuando el menú mobile está abierto */
+.menu-open .whatsapp-float {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */
@@ -637,35 +662,87 @@ img {
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
+
+    /* Mostrar botón hamburguesa */
     .menu-toggle {
         display: block;
+        z-index: 1300;
     }
-    
+
+    /* Menú mobile */
     .nav {
         position: fixed;
-        top: 80px;
-        right: -100%;
-        width: 80%;
-        max-width: 300px;
-        height: calc(100vh - 80px);
-        background: var(--primary-dark);
+        inset: 0;                 /* ocupa TODA la pantalla */
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(180deg, #0b0f1a, #06080f);
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        padding: var(--spacing-lg);
-        transition: right var(--transition-normal);
-        box-shadow: var(--shadow-2xl);
-        overflow-y: auto;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 80px 24px 40px;
+        gap: 12px;
+        transform: translateX(100%);
+        transition: transform 0.35s ease;
+        z-index: 1200;
+    }
+    
+    .nav-item.dropdown {
+        position: static; /* rompe el absolute solo en mobile */
     }
     
     .nav.active {
-        right: 0;
+        transform: translateX(0);
     }
-    
+
     .nav-link {
         width: 100%;
-        padding: var(--spacing-md);
+        font-size: 1.1rem;
+        padding: 14px 16px;
     }
+
+
+
+    .nav-link,
+    .nav-item,
+    .social-icons {
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+    }
+
+    .nav.active .nav-link,
+    .nav.active .nav-item,
+    .nav.active .social-icons {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Delay escalonado */
+    .nav.active .nav-link:nth-child(1) { transition-delay: 0.05s; }
+    .nav.active .nav-link:nth-child(2) { transition-delay: 0.10s; }
+    .nav.active .nav-link:nth-child(3) { transition-delay: 0.15s; }
+    .nav.active .nav-link:nth-child(4) { transition-delay: 0.20s; }
+    .nav.active .nav-link:nth-child(5) { transition-delay: 0.25s; }
     
+
+    .nav .dropdown-toggle {
+        width: 100%;
+        text-align: left;          /* 👈 lo manda a la izquierda */
+        font-size: 1.1rem;         /* 👈 mismo tamaño que links */
+        font-weight: 500;
+        padding: 14px 18px;
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+
+        display: flex;             /* para texto + flecha */
+        justify-content: space-between;
+        align-items: center;
+    }   
+
+
     .hero-title {
         font-size: var(--text-3xl);
     }
@@ -674,10 +751,7 @@ img {
         font-size: var(--text-lg);
     }
     
-    .social-icons {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    
     
     h1 { font-size: var(--text-3xl); }
     h2 { font-size: var(--text-2xl); }
@@ -686,6 +760,25 @@ img {
     .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
         flex: 0 0 100%;
         max-width: 100%;
+    }
+
+    /* Botón normal */
+    .menu-toggle {
+        position: relative;
+    }
+
+    /* Botón dentro del menú cuando está abierto */
+    body.menu-open .menu-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1301;
+        background: rgba(255, 255, 255, 0.15);
+    }
+    .menu-open .whatsapp-float {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.85);
     }
 }
 
@@ -793,26 +886,29 @@ img {
 
 
 /* ===== CONTENEDOR ===== */
-.nav-item.dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
+@media (min-width: 768px) {
+    .nav-item.dropdown {
+        position: relative;
+  }
 }
+
 
 /* ===== BOTÓN ===== */
 .dropdown-toggle {
-  all: unset;
+  background: none;
+  border: none;
   color: var(--white);
   font-family: var(--font-primary);
   font-size: var(--text-base);
   font-weight: 500;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
-  display: flex;
+
+  display: inline-flex;   /* 🔑 clave desktop */
   align-items: center;
   gap: 0.25rem;
-  transition: color var(--transition-fast);
 }
+
 
 .dropdown-toggle:hover {
   color: var(--accent-color);
@@ -871,14 +967,100 @@ img {
 
 /* ===== MÓVIL ===== */
 @media (max-width: 767px) {
-  .dropdown-menu {
-    position: static;
-    box-shadow: none;
-    border-top: none;
-    padding-left: 1rem;
-  }
 
-  .dropdown-menu.open {
-    display: block;
-  }
+    .nav-item.dropdown {
+        position: static; /* ⛔ mata absolute heredado */
+    }
+
+    .dropdown {
+        display : block;
+        transition: margin-bottom 0.3s ease;
+    }
+
+    .dropdown.open {
+    margin-bottom: 8px;
+    }
+
+    .dropdown-menu {
+        position: static; /* ⛔ override TOTAL */
+        display: block;
+
+        width: 100%;
+        min-width: unset; /* ⛔ clave */
+        margin-left: 50px;   /* ⛔ clave */
+
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-6px);
+
+        transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        margin-top: 6px;
+    }
+
+   
+    .dropdown.open .dropdown-menu {
+        max-height: 300px;         /* suficiente para los links */
+        opacity: 1;
+        transform: translateY(0);
+    }   
+    
+    .dropdown-link {
+        display: block;
+        padding: 12px;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .dropdown-link:hover {
+        background: rgba(255, 255, 255, 0.12);
+
+    } 
+
+
+    .dropdown.open .dropdown-toggle::after {
+        transform: rotate(180deg);
+    } 
+    .dropdown-toggle::after {
+        content: '▾';
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown.open .dropdown-toggle::after {
+        transform: rotate(180deg);
+    }
+
+
+ 
+
+   .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    /* Animación del icono hamburguesa */
+    .menu-toggle {
+    transition: transform 0.3s ease;
+    }
+
+    /* Cuando el menú está abierto */
+    body.menu-open .menu-toggle {
+    transform: rotate(90deg);
+    }
+    body.menu-open {
+    overflow: hidden;
+    height: 100vh;
+    }
+
+    
 }
