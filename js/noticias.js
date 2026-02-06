@@ -9,6 +9,21 @@ let noticiasMostradas = [];
 let currentPage = 1;
 const noticiasPerPage = 6; // Cuántas cargar cada vez (sin contar la destacada)
 
+function getDefaultNewsImage() {
+    if (typeof CONFIG !== 'undefined' && CONFIG.ASSETS && CONFIG.ASSETS.DEFAULT_NEWS_IMAGE) {
+        return CONFIG.ASSETS.DEFAULT_NEWS_IMAGE;
+    }
+    return '../images/noticias/default.jpg';
+}
+
+function normalizeNoticia(noticia) {
+    if (!noticia) return noticia;
+    const imagen = noticia.imagen || noticia.imagen_url;
+    const fecha = noticia.fecha || noticia.fecha_publicacion;
+    const categorias = noticia.categorias || (noticia.categoria ? [noticia.categoria] : []);
+    return { ...noticia, imagen, fecha, categorias };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     loadNoticias();
@@ -49,7 +64,7 @@ async function loadNoticias() {
         const response = await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS);
         
         if (response && response.length > 0) {
-            todasLasNoticias = response;
+            todasLasNoticias = response.map(normalizeNoticia);
             noticiasMostradas = [...todasLasNoticias];
             
             // Mostrar la primera como destacada
@@ -76,9 +91,9 @@ function mostrarNoticiaDestacada(noticia) {
     
     const html = `
         <div class="container">
-            <div class="noticia-destacada" onclick="verNoticia('${slugify(noticia.titulo)}', ${noticia.id})">
+            <div class="noticia-destacada" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
                 <div class="noticia-destacada-imagen">
-                    <img src="${noticia.imagen || '../images/noticias/default.jpg'}" alt="${noticia.titulo}">
+                    <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
                     <div class="badge-destacada">⭐ Destacada</div>
                 </div>
                 <div class="noticia-destacada-contenido">
@@ -101,7 +116,7 @@ function mostrarNoticiaDestacada(noticia) {
                         </div>
                     ` : ''}
                     
-                    <a href="#" class="btn btn-primary btn-lg" onclick="verNoticia('${slugify(noticia.titulo)}', ${noticia.id}); return false;">
+                    <a href="#" class="btn btn-primary btn-lg" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}'); return false;">
                         Leer noticia completa <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -161,9 +176,9 @@ function mostrarNoticias(page = 1) {
  */
 function createNoticiaCard(noticia) {
     return `
-        <div class="noticia-card" onclick="verNoticia('${slugify(noticia.titulo)}', ${noticia.id})">
+        <div class="noticia-card" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
             <div class="noticia-card-imagen">
-                <img src="${noticia.imagen || '../images/noticias/default.jpg'}" alt="${noticia.titulo}">
+                <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
                 ${noticia.categorias && noticia.categorias[0] ? 
                     `<div class="noticia-card-categoria">${noticia.categorias[0]}</div>` : ''
                 }
@@ -236,8 +251,8 @@ function mostrarNoticiasEjemplo() {
         }
     ];
     
-    todasLasNoticias = noticiasEjemplo;
-    noticiasMostradas = [...noticiasEjemplo];
+    todasLasNoticias = noticiasEjemplo.map(normalizeNoticia);
+    noticiasMostradas = [...todasLasNoticias];
     
     mostrarNoticiaDestacada(noticiasEjemplo[0]);
     mostrarNoticias(1);

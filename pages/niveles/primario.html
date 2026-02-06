@@ -20,7 +20,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+        <header class="header">
             <div class="container">
                 <div class="header-content">
                     <div class="logo-container">
@@ -40,7 +40,17 @@
                     <nav class="nav" id="mainNav">
                         <a href="../../index.html" class="nav-link active">Inicio</a>
                         <a href="../../index.html#noticias" class="nav-link">Noticias</a>
-                        <a href="../../index.html#niveles" class="nav-link">Niveles</a>
+                        <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">
+                            Niveles
+                        </button>
+                        <div class="dropdown-menu" id="nivelesMenu">
+                            <a href="/IPSM-Frontend/pages/niveles/inicial.html" class="dropdown-link">Inicial</a>
+                            <a href="/IPSM-Frontend/pages/niveles/primario.html" class="dropdown-link">Primario</a>
+                            <a href="/IPSM-Frontend/pages/niveles/secundario.html" class="dropdown-link">Secundario</a>
+                        </div>
+                        </div>
+
                         <a href="reglamento.html" class="nav-link">Reglamento</a>
                         <a href="../../index.html#contacto" class="nav-link">Contacto</a>
                         <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
@@ -53,7 +63,7 @@
                     </nav>
                 </div>
             </div>
-    </header>
+        </header>
 
     <!-- Hero Nivel -->
     <section class="hero" style="background-image: url('https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/Primario.jpg');">

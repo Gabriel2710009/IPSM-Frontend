@@ -62,6 +62,11 @@ const CONFIG = {
         USER: 'san_marino_user',
         ROLE: 'san_marino_role'
     },
+
+    // Assets compartidos
+    ASSETS: {
+        DEFAULT_NEWS_IMAGE: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'
+    },
     
     // Roles del sistema
     ROLES: {

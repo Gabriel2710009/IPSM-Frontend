@@ -45,7 +45,16 @@ function initMobileMenu() {
  */
 async function loadNoticias() {
     try {
-        const noticiasContainer = document.getElementById('noticias-container');
+        const noticiasContainer = document.getElementById('noticiasContainer') ||
+            document.getElementById('noticias-container');
+        const fallbackImage = (typeof CONFIG !== 'undefined' && CONFIG.ASSETS && CONFIG.ASSETS.DEFAULT_NEWS_IMAGE) ?
+            CONFIG.ASSETS.DEFAULT_NEWS_IMAGE :
+            './images/placeholder.jpg';
+
+        if (!noticiasContainer) {
+            console.warn('No se encontrÃ³ el contenedor de noticias en la pÃ¡gina.');
+            return;
+        }
         
         let noticias;
         
@@ -60,21 +69,21 @@ async function loadNoticias() {
                     id: 1,
                     titulo: 'Inauguración de Nueva Sala de Informática',
                     resumen: 'El IPSM estrena modernas instalaciones.',
-                    imagen_url: './images/placeholder.jpg',
+                    imagen_url: fallbackImage,
                     fecha_publicacion: new Date().toISOString()
                 },
                 {
                     id: 2,
                     titulo: 'Inicio del Ciclo Lectivo 2026',
                     resumen: 'Bienvenidos al nuevo año académico.',
-                    imagen_url: './images/placeholder.jpg',
+                    imagen_url: fallbackImage,
                     fecha_publicacion: new Date().toISOString()
                 },
                 {
                     id: 3,
                     titulo: 'Olimpiadas Deportivas',
                     resumen: 'Excelentes resultados de nuestros estudiantes.',
-                    imagen_url: './images/placeholder.jpg',
+                    imagen_url: fallbackImage,
                     fecha_publicacion: new Date().toISOString()
                 }
             ];
@@ -83,13 +92,13 @@ async function loadNoticias() {
         if (noticias && noticias.length > 0) {
             noticiasContainer.innerHTML = noticias.map(noticia => `
                 <article class="noticia-card">
-                    <img src="${noticia.imagen_url}" 
+                    <img src="${noticia.imagen_url || noticia.imagen || fallbackImage}" 
                          alt="${noticia.titulo}"
-                         onerror="this.src='./images/placeholder.jpg'">
+                         onerror="this.src='${fallbackImage}'">
                     <div class="noticia-content">
                         <h3>${noticia.titulo}</h3>
                         <p>${noticia.resumen || noticia.contenido?.substring(0, 150) + '...'}</p>
-                        <span class="fecha">${new Date(noticia.fecha_publicacion).toLocaleDateString('es-AR')}</span>
+                        <span class="fecha">${new Date(noticia.fecha_publicacion || noticia.fecha).toLocaleDateString('es-AR')}</span>
                     </div>
                 </article>
             `).join('');
@@ -97,8 +106,11 @@ async function loadNoticias() {
         
     } catch (error) {
         console.error('Error al cargar noticias:', error);
-        document.getElementById('noticias-container').innerHTML = 
-            '<p>Las noticias se cargarán próximamente.</p>';
+        const container = document.getElementById('noticiasContainer') ||
+            document.getElementById('noticias-container');
+        if (container) {
+            container.innerHTML = '<p>Las noticias se cargarán próximamente.</p>';
+        }
     }
 }
 
@@ -107,10 +119,10 @@ async function loadNoticias() {
  */
 function createNoticiaCard(noticia) {
     return `
-        <div class="noticia-card" onclick="verNoticia(${noticia.id})">
-            <img src="${noticia.imagen || 'images/noticias/default.jpg'}" alt="${noticia.titulo}" class="noticia-image">
+        <div class="noticia-card" onclick="verNoticia('${noticia.id}')">
+            <img src="${noticia.imagen || noticia.imagen_url || (CONFIG && CONFIG.ASSETS && CONFIG.ASSETS.DEFAULT_NEWS_IMAGE) || 'images/noticias/default.jpg'}" alt="${noticia.titulo}" class="noticia-image">
             <div class="noticia-content">
-                <div class="noticia-fecha">${Utils.formatDate(noticia.fecha)}</div>
+                <div class="noticia-fecha">${Utils.formatDate(noticia.fecha_publicacion || noticia.fecha)}</div>
                 <h3 class="noticia-titulo">${noticia.titulo}</h3>
                 <p class="noticia-resumen">${noticia.resumen}</p>
                 <a href="#" class="noticia-leer-mas">Leer más →</a>
@@ -124,7 +136,7 @@ function createNoticiaCard(noticia) {
  * Redirige a la página de detalle de noticia
  */
 function verNoticia(noticiaId) {
-    window.location.href = `pages/noticia.html?id=${noticiaId}`;
+    window.location.href = `pages/noticia-detalle.html?id=${noticiaId}`;
 }
 
 /**

@@ -5,6 +5,21 @@
 
 let currentNoticia = null;
 
+function getDefaultNewsImage() {
+    if (typeof CONFIG !== 'undefined' && CONFIG.ASSETS && CONFIG.ASSETS.DEFAULT_NEWS_IMAGE) {
+        return CONFIG.ASSETS.DEFAULT_NEWS_IMAGE;
+    }
+    return '../images/noticias/default.jpg';
+}
+
+function normalizeNoticia(noticia) {
+    if (!noticia) return noticia;
+    const imagen = noticia.imagen || noticia.imagen_url;
+    const fecha = noticia.fecha || noticia.fecha_publicacion;
+    const categorias = noticia.categorias || (noticia.categoria ? [noticia.categoria] : []);
+    return { ...noticia, imagen, fecha, categorias };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     loadNoticiaFromURL();
@@ -51,10 +66,10 @@ async function loadNoticiaFromURL() {
         let noticia;
         
         if (id) {
-            noticia = await API.get(`${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${id}`);
+            noticia = normalizeNoticia(await API.get(`${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${id}`));
         } else {
             // Si solo tenemos slug, buscar todas y filtrar
-            const noticias = await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS);
+            const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS)).map(normalizeNoticia);
             noticia = noticias.find(n => slugify(n.titulo) === slug);
         }
         
@@ -87,7 +102,7 @@ function mostrarNoticia(noticia) {
     // Construir HTML
     const html = `
         <div class="noticia-header">
-            <img src="${noticia.imagen || '../images/noticias/default.jpg'}" 
+            <img src="${noticia.imagen || getDefaultNewsImage()}" 
                  alt="${noticia.titulo}" 
                  class="noticia-header-imagen">
             <div class="noticia-header-overlay">
@@ -168,7 +183,7 @@ async function loadNoticiasRelacionadas(currentId, categorias) {
     const container = document.getElementById('noticiasRelacionadas');
     
     try {
-        const noticias = await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS);
+        const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS)).map(normalizeNoticia);
         
         // Filtrar noticias relacionadas (misma categoría, pero diferente ID)
         let relacionadas = noticias.filter(n => {
@@ -203,9 +218,9 @@ async function loadNoticiasRelacionadas(currentId, categorias) {
  */
 function createRelacionadaCard(noticia) {
     return `
-        <div class="noticia-relacionada-item" onclick="verNoticia('${slugify(noticia.titulo)}', ${noticia.id})">
+        <div class="noticia-relacionada-item" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
             <div class="noticia-relacionada-imagen">
-                <img src="${noticia.imagen || '../images/noticias/default.jpg'}" alt="${noticia.titulo}">
+                <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
             </div>
             <div class="noticia-relacionada-contenido">
                 <div class="noticia-relacionada-titulo">${truncateText(noticia.titulo, 60)}</div>
@@ -240,7 +255,7 @@ Recordamos a las familias que pueden consultar los horarios y materias en nuestr
         }
     };
     
-    const noticia = noticiasEjemplo[slug] || noticiasEjemplo['inicio-del-ciclo-lectivo-2025'];
+    const noticia = normalizeNoticia(noticiasEjemplo[slug] || noticiasEjemplo['inicio-del-ciclo-lectivo-2025']);
     currentNoticia = noticia;
     mostrarNoticia(noticia);
     updateMetaTags(noticia);
