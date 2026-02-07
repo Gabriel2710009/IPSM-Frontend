@@ -370,7 +370,7 @@
                             <label class="filter-label">Turno</label>
                             <select class="filter-select" id="filterCursosTurno">
                                 <option value="">Todos</option>
-                                <option value="mañana">Mañana</option>
+                            <option value="Mañana">Mañana</option>
                                 <option value="tarde">Tarde</option>
                             </select>
                         </div>
@@ -549,6 +549,91 @@
                         <i class="fas fa-save"></i> Crear Configuración
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cursos -->
+    <div id="cursoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cursoModalTitle"><i class="fas fa-chalkboard-teacher"></i> Nuevo Curso</h3>
+                <button class="modal-close" onclick="cerrarModal('cursoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cursoForm">
+                    <input type="hidden" id="cursoId">
+                    <div class="form-group">
+                        <label class="form-label">Ciclo lectivo (ID)</label>
+                        <input type="number" class="form-control" id="cursoCicloLectivoId" required min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nivel</label>
+                        <select class="form-control" id="cursoNivelId" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">Inicial</option>
+                            <option value="2">Primario</option>
+                            <option value="3">Secundario</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">AÃ±o</label>
+                        <input type="number" class="form-control" id="cursoAnio" required min="1" max="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">DivisiÃ³n</label>
+                        <input type="text" class="form-control" id="cursoDivision" required maxlength="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Turno</label>
+                        <select class="form-control" id="cursoTurno" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="MaÃ±ana">MaÃ±ana</option>
+                            <option value="Tarde">Tarde</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">OrientaciÃ³n (opcional)</label>
+                        <input type="text" class="form-control" id="cursoOrientacion">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Capacidad mÃ¡xima</label>
+                        <input type="number" class="form-control" id="cursoCapacidad" min="1" max="50" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Activo</label>
+                        <input type="checkbox" id="cursoActivo" checked>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="cursoSubmitBtn">
+                        Crear Curso
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Alumnos por Curso -->
+    <div id="alumnosCursoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="alumnosCursoModalTitle"><i class="fas fa-users"></i> Alumnos</h3>
+                <button class="modal-close" onclick="cerrarModal('alumnosCursoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="alumnosCursoContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Pago -->
+    <div id="pagoDetalleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-receipt"></i> Detalle de Pago</h3>
+                <button class="modal-close" onclick="cerrarModal('pagoDetalleModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="pagoDetalleContainer"></div>
             </div>
         </div>
     </div>

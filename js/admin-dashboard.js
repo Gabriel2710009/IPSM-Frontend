@@ -1161,6 +1161,712 @@ function aplicarFiltrosCursos() {
     console.log('Aplicando filtros a cursos');
 }
 
+// =========================
+// Integracion endpoints Admin (Pagos + Cursos)
+// =========================
+let pagosPendientes = [];
+let pagosPendientesFiltrados = [];
+
+function normalizeText(value) {
+    return (value || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+}
+
+function getMesNumero(mesValor) {
+    if (mesValor === null || mesValor === undefined) return null;
+    if (typeof mesValor === 'number') return mesValor;
+    const mesStr = normalizeText(mesValor);
+    const meses = {
+        'enero': 1,
+        'febrero': 2,
+        'marzo': 3,
+        'abril': 4,
+        'mayo': 5,
+        'junio': 6,
+        'julio': 7,
+        'agosto': 8,
+        'septiembre': 9,
+        'setiembre': 9,
+        'octubre': 10,
+        'noviembre': 11,
+        'diciembre': 12
+    };
+    return meses[mesStr] || null;
+}
+
+function getEstadoPagoLabel(estado) {
+    const estadoNorm = normalizeText(estado);
+    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'Pendiente';
+    if (estadoNorm.includes('rech')) return 'Rechazado';
+    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'Aprobado';
+    return estado || 'Pendiente';
+}
+
+function getEstadoPagoBadgeClass(estado) {
+    const estadoNorm = normalizeText(estado);
+    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'badge-warning';
+    if (estadoNorm.includes('rech')) return 'badge-error';
+    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'badge-success';
+    return 'badge-info';
+}
+
+function formatMonto(monto) {
+    if (monto === null || monto === undefined) return '-';
+    const num = typeof monto === 'number' ? monto : parseFloat(monto);
+    if (Number.isNaN(num)) return monto;
+    return num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Override initModals para incluir cursos
+function initModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    });
+
+    const nuevoUsuarioForm = document.getElementById('nuevoUsuarioForm');
+    if (nuevoUsuarioForm) {
+        nuevoUsuarioForm.addEventListener('submit', handleNuevoUsuario);
+    }
+
+    const nuevaConfigForm = document.getElementById('nuevaConfigForm');
+    if (nuevaConfigForm) {
+        nuevaConfigForm.addEventListener('submit', handleNuevaConfig);
+    }
+
+    const mensajeForm = document.getElementById('mensajeForm');
+    if (mensajeForm) {
+        mensajeForm.addEventListener('submit', handleEnviarMensaje);
+    }
+
+    const tipoDestinatario = document.getElementById('tipoDestinatario');
+    if (tipoDestinatario) {
+        tipoDestinatario.addEventListener('change', handleTipoDestinatarioChange);
+    }
+
+    const cursoForm = document.getElementById('cursoForm');
+    if (cursoForm) {
+        cursoForm.addEventListener('submit', handleCursoSubmit);
+    }
+}
+
+// Override estadisticas para agregar cursos y pagos pendientes
+async function loadEstadisticas() {
+    try {
+        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
+        const pendientesTotal = pendientesCount.count || 0;
+        document.getElementById('statPendientes').textContent = pendientesTotal;
+
+        const badge = document.getElementById('pendientesBadge');
+        if (badge) {
+            if (pendientesTotal > 0) {
+                badge.textContent = pendientesTotal;
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        try {
+            const cursosData = await API.get('/api/v1/admin/cursos', true);
+            const activos = Array.isArray(cursosData) ? cursosData.filter(c => c.activo).length : 0;
+            document.getElementById('statCursos').textContent = activos;
+        } catch (error) {
+            document.getElementById('statCursos').textContent = '-';
+        }
+
+        document.getElementById('statUsuarios').textContent = '-';
+        document.getElementById('statMensajes').textContent = '-';
+    } catch (error) {
+        console.error('Error al cargar estadisticas:', error);
+    }
+}
+
+// Override acciones pendientes con pagos
+async function loadAccionesPendientes() {
+    const container = document.getElementById('accionesPendientesContainer');
+    if (!container) return;
+
+    try {
+        const acciones = [];
+        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
+        if (pendientesCount.count > 0) {
+            acciones.push({
+                icon: 'fa-user-clock',
+                texto: `${pendientesCount.count} usuario(s) pendiente(s) de aprobacion`,
+                section: 'usuarios-pendientes'
+            });
+        }
+
+        try {
+            const pagosPendientesCount = await API.get('/api/v1/admin/pagos/pendientes/count', true);
+            if (pagosPendientesCount.pending_count > 0) {
+                acciones.push({
+                    icon: 'fa-money-check-alt',
+                    texto: `${pagosPendientesCount.pending_count} pago(s) pendiente(s) de validacion`,
+                    section: 'cuotas'
+                });
+            }
+        } catch (error) {
+            console.warn('No se pudo cargar conteo de pagos pendientes:', error);
+        }
+
+        if (acciones.length === 0) {
+            container.innerHTML = '<p class="text-center text-success"><i class="fas fa-check-circle"></i> No hay acciones pendientes</p>';
+        } else {
+            container.innerHTML = acciones.map(accion => `
+                <div class="accion-item" style="padding: var(--spacing-md); border-left: 4px solid var(--warning-color); background: var(--gray-50); margin-bottom: var(--spacing-sm); cursor: pointer; border-radius: var(--border-radius-md);" onclick="document.querySelector('[data-section=\\'${accion.section}\\']').click()">
+                    <i class="fas ${accion.icon}" style="color: var(--warning-color); margin-right: var(--spacing-sm);"></i>
+                    ${accion.texto}
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error al cargar acciones pendientes:', error);
+        container.innerHTML = '<p class="text-center text-muted">Error al cargar acciones pendientes</p>';
+    }
+}
+
+// Pagos pendientes (Validacion de pagos)
+async function loadCuotasValidacion() {
+    const container = document.getElementById('cuotasContainer');
+    if (!container) return;
+
+    try {
+        Utils.showLoader();
+        pagosPendientes = await API.get('/api/v1/admin/pagos/pendientes', true);
+        pagosPendientesFiltrados = Array.isArray(pagosPendientes) ? pagosPendientes : [];
+        aplicarFiltrosCuotas();
+    } catch (error) {
+        console.error('Error al cargar pagos pendientes:', error);
+        Utils.showError('Error al cargar pagos pendientes');
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-money-check-alt"></i></div>
+                <h3>Error al cargar pagos</h3>
+                <p>Intente nuevamente mas tarde</p>
+            </div>
+        `;
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function renderPagosPendientes(pagos) {
+    const container = document.getElementById('cuotasContainer');
+    if (!container) return;
+
+    if (!pagos || pagos.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Sin pagos pendientes</h3>
+                <p>No hay pagos para validar</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-body">
+                <div class="noticias-grid">
+                    ${pagos.map(pago => createPagoCard(pago)).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function createPagoCard(pago) {
+    const estadoLabel = getEstadoPagoLabel(pago.estado);
+    const badgeClass = getEstadoPagoBadgeClass(pago.estado);
+
+    return `
+        <div class="card">
+            <div class="card-body">
+                <div class="card-header" style="padding: 0 0 var(--spacing-sm) 0;">
+                    <h3 class="card-title"><i class="fas fa-user"></i> ${pago.alumno_nombre}</h3>
+                    <span class="badge ${badgeClass}">${estadoLabel}</span>
+                </div>
+                <p class="text-muted"><i class="fas fa-id-card"></i> DNI: ${pago.alumno_dni}</p>
+                <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
+                <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
+                <p><strong>Metodo:</strong> ${pago.metodo_pago || '-'}</p>
+                ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operacion:</strong> ${pago.numero_operacion}</p>` : ''}
+                <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDateTime(pago.fecha_pago)}</p>
+
+                <div class="action-buttons mt-md">
+                    <button class="btn btn-sm btn-success" onclick="aprobarPago(${pago.id})">
+                        <i class="fas fa-check"></i> Aprobar
+                    </button>
+                    <button class="btn btn-sm btn-error" onclick="rechazarPago(${pago.id})">
+                        <i class="fas fa-times"></i> Rechazar
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="verDetallePago(${pago.id})">
+                        <i class="fas fa-eye"></i> Ver detalle
+                    </button>
+                    ${pago.comprobante_url ? `<a class="btn btn-sm btn-outline" href="${pago.comprobante_url}" target="_blank" rel="noopener">Ver comprobante</a>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+async function aprobarPago(pagoId) {
+    if (!confirm('Confirmar aprobacion del pago?')) return;
+    const observaciones = prompt('Observaciones (opcional):') || null;
+
+    try {
+        Utils.showLoader();
+        await API.post('/api/v1/admin/pagos/validar', {
+            pago_id: pagoId,
+            accion: 'aprobar',
+            observaciones: observaciones
+        }, true);
+
+        Utils.showSuccess('Pago aprobado correctamente');
+        await loadCuotasValidacion();
+        await loadEstadisticas();
+        await loadAccionesPendientes();
+    } catch (error) {
+        console.error('Error al aprobar pago:', error);
+        Utils.showError(error.message || 'Error al aprobar el pago');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function rechazarPago(pagoId) {
+    if (!confirm('Confirmar rechazo del pago?')) return;
+    const observaciones = prompt('Motivo de rechazo (opcional):') || null;
+
+    try {
+        Utils.showLoader();
+        await API.post('/api/v1/admin/pagos/validar', {
+            pago_id: pagoId,
+            accion: 'rechazar',
+            observaciones: observaciones
+        }, true);
+
+        Utils.showSuccess('Pago rechazado correctamente');
+        await loadCuotasValidacion();
+        await loadEstadisticas();
+        await loadAccionesPendientes();
+    } catch (error) {
+        console.error('Error al rechazar pago:', error);
+        Utils.showError(error.message || 'Error al rechazar el pago');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function verDetallePago(pagoId) {
+    try {
+        Utils.showLoader();
+        const pago = await API.get(`/api/v1/admin/pagos/${pagoId}`, true);
+        abrirModalPagoDetalle(pago);
+    } catch (error) {
+        console.error('Error al cargar detalle de pago:', error);
+        Utils.showError('Error al cargar detalle de pago');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function abrirModalPagoDetalle(pago) {
+    const modal = document.getElementById('pagoDetalleModal');
+    const container = document.getElementById('pagoDetalleContainer');
+    if (!modal || !container) return;
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Alumno:</strong> ${pago.alumno_nombre} (${pago.alumno_dni})</p>
+                <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
+                <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
+                <p><strong>Metodo:</strong> ${pago.metodo_pago || '-'}</p>
+                ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operacion:</strong> ${pago.numero_operacion}</p>` : ''}
+                <p><strong>Fecha de pago:</strong> ${Utils.formatDateTime(pago.fecha_pago)}</p>
+                <p><strong>Estado:</strong> ${getEstadoPagoLabel(pago.estado)}</p>
+                ${pago.comprobante_url ? `<p><strong>Comprobante:</strong> <a href="${pago.comprobante_url}" target="_blank" rel="noopener">Ver comprobante</a></p>` : ''}
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+}
+
+// Cursos (Admin)
+async function loadCursos() {
+    const container = document.getElementById('cursosContainer');
+    if (!container) return;
+
+    try {
+        Utils.showLoader();
+        cursos = await API.get('/api/v1/admin/cursos', true);
+        aplicarFiltrosCursos();
+    } catch (error) {
+        console.error('Error al cargar cursos:', error);
+        Utils.showError('Error al cargar cursos');
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>Error al cargar cursos</h3>
+                <p>Intente nuevamente mas tarde</p>
+            </div>
+        `;
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function renderCursos(lista) {
+    const container = document.getElementById('cursosContainer');
+    if (!container) return;
+
+    if (!lista || lista.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>No hay cursos</h3>
+                <p>No se encontraron cursos con los filtros seleccionados</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="noticias-grid">
+            ${lista.map(curso => createCursoCard(curso)).join('')}
+        </div>
+    `;
+}
+
+function createCursoCard(curso) {
+    const estadoBadge = curso.activo ? 'badge-success' : 'badge-warning';
+    const estadoLabel = curso.activo ? 'Activo' : 'Inactivo';
+    const turnoLabel = curso.turno || '-';
+    const nivelLabel = curso.nivel_nombre || '-';
+
+    return `
+        <div class="card">
+            <div class="card-body">
+                <div class="card-header" style="padding: 0 0 var(--spacing-sm) 0;">
+                    <h3 class="card-title"><i class="fas fa-chalkboard-teacher"></i> ${nivelLabel} - ${curso.anio}° ${curso.division}</h3>
+                    <span class="badge ${estadoBadge}">${estadoLabel}</span>
+                </div>
+                <p class="text-muted"><i class="fas fa-calendar"></i> Ciclo: ${curso.ciclo_lectivo_nombre || 'N/A'}</p>
+                <p><strong>Turno:</strong> ${turnoLabel}</p>
+                <p><strong>Alumnos:</strong> ${curso.cantidad_alumnos || 0}</p>
+                <p><strong>Capacidad:</strong> ${curso.capacidad_maxima}</p>
+                ${curso.orientacion ? `<p><strong>Orientacion:</strong> ${curso.orientacion}</p>` : ''}
+
+                <div class="action-buttons mt-md">
+                    <button class="btn btn-sm btn-primary" onclick="verAlumnosCurso(${curso.id})">
+                        <i class="fas fa-users"></i> Ver Alumnos
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="abrirModalEditarCurso(${curso.id})">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    ${curso.activo ? `
+                        <button class="btn btn-sm btn-error" onclick="desactivarCurso(${curso.id})">
+                            <i class="fas fa-ban"></i> Desactivar
+                        </button>
+                    ` : `
+                        <button class="btn btn-sm btn-success" onclick="activarCurso(${curso.id})">
+                            <i class="fas fa-check"></i> Activar
+                        </button>
+                    `}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function abrirModalNuevoCurso() {
+    const modal = document.getElementById('cursoModal');
+    const form = document.getElementById('cursoForm');
+    const title = document.getElementById('cursoModalTitle');
+    const submitBtn = document.getElementById('cursoSubmitBtn');
+
+    if (!modal || !form) return;
+
+    form.reset();
+    document.getElementById('cursoId').value = '';
+    document.getElementById('cursoActivo').checked = true;
+    document.getElementById('cursoCicloLectivoId').disabled = false;
+    document.getElementById('cursoNivelId').disabled = false;
+    document.getElementById('cursoAnio').disabled = false;
+    document.getElementById('cursoDivision').disabled = false;
+
+    if (title) title.textContent = 'Nuevo Curso';
+    if (submitBtn) submitBtn.textContent = 'Crear Curso';
+
+    modal.classList.add('active');
+}
+
+function abrirModalEditarCurso(cursoId) {
+    const curso = (cursos || []).find(c => c.id === cursoId);
+    if (!curso) {
+        Utils.showError('Curso no encontrado');
+        return;
+    }
+
+    const modal = document.getElementById('cursoModal');
+    const form = document.getElementById('cursoForm');
+    const title = document.getElementById('cursoModalTitle');
+    const submitBtn = document.getElementById('cursoSubmitBtn');
+
+    if (!modal || !form) return;
+
+    form.reset();
+    document.getElementById('cursoId').value = curso.id;
+    document.getElementById('cursoCicloLectivoId').value = curso.ciclo_lectivo_id || '';
+    document.getElementById('cursoNivelId').value = curso.nivel_id || '';
+    document.getElementById('cursoAnio').value = curso.anio || '';
+    document.getElementById('cursoDivision').value = curso.division || '';
+    document.getElementById('cursoTurno').value = curso.turno || '';
+    document.getElementById('cursoOrientacion').value = curso.orientacion || '';
+    document.getElementById('cursoCapacidad').value = curso.capacidad_maxima || '';
+    document.getElementById('cursoActivo').checked = !!curso.activo;
+    document.getElementById('cursoCicloLectivoId').disabled = true;
+    document.getElementById('cursoNivelId').disabled = true;
+    document.getElementById('cursoAnio').disabled = true;
+    document.getElementById('cursoDivision').disabled = true;
+
+    if (title) title.textContent = 'Editar Curso';
+    if (submitBtn) submitBtn.textContent = 'Guardar Cambios';
+
+    modal.classList.add('active');
+}
+
+async function handleCursoSubmit(e) {
+    e.preventDefault();
+
+    const cursoId = document.getElementById('cursoId').value;
+    const cicloLectivoId = parseInt(document.getElementById('cursoCicloLectivoId').value, 10);
+    const nivelId = parseInt(document.getElementById('cursoNivelId').value, 10);
+    const anio = parseInt(document.getElementById('cursoAnio').value, 10);
+    const division = document.getElementById('cursoDivision').value.trim().toUpperCase();
+    const turno = document.getElementById('cursoTurno').value;
+    const orientacion = document.getElementById('cursoOrientacion').value.trim();
+    const capacidad = parseInt(document.getElementById('cursoCapacidad').value, 10);
+    const activo = document.getElementById('cursoActivo').checked;
+
+    try {
+        Utils.showLoader();
+
+        if (cursoId) {
+            const updateData = {};
+            if (turno) updateData.turno = turno;
+            if (orientacion) updateData.orientacion = orientacion;
+            if (!Number.isNaN(capacidad)) updateData.capacidad_maxima = capacidad;
+            updateData.activo = activo;
+
+            await API.put(`/api/v1/admin/cursos/${cursoId}`, updateData, true);
+            Utils.showSuccess('Curso actualizado correctamente');
+        } else {
+            if (Number.isNaN(cicloLectivoId) || Number.isNaN(nivelId) || Number.isNaN(anio) || !division || !turno) {
+                Utils.showError('Complete todos los campos obligatorios');
+                return;
+            }
+
+            const createData = {
+                ciclo_lectivo_id: cicloLectivoId,
+                nivel_id: nivelId,
+                anio: anio,
+                division: division,
+                turno: turno,
+                orientacion: orientacion || null,
+                capacidad_maxima: Number.isNaN(capacidad) ? 30 : capacidad
+            };
+
+            await API.post('/api/v1/admin/cursos', createData, true);
+            Utils.showSuccess('Curso creado correctamente');
+        }
+
+        cerrarModal('cursoModal');
+        await loadCursos();
+        await loadEstadisticas();
+    } catch (error) {
+        console.error('Error al guardar curso:', error);
+        Utils.showError(error.message || 'Error al guardar el curso');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function desactivarCurso(cursoId) {
+    if (!confirm('Desactivar este curso?')) return;
+
+    try {
+        Utils.showLoader();
+        await API.delete(`/api/v1/admin/cursos/${cursoId}`, true);
+        Utils.showSuccess('Curso desactivado');
+        await loadCursos();
+        await loadEstadisticas();
+    } catch (error) {
+        console.error('Error al desactivar curso:', error);
+        Utils.showError(error.message || 'Error al desactivar el curso');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function activarCurso(cursoId) {
+    try {
+        Utils.showLoader();
+        await API.put(`/api/v1/admin/cursos/${cursoId}`, { activo: true }, true);
+        Utils.showSuccess('Curso activado');
+        await loadCursos();
+        await loadEstadisticas();
+    } catch (error) {
+        console.error('Error al activar curso:', error);
+        Utils.showError(error.message || 'Error al activar el curso');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function verAlumnosCurso(cursoId) {
+    try {
+        Utils.showLoader();
+        const alumnos = await API.get(`/api/v1/admin/cursos/${cursoId}/alumnos`, true);
+        const curso = (cursos || []).find(c => c.id === cursoId) || { id: cursoId, nivel_nombre: '', anio: '', division: '' };
+        abrirModalAlumnosCurso(curso, alumnos || []);
+    } catch (error) {
+        console.error('Error al cargar alumnos del curso:', error);
+        Utils.showError('Error al cargar alumnos del curso');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function abrirModalAlumnosCurso(curso, alumnos) {
+    const modal = document.getElementById('alumnosCursoModal');
+    const container = document.getElementById('alumnosCursoContainer');
+    const title = document.getElementById('alumnosCursoModalTitle');
+
+    if (!modal || !container) return;
+
+    if (title) {
+        title.textContent = `Alumnos - ${curso.nivel_nombre || ''} ${curso.anio || ''}° ${curso.division || ''}`.trim();
+    }
+
+    if (!alumnos || alumnos.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-users"></i></div>
+                <h3>Sin alumnos</h3>
+                <p>No hay alumnos asignados a este curso</p>
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="card">
+                <div class="card-body">
+                    <div class="usuarios-table-container">
+                        <table class="usuarios-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>DNI</th>
+                                    <th>Email</th>
+                                    <th>Legajo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${alumnos.map(alumno => `
+                                    <tr>
+                                        <td>${alumno.nombre} ${alumno.apellido}</td>
+                                        <td>${alumno.dni}</td>
+                                        <td>${alumno.email || '-'}</td>
+                                        <td>${alumno.legajo}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    modal.classList.add('active');
+}
+
+// Filtros pagos
+function aplicarFiltrosCuotas() {
+    const filterEstado = document.getElementById('filterCuotasEstado');
+    const filterMes = document.getElementById('filterCuotasMes');
+
+    let filtrados = Array.isArray(pagosPendientes) ? pagosPendientes.slice() : [];
+
+    const estado = filterEstado ? filterEstado.value : 'pendiente';
+    const mes = filterMes ? filterMes.value : '';
+
+    if (estado && estado !== 'todos') {
+        filtrados = filtrados.filter(pago => {
+            const estadoNorm = normalizeText(pago.estado);
+            if (estado === 'pendiente') return ['pending', 'in_process', 'pendiente'].includes(estadoNorm);
+            if (estado === 'validado') return estadoNorm.includes('aprob') || estadoNorm === 'approved';
+            if (estado === 'rechazado') return estadoNorm.includes('rech');
+            return true;
+        });
+    }
+
+    if (mes) {
+        const mesNum = parseInt(mes, 10);
+        filtrados = filtrados.filter(pago => getMesNumero(pago.mes) === mesNum);
+    }
+
+    pagosPendientesFiltrados = filtrados;
+    renderPagosPendientes(pagosPendientesFiltrados);
+}
+
+// Filtros cursos
+function aplicarFiltrosCursos() {
+    const filterNivel = document.getElementById('filterCursosNivel');
+    const filterAnio = document.getElementById('filterCursosAnio');
+    const filterTurno = document.getElementById('filterCursosTurno');
+
+    let filtrados = Array.isArray(cursos) ? cursos.slice() : [];
+
+    const nivel = filterNivel ? filterNivel.value : '';
+    const anio = filterAnio ? filterAnio.value : '';
+    const turno = filterTurno ? filterTurno.value : '';
+
+    if (nivel) {
+        filtrados = filtrados.filter(curso => {
+            const nivelNombre = normalizeText(curso.nivel_nombre);
+            const nivelId = String(curso.nivel_id || '');
+            if (['inicial', 'primario', 'secundario'].includes(nivel)) {
+                return nivelNombre === nivel || nivelId === (nivel === 'inicial' ? '1' : nivel === 'primario' ? '2' : '3');
+            }
+            return true;
+        });
+    }
+
+    if (anio) {
+        filtrados = filtrados.filter(curso => String(curso.anio) === String(anio));
+    }
+
+    if (turno) {
+        filtrados = filtrados.filter(curso => normalizeText(curso.turno) === normalizeText(turno));
+    }
+
+    renderCursos(filtrados);
+}
+
 /**
  * Log de carga del módulo
  */
