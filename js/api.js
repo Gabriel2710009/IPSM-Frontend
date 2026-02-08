@@ -1,29 +1,39 @@
 /**
  * API Helper - Funciones para comunicación con el backend
- * Con debugging mejorado
+ * Con debugging mejorado y soporte para autenticación
  */
 
 // Clase para manejar las peticiones HTTP
 class API {
     /**
      * Realiza una petición GET al backend
+     * @param {string} endpoint - Endpoint de la API
+     * @param {boolean} requireAuth - Si requiere autenticación (default: true)
      */
-    static async get(endpoint) {
+    static async get(endpoint, requireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
         
         console.log('🌐 API GET Request:', {
             endpoint,
             fullUrl: url,
+            requireAuth,
             timestamp: new Date().toISOString()
         });
         
         try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            // Agregar headers de autenticación si es necesario
+            if (requireAuth) {
+                const authHeaders = this.getAuthHeaders();
+                Object.assign(headers, authHeaders);
+            }
+            
             const response = await fetch(url, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...this.getAuthHeaders()
-                }
+                headers: headers
             });
             
             console.log('📡 API GET Response:', {
@@ -45,32 +55,41 @@ class API {
     
     /**
      * Realiza una petición POST al backend
+     * @param {string} endpoint - Endpoint de la API
+     * @param {object} data - Datos a enviar
+     * @param {boolean} requireAuth - Si requiere autenticación (default: true)
      */
-    static async post(endpoint, data) {
+    static async post(endpoint, data, requireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
         
         console.log('🌐 API POST Request:', {
             endpoint,
             fullUrl: url,
+            requireAuth,
             data: data,
             timestamp: new Date().toISOString()
         });
         
         try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (requireAuth) {
+                const authHeaders = this.getAuthHeaders();
+                Object.assign(headers, authHeaders);
+            }
+            
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...this.getAuthHeaders()
-                },
+                headers: headers,
                 body: JSON.stringify(data)
             });
             
             console.log('📡 API POST Response:', {
                 status: response.status,
                 statusText: response.statusText,
-                url: response.url,
-                headers: Object.fromEntries(response.headers)
+                url: response.url
             });
             
             return await this.handleResponse(response);
@@ -86,24 +105,34 @@ class API {
     
     /**
      * Realiza una petición PUT al backend
+     * @param {string} endpoint - Endpoint de la API
+     * @param {object} data - Datos a enviar
+     * @param {boolean} requireAuth - Si requiere autenticación (default: true)
      */
-    static async put(endpoint, data) {
+    static async put(endpoint, data, requireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
         
         console.log('🌐 API PUT Request:', {
             endpoint,
             fullUrl: url,
+            requireAuth,
             data: data,
             timestamp: new Date().toISOString()
         });
         
         try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (requireAuth) {
+                const authHeaders = this.getAuthHeaders();
+                Object.assign(headers, authHeaders);
+            }
+            
             const response = await fetch(url, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...this.getAuthHeaders()
-                },
+                headers: headers,
                 body: JSON.stringify(data)
             });
             
@@ -124,23 +153,32 @@ class API {
     
     /**
      * Realiza una petición DELETE al backend
+     * @param {string} endpoint - Endpoint de la API
+     * @param {boolean} requireAuth - Si requiere autenticación (default: true)
      */
-    static async delete(endpoint) {
+    static async delete(endpoint, requireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
         
         console.log('🌐 API DELETE Request:', {
             endpoint,
             fullUrl: url,
+            requireAuth,
             timestamp: new Date().toISOString()
         });
         
         try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (requireAuth) {
+                const authHeaders = this.getAuthHeaders();
+                Object.assign(headers, authHeaders);
+            }
+            
             const response = await fetch(url, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...this.getAuthHeaders()
-                }
+                headers: headers
             });
             
             console.log('📡 API DELETE Response:', {
@@ -164,6 +202,11 @@ class API {
     static getAuthHeaders() {
         const token = localStorage.getItem('access_token');
         
+        console.log('🔒 Getting auth headers:', {
+            hasToken: !!token,
+            tokenPreview: token ? token.substring(0, 20) + '...' : null
+        });
+        
         if (token) {
             return {
                 'Authorization': `Bearer ${token}`
@@ -178,6 +221,21 @@ class API {
      */
     static async handleResponse(response) {
         const contentType = response.headers.get('content-type');
+        
+        // Si es 401, el token expiró
+        if (response.status === 401) {
+            console.warn('⚠️ Token expirado o inválido - redirigiendo al login');
+            
+            // Limpiar localStorage
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user_data');
+            
+            // Redirigir al login
+            window.location.href = '../../pages/auth/login.html';
+            
+            throw new Error('Token inválido o expirado');
+        }
         
         // Intentar parsear JSON si el content-type es JSON
         if (contentType && contentType.includes('application/json')) {
@@ -225,8 +283,7 @@ class API {
         // Error de red
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
             const networkError = new Error(
-                `No se pudo conectar con el servidor en ${url}. ` +
-                `Verifique que el backend esté corriendo y que la URL sea correcta.`
+                `No se pudo conectar con el servidor. Verifique su conexión a internet.`
             );
             networkError.isNetworkError = true;
             return networkError;
@@ -235,7 +292,7 @@ class API {
         // Error de CORS
         if (error.message.includes('CORS')) {
             const corsError = new Error(
-                'Error de CORS. Verifique la configuración del backend para permitir peticiones desde el frontend.'
+                'Error de CORS. Contacte al administrador del sistema.'
             );
             corsError.isCorsError = true;
             return corsError;
@@ -251,7 +308,7 @@ class API {
         console.log('🏥 Checking backend health...');
         
         try {
-            const response = await this.get('/');
+            const response = await this.get('/', false); // Sin auth para health check
             console.log('✅ Backend is healthy:', response);
             return true;
         } catch (error) {
@@ -278,39 +335,19 @@ class Auth {
             // Primero verificar conectividad
             const isHealthy = await API.checkHealth();
             if (!isHealthy) {
-                throw new Error('El servidor no está disponible. Verifique que el backend esté corriendo.');
+                throw new Error('El servidor no está disponible. Intente nuevamente en unos momentos.');
             }
             
-            // Crear FormData para el login (FastAPI espera form-data para OAuth2)
             const requestBody = {
                 dni: dni,
                 password: password
-                    };
-            
+            };
             
             console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/api/v1/auth/login`);
             
-            const response = await fetch(`${CONFIG.API_BASE_URL}/api/v1/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody)
-            });
+            // Login NO requiere auth
+            const data = await API.post('/api/v1/auth/login', requestBody, false);
             
-            console.log('📥 Login response received:', {
-                status: response.status,
-                statusText: response.statusText,
-                headers: Object.fromEntries(response.headers)
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ detail: 'Error desconocido' }));
-                console.error('❌ Login failed:', errorData);
-                throw new Error(errorData.detail || 'Credenciales incorrectas');
-            }
-            
-            const data = await response.json();
             console.log('✅ Login successful:', {
                 hasToken: !!data.access_token,
                 tokenType: data.token_type
@@ -320,14 +357,13 @@ class Auth {
             if (data.access_token) {
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('token_type', data.token_type || 'bearer');
-                localStorage.setItem('user_dni', dni);
                 
-                // Obtener datos del usuario
-                try {
-                    const userData = await this.getCurrentUser();
-                    localStorage.setItem('user_data', JSON.stringify(userData));
-                } catch (error) {
-                    console.warn('⚠️ Could not fetch user data:', error);
+                if (data.refresh_token) {
+                    localStorage.setItem('refresh_token', data.refresh_token);
+                }
+                
+                if (data.user) {
+                    localStorage.setItem('user_data', JSON.stringify(data.user));
                 }
             }
             
@@ -348,28 +384,14 @@ class Auth {
         console.log('Fetching current user data...');
         
         try {
-            const userData = await API.get('/api/v1/auth/me');
+            const userData = await API.get('/api/v1/auth/me', true);
             console.log('User data retrieved:', userData);
             return userData;
         } catch (error) {
-            // Fallback para compatibilidad con backends antiguos
-            if (error && (error.status === 404 || /not found/i.test(error.message || ''))) {
-                try {
-                    console.warn('/api/v1/auth/me not found, trying /users/me');
-                    const legacyUserData = await API.get('/users/me');
-                    console.log('User data retrieved (legacy):', legacyUserData);
-                    return legacyUserData;
-                } catch (legacyError) {
-                    console.error('Error fetching user data (legacy):', legacyError);
-                    throw legacyError;
-                }
-            }
             console.error('Error fetching user data:', error);
             throw error;
         }
     }
-
-    
     
     /**
      * Cierra sesión
@@ -378,8 +400,9 @@ class Auth {
         console.log('🚪 Logging out...');
         
         localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         localStorage.removeItem('token_type');
-        localStorage.removeItem('user_dni');
+        localStorage.removeItem('user_dni')
         localStorage.removeItem('user_data');
         
         window.location.href = '../../pages/auth/login.html';
@@ -444,8 +467,8 @@ class Auth {
                 
                 // Redirigir según rol
                 switch (userData.role) {
-                    case 'director':
-                        window.location.href = '../../pages/dashboards/director.html';
+                    case 'admin':
+                        window.location.href = '../../pages/admin/dashboard.html';
                         break;
                     case 'preceptor':
                         window.location.href = '../../pages/preceptor/dashboard.html';
@@ -454,27 +477,27 @@ class Auth {
                     case 'docente':
                         window.location.href = '../../pages/profesor/dashboard.html';
                         break;
-                    case 'admin':
-                        window.location.href = '../../pages/admin/dashboard.html';
-                        break;
                     case 'alumno':
                         window.location.href = '../../pages/alumno/dashboard.html';
                         break;
+                    case 'padre':
+                        window.location.href = '../../pages/padre/dashboard.html';
+                        break;
                     default:
-                        console.warn('⚠️ Unknown role, redirecting to default dashboard');
-                        window.location.href = '../../pages/alumno/dashboard.html';
+                        console.warn('⚠️ Unknown role, redirecting to login');
+                        window.location.href = '../../pages/auth/login.html';
                 }
             } catch (error) {
                 console.error('❌ Error parsing user data:', error);
-                window.location.href = '../../pages/alumno/dashboard.html';
+                window.location.href = '../../pages/auth/login.html';
             }
         } else {
-            console.warn('⚠️ No user data found, redirecting to default dashboard');
-            window.location.href = '../../pages/alumno/dashboard.html';
+            console.warn('⚠️ No user data found, redirecting to login');
+            window.location.href = '../../pages/auth/login.html';
         }
     }
-
 }
+
 // Clase de utilidades
 class Utils {
     /**
@@ -566,6 +589,7 @@ class Utils {
      * Formatea una fecha
      */
     static formatDate(dateString) {
+        if (!dateString) return '-';
         const date = new Date(dateString);
         return date.toLocaleDateString('es-AR');
     }
@@ -574,6 +598,7 @@ class Utils {
      * Formatea una fecha y hora
      */
     static formatDateTime(dateString) {
+        if (!dateString) return '-';
         const date = new Date(dateString);
         return date.toLocaleString('es-AR');
     }
