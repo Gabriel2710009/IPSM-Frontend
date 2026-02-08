@@ -1,5 +1,5 @@
 /**
- * JavaScript para Dashboard de Administrador
+ * JavaScript para Dashboard de Administrador - INTEGRADO CON BACKEND
  * Instituto Privado San Marino
  */
 
@@ -10,6 +10,8 @@ let configuracionesCuotas = [];
 let cursos = [];
 let noticias = [];
 let mensajes = [];
+let pagosPendientes = [];
+let pagosPendientesFiltrados = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar autenticación
@@ -88,6 +90,8 @@ async function loadSectionData(sectionName) {
     switch(sectionName) {
         case 'inicio':
             await loadEstadisticas();
+            await loadAccionesPendientes();
+            await loadActividadReciente();
             break;
         case 'usuarios-pendientes':
             await loadUsuariosPendientes();
@@ -183,6 +187,11 @@ function initModals() {
     if (tipoDestinatario) {
         tipoDestinatario.addEventListener('change', handleTipoDestinatarioChange);
     }
+
+    const cursoForm = document.getElementById('cursoForm');
+    if (cursoForm) {
+        cursoForm.addEventListener('submit', handleCursoSubmit);
+    }
 }
 
 /**
@@ -207,26 +216,38 @@ async function loadDashboardData() {
 }
 
 /**
- * Carga las estadísticas generales
+ * Carga las estadísticas generales - INTEGRADO
  */
 async function loadEstadisticas() {
     try {
         // Cargar usuarios pendientes
         const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
-        document.getElementById('statPendientes').textContent = pendientesCount.count || 0;
+        const pendientesTotal = pendientesCount.pending_count || 0;
+        document.getElementById('statPendientes').textContent = pendientesTotal;
         
-        if (pendientesCount.count > 0) {
-            const badge = document.getElementById('pendientesBadge');
-            if (badge) {
-                badge.textContent = pendientesCount.count;
+        const badge = document.getElementById('pendientesBadge');
+        if (badge) {
+            if (pendientesTotal > 0) {
+                badge.textContent = pendientesTotal;
                 badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
             }
         }
-        
-        // TODO: Cargar otras estadísticas cuando estén disponibles los endpoints
+
+        // Cargar cursos activos
+        try {
+            const cursosData = await API.get('/api/v1/admin/cursos', true);
+            const activos = Array.isArray(cursosData) ? cursosData.filter(c => c.activo).length : 0;
+            document.getElementById('statCursos').textContent = activos;
+        } catch (error) {
+            console.warn('No se pudo cargar estadística de cursos:', error);
+            document.getElementById('statCursos').textContent = '-';
+        }
+
+        // TODO: Implementar cuando estén disponibles
         document.getElementById('statUsuarios').textContent = '-';
         document.getElementById('statMensajes').textContent = '-';
-        document.getElementById('statCursos').textContent = '-';
         
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
@@ -234,30 +255,44 @@ async function loadEstadisticas() {
 }
 
 /**
- * Carga acciones pendientes
+ * Carga acciones pendientes - INTEGRADO
  */
 async function loadAccionesPendientes() {
     const container = document.getElementById('accionesPendientesContainer');
     if (!container) return;
     
     try {
-        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
-        
         const acciones = [];
-        
-        if (pendientesCount.count > 0) {
+
+        // Usuarios pendientes
+        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
+        if (pendientesCount.pending_count > 0) {
             acciones.push({
                 icon: 'fa-user-clock',
-                texto: `${pendientesCount.count} usuario(s) pendiente(s) de aprobación`,
-                accion: () => document.querySelector('[data-section="usuarios-pendientes"]').click()
+                texto: `${pendientesCount.pending_count} usuario(s) pendiente(s) de aprobación`,
+                section: 'usuarios-pendientes'
             });
+        }
+
+        // Pagos pendientes
+        try {
+            const pagosPendientesCount = await API.get('/api/v1/admin/pagos/pendientes/count', true);
+            if (pagosPendientesCount.pending_count > 0) {
+                acciones.push({
+                    icon: 'fa-money-check-alt',
+                    texto: `${pagosPendientesCount.pending_count} pago(s) pendiente(s) de validación`,
+                    section: 'cuotas'
+                });
+            }
+        } catch (error) {
+            console.warn('No se pudo cargar conteo de pagos pendientes:', error);
         }
         
         if (acciones.length === 0) {
             container.innerHTML = '<p class="text-center text-success"><i class="fas fa-check-circle"></i> No hay acciones pendientes</p>';
         } else {
             container.innerHTML = acciones.map(accion => `
-                <div class="accion-item" style="padding: var(--spacing-md); border-left: 4px solid var(--warning-color); background: var(--gray-50); margin-bottom: var(--spacing-sm); cursor: pointer; border-radius: var(--border-radius-md);" onclick="document.querySelector('[data-section=\\'usuarios-pendientes\\']').click()">
+                <div class="accion-item" style="padding: var(--spacing-md); border-left: 4px solid var(--warning-color); background: var(--gray-50); margin-bottom: var(--spacing-sm); cursor: pointer; border-radius: var(--border-radius-md);" onclick="document.querySelector('[data-section=\\'${accion.section}\\']').click()">
                     <i class="fas ${accion.icon}" style="color: var(--warning-color); margin-right: var(--spacing-sm);"></i>
                     ${accion.texto}
                 </div>
@@ -286,7 +321,7 @@ async function loadActividadReciente() {
 }
 
 /**
- * Carga usuarios pendientes de aprobación
+ * Carga usuarios pendientes de aprobación - INTEGRADO
  */
 async function loadUsuariosPendientes() {
     const container = document.getElementById('pendientesContainer');
@@ -329,9 +364,9 @@ function createPendingUserCard(user) {
             <div class="pending-user-header">
                 <div class="pending-user-info">
                     <h3>${user.nombre} ${user.apellido}</h3>
-                    <p><span class="info-label">DNI:</span>${user.dni}</p>
-                    <p><span class="info-label">Email:</span>${user.email}</p>
-                    ${user.telefono ? `<p><span class="info-label">Teléfono:</span>${user.telefono}</p>` : ''}
+                    <p><span class="info-label">DNI:</span> ${user.dni}</p>
+                    <p><span class="info-label">Email:</span> ${user.email}</p>
+                    ${user.telefono ? `<p><span class="info-label">Teléfono:</span> ${user.telefono}</p>` : ''}
                     <p class="pending-date">
                         <i class="fas fa-calendar"></i>
                         Registrado: ${Utils.formatDateTime(user.fecha_creacion)}
@@ -359,7 +394,7 @@ function createPendingUserCard(user) {
 }
 
 /**
- * Aprueba un usuario pendiente
+ * Aprueba un usuario pendiente - INTEGRADO
  */
 async function aprobarUsuario(userId, userName) {
     const roleSelect = document.getElementById(`role-${userId}`);
@@ -381,17 +416,18 @@ async function aprobarUsuario(userId, userName) {
         Utils.showSuccess(`Usuario ${userName} aprobado correctamente`);
         await loadUsuariosPendientes();
         await loadEstadisticas();
+        await loadAccionesPendientes();
         
     } catch (error) {
         console.error('Error al aprobar usuario:', error);
-        Utils.showError('Error al aprobar el usuario');
+        Utils.showError(error.message || 'Error al aprobar el usuario');
     } finally {
         Utils.hideLoader();
     }
 }
 
 /**
- * Rechaza un usuario pendiente
+ * Rechaza un usuario pendiente - INTEGRADO
  */
 async function rechazarUsuario(userId, userName) {
     if (!confirm(`¿Confirmar rechazo de ${userName}?\nEsta acción no se puede deshacer.`)) {
@@ -409,14 +445,16 @@ async function rechazarUsuario(userId, userName) {
         Utils.showSuccess(`Usuario ${userName} rechazado`);
         await loadUsuariosPendientes();
         await loadEstadisticas();
+        await loadAccionesPendientes();
         
     } catch (error) {
         console.error('Error al rechazar usuario:', error);
-        Utils.showError('Error al rechazar el usuario');
+        Utils.showError(error.message || 'Error al rechazar el usuario');
     } finally {
         Utils.hideLoader();
     }
 }
+
 /**
  * Gestión de Usuarios
  */
@@ -428,7 +466,6 @@ async function loadUsuarios() {
         Utils.showLoader();
         
         // TODO: Implementar endpoint para obtener todos los usuarios
-        // Por ahora mostrar mensaje
         container.innerHTML = `
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-users"></i></div>
@@ -455,7 +492,7 @@ function abrirModalNuevoUsuario() {
 }
 
 /**
- * Maneja la creación de nuevo usuario
+ * Maneja la creación de nuevo usuario - INTEGRADO
  */
 async function handleNuevoUsuario(e) {
     e.preventDefault();
@@ -487,7 +524,7 @@ async function handleNuevoUsuario(e) {
 }
 
 /**
- * Configuración de Cuotas
+ * Configuración de Cuotas - INTEGRADO
  */
 async function loadConfiguracionesCuotas() {
     try {
@@ -496,9 +533,18 @@ async function loadConfiguracionesCuotas() {
         configuracionesCuotas = await API.get('/api/v1/admin/cuotas/configuracion', true);
         
         // Separar por nivel
-        const inicial = configuracionesCuotas.filter(c => c.nivel === 'inicial');
-        const primario = configuracionesCuotas.filter(c => c.nivel === 'primario');
-        const secundario = configuracionesCuotas.filter(c => c.nivel === 'secundario');
+        const inicial = configuracionesCuotas.filter(c => {
+            const nivel = (c.nivel_nombre || '').toLowerCase();
+            return nivel.includes('inicial');
+        });
+        const primario = configuracionesCuotas.filter(c => {
+            const nivel = (c.nivel_nombre || '').toLowerCase();
+            return nivel.includes('primari');
+        });
+        const secundario = configuracionesCuotas.filter(c => {
+            const nivel = (c.nivel_nombre || '').toLowerCase();
+            return nivel.includes('secundari');
+        });
         
         renderConfiguraciones('configInicialContainer', inicial);
         renderConfiguraciones('configPrimarioContainer', primario);
@@ -543,12 +589,12 @@ function renderConfiguraciones(containerId, configs) {
  * Crea una tarjeta de configuración
  */
 function createConfigCard(config) {
-    const isActive = config.vigente;
+    const isActive = config.activo;
     
     return `
         <div class="config-card ${isActive ? 'active' : 'inactive'}">
             <div class="config-header">
-                <h3 class="config-title">${capitalize(config.nivel)}</h3>
+                <h3 class="config-title">${config.nivel_nombre || 'N/A'}</h3>
                 <span class="config-status ${isActive ? 'active' : 'inactive'}">
                     ${isActive ? 'Vigente' : 'Inactiva'}
                 </span>
@@ -556,27 +602,25 @@ function createConfigCard(config) {
             
             <div class="config-details">
                 <div class="config-detail-item">
-                    <span class="config-detail-label">Monto mensual</span>
-                    <span class="config-detail-value">$${config.monto.toLocaleString()}</span>
+                    <span class="config-detail-label">Monto base</span>
+                    <span class="config-detail-value">$${formatMonto(config.monto_base)}</span>
                 </div>
                 <div class="config-detail-item">
-                    <span class="config-detail-label">Vencimiento</span>
-                    <span class="config-detail-value">Día ${config.dia_vencimiento}</span>
+                    <span class="config-detail-label">Con recargo</span>
+                    <span class="config-detail-value">$${formatMonto(config.monto_con_recargo)}</span>
                 </div>
                 <div class="config-detail-item">
                     <span class="config-detail-label">Recargo</span>
-                    <span class="config-detail-value">${config.recargo_porcentaje}%</span>
+                    <span class="config-detail-value">${config.porcentaje_recargo}%</span>
                 </div>
                 <div class="config-detail-item">
-                    <span class="config-detail-label">Desde</span>
-                    <span class="config-detail-value">${Utils.formatDate(config.fecha_inicio_vigencia)}</span>
+                    <span class="config-detail-label">Matrícula</span>
+                    <span class="config-detail-value">$${formatMonto(config.monto_matricula)}</span>
                 </div>
-                ${config.fecha_fin_vigencia ? `
-                    <div class="config-detail-item">
-                        <span class="config-detail-label">Hasta</span>
-                        <span class="config-detail-value">${Utils.formatDate(config.fecha_fin_vigencia)}</span>
-                    </div>
-                ` : ''}
+                <div class="config-detail-item">
+                    <span class="config-detail-label">Ciclo</span>
+                    <span class="config-detail-value">${config.ciclo_lectivo_nombre || 'N/A'}</span>
+                </div>
             </div>
             
             <div class="config-actions">
@@ -603,17 +647,21 @@ function abrirModalNuevaConfig() {
 }
 
 /**
- * Maneja la creación de nueva configuración
+ * Maneja la creación de nueva configuración - INTEGRADO
  */
 async function handleNuevaConfig(e) {
     e.preventDefault();
     
+    const nivel = document.getElementById('configNivel').value;
+    const nivelId = getNivelId(nivel);
+    
     const formData = {
-        nivel_id: getNivelId(document.getElementById('configNivel').value),
-        monto: parseFloat(document.getElementById('configMonto').value),
-        dia_vencimiento: parseInt(document.getElementById('configDiaVencimiento').value),
-        recargo_porcentaje: parseFloat(document.getElementById('configRecargo').value),
-        fecha_inicio_vigencia: document.getElementById('configFechaInicio').value
+        ciclo_lectivo_id: 2, // 2025
+        nivel_id: nivelId,
+        monto_base: parseFloat(document.getElementById('configMonto').value),
+        monto_con_recargo: parseFloat(document.getElementById('configMonto').value) * 1.10,
+        porcentaje_recargo: parseFloat(document.getElementById('configRecargo').value),
+        monto_matricula: parseFloat(document.getElementById('configMonto').value) * 1.30
     };
     
     try {
@@ -638,11 +686,10 @@ async function handleNuevaConfig(e) {
  */
 async function editarConfig(configId) {
     Utils.showWarning('Funcionalidad de edición en desarrollo');
-    // TODO: Implementar edición
 }
 
 /**
- * Eliminar configuración
+ * Eliminar configuración - INTEGRADO
  */
 async function eliminarConfig(configId) {
     if (!confirm('¿Está seguro de eliminar esta configuración?\nEsta acción no se puede deshacer.')) {
@@ -666,674 +713,8 @@ async function eliminarConfig(configId) {
 }
 
 /**
- * Validación de Cuotas
+ * Validación de Cuotas/Pagos - INTEGRADO
  */
-async function loadCuotasValidacion() {
-    const container = document.getElementById('cuotasContainer');
-    if (!container) return;
-    
-    try {
-        Utils.showLoader();
-        
-        // TODO: Implementar endpoint para validar cuotas
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon"><i class="fas fa-money-check-alt"></i></div>
-                <h3>Validación de cuotas</h3>
-                <p>Esta funcionalidad estará disponible próximamente</p>
-            </div>
-        `;
-        
-    } catch (error) {
-        console.error('Error al cargar cuotas:', error);
-        Utils.showError('Error al cargar cuotas');
-    } finally {
-        Utils.hideLoader();
-    }
-}
-
-/**
- * Gestión de Cursos
- */
-async function loadCursos() {
-    const container = document.getElementById('cursosContainer');
-    if (!container) return;
-    
-    try {
-        Utils.showLoader();
-        
-        // TODO: Implementar endpoint para cursos
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                <h3>Gestión de cursos</h3>
-                <p>Esta funcionalidad estará disponible próximamente</p>
-            </div>
-        `;
-        
-    } catch (error) {
-        console.error('Error al cargar cursos:', error);
-        Utils.showError('Error al cargar cursos');
-    } finally {
-        Utils.hideLoader();
-    }
-}
-
-/**
- * Abre modal para nuevo curso
- */
-function abrirModalNuevoCurso() {
-    Utils.showWarning('Funcionalidad en desarrollo');
-    // TODO: Implementar modal de nuevo curso
-}
-
-/**
- * Gestión de Noticias
- */
-async function loadNoticias() {
-    const container = document.getElementById('noticiasContainer');
-    if (!container) return;
-    
-    try {
-        Utils.showLoader();
-        
-        noticias = await API.get('/api/v1/publico/noticias', false);
-        
-        if (noticias.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon"><i class="fas fa-newspaper"></i></div>
-                    <h3>No hay noticias publicadas</h3>
-                    <button class="btn btn-primary mt-md" onclick="abrirModalNuevaNoticia()">
-                        <i class="fas fa-plus"></i> Publicar Primera Noticia
-                    </button>
-                </div>
-            `;
-        } else {
-            container.innerHTML = `
-                <div class="noticias-grid">
-                    ${noticias.map(noticia => createNoticiaCard(noticia)).join('')}
-                </div>
-            `;
-        }
-        
-    } catch (error) {
-        console.error('Error al cargar noticias:', error);
-        Utils.showError('Error al cargar noticias');
-    } finally {
-        Utils.hideLoader();
-    }
-}
-
-/**
- * Crea una tarjeta de noticia
- */
-function createNoticiaCard(noticia) {
-    return `
-        <div class="card">
-            <div class="card-body">
-                <h3>${noticia.titulo}</h3>
-                <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDate(noticia.fecha)}</p>
-                <p>${noticia.resumen}</p>
-                <div class="action-buttons mt-md">
-                    <button class="btn btn-sm btn-outline" onclick="editarNoticia(${noticia.id})">
-                        <i class="fas fa-edit"></i> Editar
-                    </button>
-                    <button class="btn btn-sm btn-error" onclick="eliminarNoticia(${noticia.id})">
-                        <i class="fas fa-trash"></i> Eliminar
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-/**
- * Abre modal para nueva noticia
- */
-function abrirModalNuevaNoticia() {
-    Utils.showWarning('Funcionalidad en desarrollo');
-    // TODO: Implementar modal de nueva noticia
-}
-
-/**
- * Editar noticia
- */
-function editarNoticia(noticiaId) {
-    Utils.showWarning('Funcionalidad de edición en desarrollo');
-}
-
-/**
- * Eliminar noticia
- */
-function eliminarNoticia(noticiaId) {
-    Utils.showWarning('Funcionalidad de eliminación en desarrollo');
-}
-
-/**
- * Utilidades
- */
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function getNivelId(nivelNombre) {
-    // TODO: Obtener ID real desde la base de datos
-    const niveles = {
-        'inicial': 1,
-        'primario': 2,
-        'secundario': 3
-    };
-    return niveles[nivelNombre] || 1;
-}
-
-function cerrarModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
-/**
- * Gestión de Mensajes
- */
-async function loadMensajes() {
-    try {
-        await loadMensajesRecibidos();
-    } catch (error) {
-        console.error('Error al cargar mensajes:', error);
-    }
-}
-
-/**
- * Carga mensajes recibidos
- */
-async function loadMensajesRecibidos() {
-    const container = document.getElementById('mensajesRecibidosContainer');
-    if (!container) return;
-    
-    try {
-        Utils.showLoader();
-        
-        // TODO: Implementar endpoint para mensajes del admin
-        mensajes = [];
-        
-        if (mensajes.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
-                    <h3>Bandeja vacía</h3>
-                    <p>No tienes mensajes</p>
-                </div>
-            `;
-        } else {
-            container.innerHTML = `
-                <div class="messages-list">
-                    ${mensajes.map(msg => createMessageCard(msg)).join('')}
-                </div>
-            `;
-        }
-        
-    } catch (error) {
-        console.error('Error al cargar mensajes recibidos:', error);
-        Utils.showError('Error al cargar mensajes');
-    } finally {
-        Utils.hideLoader();
-    }
-}
-
-/**
- * Crea una tarjeta de mensaje
- */
-function createMessageCard(mensaje) {
-    return `
-        <div class="message-item ${!mensaje.leido ? 'unread' : ''}" onclick="verMensaje(${mensaje.id})">
-            <div class="message-header">
-                <span class="message-sender">${mensaje.remitente}</span>
-                <span class="message-date">${Utils.formatDateTime(mensaje.fecha)}</span>
-            </div>
-            <div class="message-subject">${mensaje.asunto}</div>
-            <div class="message-preview">${mensaje.preview || ''}</div>
-        </div>
-    `;
-}
-
-/**
- * Ver detalle de un mensaje
- */
-function verMensaje(mensajeId) {
-    Utils.showWarning('Funcionalidad de ver mensaje en desarrollo');
-    // TODO: Implementar vista de mensaje completo
-}
-
-/**
- * Maneja el cambio de tipo de destinatario
- */
-function handleTipoDestinatarioChange() {
-    const tipo = document.getElementById('tipoDestinatario').value;
-    const detalleGroup = document.getElementById('destinatarioDetalleGroup');
-    const detalleSelect = document.getElementById('destinatarioDetalle');
-    const detalleLabel = document.getElementById('destinatarioDetalleLabel');
-    
-    if (tipo === 'todos') {
-        detalleGroup.style.display = 'none';
-        return;
-    }
-    
-    detalleGroup.style.display = 'block';
-    detalleSelect.innerHTML = '';
-    
-    switch(tipo) {
-        case 'rol':
-            detalleLabel.textContent = 'Seleccionar rol';
-            detalleSelect.innerHTML = `
-                <option value="">Seleccionar...</option>
-                <option value="alumno">Alumnos</option>
-                <option value="padre">Padres</option>
-                <option value="docente">Docentes</option>
-                <option value="preceptor">Preceptores</option>
-            `;
-            break;
-            
-        case 'nivel':
-            detalleLabel.textContent = 'Seleccionar nivel';
-            detalleSelect.innerHTML = `
-                <option value="">Seleccionar...</option>
-                <option value="inicial">Inicial</option>
-                <option value="primario">Primario</option>
-                <option value="secundario">Secundario</option>
-            `;
-            break;
-            
-        case 'individual':
-            detalleLabel.textContent = 'Buscar usuario';
-            detalleSelect.innerHTML = `
-                <option value="">Buscar por DNI o nombre...</option>
-            `;
-            // TODO: Implementar búsqueda de usuarios
-            break;
-    }
-}
-
-/**
- * Maneja el envío de mensajes
- */
-async function handleEnviarMensaje(e) {
-    e.preventDefault();
-    
-    const tipo = document.getElementById('tipoDestinatario').value;
-    const detalle = document.getElementById('destinatarioDetalle').value;
-    const asunto = document.getElementById('mensajeAsunto').value.trim();
-    const cuerpo = document.getElementById('mensajeCuerpo').value.trim();
-    
-    if (!asunto || !cuerpo) {
-        Utils.showError('Complete todos los campos');
-        return;
-    }
-    
-    if (tipo !== 'todos' && !detalle) {
-        Utils.showError('Seleccione el destinatario');
-        return;
-    }
-    
-    const messageData = {
-        tipo_destinatario: tipo,
-        destinatario_detalle: detalle || null,
-        asunto: asunto,
-        mensaje: cuerpo
-    };
-    
-    try {
-        Utils.showLoader();
-        
-        // TODO: Implementar endpoint para enviar mensajes
-        console.log('Enviando mensaje:', messageData);
-        
-        Utils.showSuccess('Mensaje enviado correctamente');
-        document.getElementById('mensajeForm').reset();
-        document.getElementById('destinatarioDetalleGroup').style.display = 'none';
-        
-    } catch (error) {
-        console.error('Error al enviar mensaje:', error);
-        Utils.showError('Error al enviar el mensaje');
-    } finally {
-        Utils.hideLoader();
-    }
-}
-
-/**
- * Extensiones de la clase Utils para funcionalidades específicas de admin
- */
-
-// Formatear fecha y hora
-if (typeof Utils !== 'undefined') {
-    Utils.formatDateTime = function(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleString('es-AR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-    
-    Utils.formatDate = function(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    };
-    
-    Utils.formatDateShort = function(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
-    };
-}
-
-/**
- * Filtros
- */
-
-// Filtro de usuarios pendientes
-document.addEventListener('DOMContentLoaded', function() {
-    const filterSearch = document.getElementById('filterPendientesSearch');
-    const filterSort = document.getElementById('filterPendientesSort');
-    
-    if (filterSearch) {
-        filterSearch.addEventListener('input', aplicarFiltrosPendientes);
-    }
-    
-    if (filterSort) {
-        filterSort.addEventListener('change', aplicarFiltrosPendientes);
-    }
-});
-
-function aplicarFiltrosPendientes() {
-    // TODO: Implementar filtrado y ordenamiento
-    console.log('Aplicando filtros a usuarios pendientes');
-}
-
-// Filtro de usuarios
-document.addEventListener('DOMContentLoaded', function() {
-    const filterSearch = document.getElementById('filterUsuariosSearch');
-    const filterRole = document.getElementById('filterUsuariosRole');
-    const filterStatus = document.getElementById('filterUsuariosStatus');
-    
-    if (filterSearch) {
-        filterSearch.addEventListener('input', aplicarFiltrosUsuarios);
-    }
-    
-    if (filterRole) {
-        filterRole.addEventListener('change', aplicarFiltrosUsuarios);
-    }
-    
-    if (filterStatus) {
-        filterStatus.addEventListener('change', aplicarFiltrosUsuarios);
-    }
-});
-
-function aplicarFiltrosUsuarios() {
-    // TODO: Implementar filtrado
-    console.log('Aplicando filtros a usuarios');
-}
-
-// Filtro de cuotas
-document.addEventListener('DOMContentLoaded', function() {
-    const filterEstado = document.getElementById('filterCuotasEstado');
-    const filterMes = document.getElementById('filterCuotasMes');
-    
-    if (filterEstado) {
-        filterEstado.addEventListener('change', aplicarFiltrosCuotas);
-    }
-    
-    if (filterMes) {
-        filterMes.addEventListener('change', aplicarFiltrosCuotas);
-    }
-});
-
-function aplicarFiltrosCuotas() {
-    // TODO: Implementar filtrado
-    console.log('Aplicando filtros a cuotas');
-}
-
-// Filtro de cursos
-document.addEventListener('DOMContentLoaded', function() {
-    const filterNivel = document.getElementById('filterCursosNivel');
-    const filterAnio = document.getElementById('filterCursosAnio');
-    const filterTurno = document.getElementById('filterCursosTurno');
-    
-    if (filterNivel) {
-        filterNivel.addEventListener('change', function() {
-            actualizarFiltroAnios(this.value);
-            aplicarFiltrosCursos();
-        });
-    }
-    
-    if (filterAnio) {
-        filterAnio.addEventListener('change', aplicarFiltrosCursos);
-    }
-    
-    if (filterTurno) {
-        filterTurno.addEventListener('change', aplicarFiltrosCursos);
-    }
-});
-
-function actualizarFiltroAnios(nivel) {
-    const selectAnio = document.getElementById('filterCursosAnio');
-    if (!selectAnio) return;
-    
-    let opciones = '<option value="">Todos</option>';
-    
-    switch(nivel) {
-        case 'inicial':
-            opciones += '<option value="3">Sala de 3</option>';
-            opciones += '<option value="4">Sala de 4</option>';
-            opciones += '<option value="5">Sala de 5</option>';
-            break;
-        case 'primario':
-            for (let i = 1; i <= 6; i++) {
-                opciones += `<option value="${i}">${i}° Grado</option>`;
-            }
-            break;
-        case 'secundario':
-            for (let i = 1; i <= 6; i++) {
-                opciones += `<option value="${i}">${i}° Año</option>`;
-            }
-            break;
-        default:
-            opciones = '<option value="">Todos</option>';
-    }
-    
-    selectAnio.innerHTML = opciones;
-}
-
-function aplicarFiltrosCursos() {
-    // TODO: Implementar filtrado
-    console.log('Aplicando filtros a cursos');
-}
-
-// =========================
-// Integracion endpoints Admin (Pagos + Cursos)
-// =========================
-let pagosPendientes = [];
-let pagosPendientesFiltrados = [];
-
-function normalizeText(value) {
-    return (value || '')
-        .toString()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase();
-}
-
-function getMesNumero(mesValor) {
-    if (mesValor === null || mesValor === undefined) return null;
-    if (typeof mesValor === 'number') return mesValor;
-    const mesStr = normalizeText(mesValor);
-    const meses = {
-        'enero': 1,
-        'febrero': 2,
-        'marzo': 3,
-        'abril': 4,
-        'mayo': 5,
-        'junio': 6,
-        'julio': 7,
-        'agosto': 8,
-        'septiembre': 9,
-        'setiembre': 9,
-        'octubre': 10,
-        'noviembre': 11,
-        'diciembre': 12
-    };
-    return meses[mesStr] || null;
-}
-
-function getEstadoPagoLabel(estado) {
-    const estadoNorm = normalizeText(estado);
-    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'Pendiente';
-    if (estadoNorm.includes('rech')) return 'Rechazado';
-    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'Aprobado';
-    return estado || 'Pendiente';
-}
-
-function getEstadoPagoBadgeClass(estado) {
-    const estadoNorm = normalizeText(estado);
-    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'badge-warning';
-    if (estadoNorm.includes('rech')) return 'badge-error';
-    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'badge-success';
-    return 'badge-info';
-}
-
-function formatMonto(monto) {
-    if (monto === null || monto === undefined) return '-';
-    const num = typeof monto === 'number' ? monto : parseFloat(monto);
-    if (Number.isNaN(num)) return monto;
-    return num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-// Override initModals para incluir cursos
-function initModals() {
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-            }
-        });
-    });
-
-    const nuevoUsuarioForm = document.getElementById('nuevoUsuarioForm');
-    if (nuevoUsuarioForm) {
-        nuevoUsuarioForm.addEventListener('submit', handleNuevoUsuario);
-    }
-
-    const nuevaConfigForm = document.getElementById('nuevaConfigForm');
-    if (nuevaConfigForm) {
-        nuevaConfigForm.addEventListener('submit', handleNuevaConfig);
-    }
-
-    const mensajeForm = document.getElementById('mensajeForm');
-    if (mensajeForm) {
-        mensajeForm.addEventListener('submit', handleEnviarMensaje);
-    }
-
-    const tipoDestinatario = document.getElementById('tipoDestinatario');
-    if (tipoDestinatario) {
-        tipoDestinatario.addEventListener('change', handleTipoDestinatarioChange);
-    }
-
-    const cursoForm = document.getElementById('cursoForm');
-    if (cursoForm) {
-        cursoForm.addEventListener('submit', handleCursoSubmit);
-    }
-}
-
-// Override estadisticas para agregar cursos y pagos pendientes
-async function loadEstadisticas() {
-    try {
-        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
-        const pendientesTotal = pendientesCount.count || 0;
-        document.getElementById('statPendientes').textContent = pendientesTotal;
-
-        const badge = document.getElementById('pendientesBadge');
-        if (badge) {
-            if (pendientesTotal > 0) {
-                badge.textContent = pendientesTotal;
-                badge.style.display = 'inline';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        try {
-            const cursosData = await API.get('/api/v1/admin/cursos', true);
-            const activos = Array.isArray(cursosData) ? cursosData.filter(c => c.activo).length : 0;
-            document.getElementById('statCursos').textContent = activos;
-        } catch (error) {
-            document.getElementById('statCursos').textContent = '-';
-        }
-
-        document.getElementById('statUsuarios').textContent = '-';
-        document.getElementById('statMensajes').textContent = '-';
-    } catch (error) {
-        console.error('Error al cargar estadisticas:', error);
-    }
-}
-
-// Override acciones pendientes con pagos
-async function loadAccionesPendientes() {
-    const container = document.getElementById('accionesPendientesContainer');
-    if (!container) return;
-
-    try {
-        const acciones = [];
-        const pendientesCount = await API.get('/api/v1/auth/pending-count', true);
-        if (pendientesCount.count > 0) {
-            acciones.push({
-                icon: 'fa-user-clock',
-                texto: `${pendientesCount.count} usuario(s) pendiente(s) de aprobacion`,
-                section: 'usuarios-pendientes'
-            });
-        }
-
-        try {
-            const pagosPendientesCount = await API.get('/api/v1/admin/pagos/pendientes/count', true);
-            if (pagosPendientesCount.pending_count > 0) {
-                acciones.push({
-                    icon: 'fa-money-check-alt',
-                    texto: `${pagosPendientesCount.pending_count} pago(s) pendiente(s) de validacion`,
-                    section: 'cuotas'
-                });
-            }
-        } catch (error) {
-            console.warn('No se pudo cargar conteo de pagos pendientes:', error);
-        }
-
-        if (acciones.length === 0) {
-            container.innerHTML = '<p class="text-center text-success"><i class="fas fa-check-circle"></i> No hay acciones pendientes</p>';
-        } else {
-            container.innerHTML = acciones.map(accion => `
-                <div class="accion-item" style="padding: var(--spacing-md); border-left: 4px solid var(--warning-color); background: var(--gray-50); margin-bottom: var(--spacing-sm); cursor: pointer; border-radius: var(--border-radius-md);" onclick="document.querySelector('[data-section=\\'${accion.section}\\']').click()">
-                    <i class="fas ${accion.icon}" style="color: var(--warning-color); margin-right: var(--spacing-sm);"></i>
-                    ${accion.texto}
-                </div>
-            `).join('');
-        }
-    } catch (error) {
-        console.error('Error al cargar acciones pendientes:', error);
-        container.innerHTML = '<p class="text-center text-muted">Error al cargar acciones pendientes</p>';
-    }
-}
-
-// Pagos pendientes (Validacion de pagos)
 async function loadCuotasValidacion() {
     const container = document.getElementById('cuotasContainer');
     if (!container) return;
@@ -1350,7 +731,7 @@ async function loadCuotasValidacion() {
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-money-check-alt"></i></div>
                 <h3>Error al cargar pagos</h3>
-                <p>Intente nuevamente mas tarde</p>
+                <p>Intente nuevamente más tarde</p>
             </div>
         `;
     } finally {
@@ -1374,12 +755,8 @@ function renderPagosPendientes(pagos) {
     }
 
     container.innerHTML = `
-        <div class="card">
-            <div class="card-body">
-                <div class="noticias-grid">
-                    ${pagos.map(pago => createPagoCard(pago)).join('')}
-                </div>
-            </div>
+        <div class="noticias-grid">
+            ${pagos.map(pago => createPagoCard(pago)).join('')}
         </div>
     `;
 }
@@ -1398,9 +775,9 @@ function createPagoCard(pago) {
                 <p class="text-muted"><i class="fas fa-id-card"></i> DNI: ${pago.alumno_dni}</p>
                 <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
-                <p><strong>Metodo:</strong> ${pago.metodo_pago || '-'}</p>
+                <p><strong>Método:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
-                ${pago.numero_operacion ? `<p><strong>Operacion:</strong> ${pago.numero_operacion}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDateTime(pago.fecha_pago)}</p>
 
                 <div class="action-buttons mt-md">
@@ -1421,7 +798,7 @@ function createPagoCard(pago) {
 }
 
 async function aprobarPago(pagoId) {
-    if (!confirm('Confirmar aprobacion del pago?')) return;
+    if (!confirm('¿Confirmar aprobación del pago?')) return;
     const observaciones = prompt('Observaciones (opcional):') || null;
 
     try {
@@ -1445,7 +822,7 @@ async function aprobarPago(pagoId) {
 }
 
 async function rechazarPago(pagoId) {
-    if (!confirm('Confirmar rechazo del pago?')) return;
+    if (!confirm('¿Confirmar rechazo del pago?')) return;
     const observaciones = prompt('Motivo de rechazo (opcional):') || null;
 
     try {
@@ -1492,9 +869,9 @@ function abrirModalPagoDetalle(pago) {
                 <p><strong>Alumno:</strong> ${pago.alumno_nombre} (${pago.alumno_dni})</p>
                 <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
-                <p><strong>Metodo:</strong> ${pago.metodo_pago || '-'}</p>
+                <p><strong>Método:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
-                ${pago.numero_operacion ? `<p><strong>Operacion:</strong> ${pago.numero_operacion}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p><strong>Fecha de pago:</strong> ${Utils.formatDateTime(pago.fecha_pago)}</p>
                 <p><strong>Estado:</strong> ${getEstadoPagoLabel(pago.estado)}</p>
                 ${pago.comprobante_url ? `<p><strong>Comprobante:</strong> <a href="${pago.comprobante_url}" target="_blank" rel="noopener">Ver comprobante</a></p>` : ''}
@@ -1505,7 +882,9 @@ function abrirModalPagoDetalle(pago) {
     modal.classList.add('active');
 }
 
-// Cursos (Admin)
+/**
+ * Gestión de Cursos - INTEGRADO
+ */
 async function loadCursos() {
     const container = document.getElementById('cursosContainer');
     if (!container) return;
@@ -1521,7 +900,7 @@ async function loadCursos() {
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                 <h3>Error al cargar cursos</h3>
-                <p>Intente nuevamente mas tarde</p>
+                <p>Intente nuevamente más tarde</p>
             </div>
         `;
     } finally {
@@ -1566,9 +945,8 @@ function createCursoCard(curso) {
                 </div>
                 <p class="text-muted"><i class="fas fa-calendar"></i> Ciclo: ${curso.ciclo_lectivo_nombre || 'N/A'}</p>
                 <p><strong>Turno:</strong> ${turnoLabel}</p>
-                <p><strong>Alumnos:</strong> ${curso.cantidad_alumnos || 0}</p>
-                <p><strong>Capacidad:</strong> ${curso.capacidad_maxima}</p>
-                ${curso.orientacion ? `<p><strong>Orientacion:</strong> ${curso.orientacion}</p>` : ''}
+                <p><strong>Alumnos:</strong> ${curso.cantidad_alumnos || 0} / ${curso.capacidad_maxima}</p>
+                ${curso.orientacion ? `<p><strong>Orientación:</strong> ${curso.orientacion}</p>` : ''}
 
                 <div class="action-buttons mt-md">
                     <button class="btn btn-sm btn-primary" onclick="verAlumnosCurso(${curso.id})">
@@ -1706,7 +1084,7 @@ async function handleCursoSubmit(e) {
 }
 
 async function desactivarCurso(cursoId) {
-    if (!confirm('Desactivar este curso?')) return;
+    if (!confirm('¿Desactivar este curso?')) return;
 
     try {
         Utils.showLoader();
@@ -1804,7 +1182,295 @@ function abrirModalAlumnosCurso(curso, alumnos) {
     modal.classList.add('active');
 }
 
-// Filtros pagos
+/**
+ * Gestión de Noticias - INTEGRADO
+ */
+async function loadNoticias() {
+    const container = document.getElementById('noticiasContainer');
+    if (!container) return;
+    
+    try {
+        Utils.showLoader();
+        
+        noticias = await API.get('/api/v1/publico/noticias', false);
+        
+        if (noticias.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon"><i class="fas fa-newspaper"></i></div>
+                    <h3>No hay noticias publicadas</h3>
+                    <button class="btn btn-primary mt-md" onclick="abrirModalNuevaNoticia()">
+                        <i class="fas fa-plus"></i> Publicar Primera Noticia
+                    </button>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="noticias-grid">
+                    ${noticias.map(noticia => createNoticiaCard(noticia)).join('')}
+                </div>
+            `;
+        }
+        
+    } catch (error) {
+        console.error('Error al cargar noticias:', error);
+        Utils.showError('Error al cargar noticias');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function createNoticiaCard(noticia) {
+    return `
+        <div class="card">
+            <div class="card-body">
+                <h3>${noticia.titulo}</h3>
+                <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDate(noticia.fecha_publicacion)}</p>
+                <p>${noticia.resumen || noticia.contenido.substring(0, 150)}...</p>
+                <div class="action-buttons mt-md">
+                    <button class="btn btn-sm btn-outline" onclick="editarNoticia('${noticia.id}')">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn btn-sm btn-error" onclick="eliminarNoticia('${noticia.id}')">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function abrirModalNuevaNoticia() {
+    Utils.showWarning('Funcionalidad en desarrollo');
+}
+
+function editarNoticia(noticiaId) {
+    Utils.showWarning('Funcionalidad de edición en desarrollo');
+}
+
+function eliminarNoticia(noticiaId) {
+    Utils.showWarning('Funcionalidad de eliminación en desarrollo');
+}
+
+/**
+ * Gestión de Mensajes
+ */
+async function loadMensajes() {
+    try {
+        await loadMensajesRecibidos();
+    } catch (error) {
+        console.error('Error al cargar mensajes:', error);
+    }
+}
+
+async function loadMensajesRecibidos() {
+    const container = document.getElementById('mensajesRecibidosContainer');
+    if (!container) return;
+    
+    try {
+        Utils.showLoader();
+        
+        // TODO: Implementar endpoint para mensajes del admin
+        mensajes = [];
+        
+        if (mensajes.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
+                    <h3>Bandeja vacía</h3>
+                    <p>No tienes mensajes</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="messages-list">
+                    ${mensajes.map(msg => createMessageCard(msg)).join('')}
+                </div>
+            `;
+        }
+        
+    } catch (error) {
+        console.error('Error al cargar mensajes recibidos:', error);
+        Utils.showError('Error al cargar mensajes');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function createMessageCard(mensaje) {
+    return `
+        <div class="message-item ${!mensaje.leido ? 'unread' : ''}" onclick="verMensaje(${mensaje.id})">
+            <div class="message-header">
+                <span class="message-sender">${mensaje.remitente}</span>
+                <span class="message-date">${Utils.formatDateTime(mensaje.fecha)}</span>
+            </div>
+            <div class="message-subject">${mensaje.asunto}</div>
+            <div class="message-preview">${mensaje.preview || ''}</div>
+        </div>
+    `;
+}
+
+function verMensaje(mensajeId) {
+    Utils.showWarning('Funcionalidad de ver mensaje en desarrollo');
+}
+
+function handleTipoDestinatarioChange() {
+    const tipo = document.getElementById('tipoDestinatario').value;
+    const detalleGroup = document.getElementById('destinatarioDetalleGroup');
+    const detalleSelect = document.getElementById('destinatarioDetalle');
+    const detalleLabel = document.getElementById('destinatarioDetalleLabel');
+    
+    if (tipo === 'todos') {
+        detalleGroup.style.display = 'none';
+        return;
+    }
+    
+    detalleGroup.style.display = 'block';
+    detalleSelect.innerHTML = '';
+    
+    switch(tipo) {
+        case 'rol':
+            detalleLabel.textContent = 'Seleccionar rol';
+            detalleSelect.innerHTML = `
+                <option value="">Seleccionar...</option>
+                <option value="alumno">Alumnos</option>
+                <option value="padre">Padres</option>
+                <option value="docente">Docentes</option>
+                <option value="preceptor">Preceptores</option>
+            `;
+            break;
+            
+        case 'nivel':
+            detalleLabel.textContent = 'Seleccionar nivel';
+            detalleSelect.innerHTML = `
+                <option value="">Seleccionar...</option>
+                <option value="inicial">Inicial</option>
+                <option value="primario">Primario</option>
+                <option value="secundario">Secundario</option>
+            `;
+            break;
+            
+        case 'individual':
+            detalleLabel.textContent = 'Buscar usuario';
+            detalleSelect.innerHTML = `
+                <option value="">Buscar por DNI o nombre...</option>
+            `;
+            break;
+    }
+}
+
+async function handleEnviarMensaje(e) {
+    e.preventDefault();
+    
+    const tipo = document.getElementById('tipoDestinatario').value;
+    const detalle = document.getElementById('destinatarioDetalle').value;
+    const asunto = document.getElementById('mensajeAsunto').value.trim();
+    const cuerpo = document.getElementById('mensajeCuerpo').value.trim();
+    
+    if (!asunto || !cuerpo) {
+        Utils.showError('Complete todos los campos');
+        return;
+    }
+    
+    if (tipo !== 'todos' && !detalle) {
+        Utils.showError('Seleccione el destinatario');
+        return;
+    }
+    
+    const messageData = {
+        tipo_destinatario: tipo,
+        destinatario_detalle: detalle || null,
+        asunto: asunto,
+        mensaje: cuerpo
+    };
+    
+    try {
+        Utils.showLoader();
+        
+        // TODO: Implementar endpoint para enviar mensajes
+        console.log('Enviando mensaje:', messageData);
+        
+        Utils.showSuccess('Mensaje enviado correctamente');
+        document.getElementById('mensajeForm').reset();
+        document.getElementById('destinatarioDetalleGroup').style.display = 'none';
+        
+    } catch (error) {
+        console.error('Error al enviar mensaje:', error);
+        Utils.showError('Error al enviar el mensaje');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+/**
+ * Utilidades y Helpers
+ */
+function normalizeText(value) {
+    return (value || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+}
+
+function getMesNumero(mesValor) {
+    if (mesValor === null || mesValor === undefined) return null;
+    if (typeof mesValor === 'number') return mesValor;
+    const mesStr = normalizeText(mesValor);
+    const meses = {
+        'enero': 1, 'febrero': 2, 'marzo': 3, 'abril': 4, 'mayo': 5, 'junio': 6,
+        'julio': 7, 'agosto': 8, 'septiembre': 9, 'setiembre': 9, 'octubre': 10,
+        'noviembre': 11, 'diciembre': 12
+    };
+    return meses[mesStr] || null;
+}
+
+function getEstadoPagoLabel(estado) {
+    const estadoNorm = normalizeText(estado);
+    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'Pendiente';
+    if (estadoNorm.includes('rech')) return 'Rechazado';
+    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'Aprobado';
+    return estado || 'Pendiente';
+}
+
+function getEstadoPagoBadgeClass(estado) {
+    const estadoNorm = normalizeText(estado);
+    if (['pending', 'in_process', 'pendiente'].includes(estadoNorm)) return 'badge-warning';
+    if (estadoNorm.includes('rech')) return 'badge-error';
+    if (estadoNorm.includes('aprob') || estadoNorm === 'approved') return 'badge-success';
+    return 'badge-info';
+}
+
+function formatMonto(monto) {
+    if (monto === null || monto === undefined) return '-';
+    const num = typeof monto === 'number' ? monto : parseFloat(monto);
+    if (Number.isNaN(num)) return monto;
+    return num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function getNivelId(nivelNombre) {
+    const niveles = {
+        'inicial': 1,
+        'primario': 2,
+        'secundario': 3
+    };
+    return niveles[nivelNombre] || 1;
+}
+
+function cerrarModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+/**
+ * Filtros
+ */
 function aplicarFiltrosCuotas() {
     const filterEstado = document.getElementById('filterCuotasEstado');
     const filterMes = document.getElementById('filterCuotasMes');
@@ -1833,7 +1499,6 @@ function aplicarFiltrosCuotas() {
     renderPagosPendientes(pagosPendientesFiltrados);
 }
 
-// Filtros cursos
 function aplicarFiltrosCursos() {
     const filterNivel = document.getElementById('filterCursosNivel');
     const filterAnio = document.getElementById('filterCursosAnio');
@@ -1867,9 +1532,105 @@ function aplicarFiltrosCursos() {
     renderCursos(filtrados);
 }
 
+function actualizarFiltroAnios(nivel) {
+    const selectAnio = document.getElementById('filterCursosAnio');
+    if (!selectAnio) return;
+    
+    let opciones = '<option value="">Todos</option>';
+    
+    switch(nivel) {
+        case 'inicial':
+            opciones += '<option value="3">Sala de 3</option>';
+            opciones += '<option value="4">Sala de 4</option>';
+            opciones += '<option value="5">Sala de 5</option>';
+            break;
+        case 'primario':
+            for (let i = 1; i <= 6; i++) {
+                opciones += `<option value="${i}">${i}° Grado</option>`;
+            }
+            break;
+        case 'secundario':
+            for (let i = 1; i <= 6; i++) {
+                opciones += `<option value="${i}">${i}° Año</option>`;
+            }
+            break;
+        default:
+            opciones = '<option value="">Todos</option>';
+    }
+    
+    selectAnio.innerHTML = opciones;
+}
+
 /**
- * Log de carga del módulo
+ * Event Listeners para filtros
  */
-console.log('✅ Admin Dashboard Module Loaded:', {
-    timestamp: new Date().toISOString()
+document.addEventListener('DOMContentLoaded', function() {
+    const filterEstado = document.getElementById('filterCuotasEstado');
+    const filterMes = document.getElementById('filterCuotasMes');
+    
+    if (filterEstado) {
+        filterEstado.addEventListener('change', aplicarFiltrosCuotas);
+    }
+    
+    if (filterMes) {
+        filterMes.addEventListener('change', aplicarFiltrosCuotas);
+    }
+
+    const filterNivel = document.getElementById('filterCursosNivel');
+    const filterAnio = document.getElementById('filterCursosAnio');
+    const filterTurno = document.getElementById('filterCursosTurno');
+    
+    if (filterNivel) {
+        filterNivel.addEventListener('change', function() {
+            actualizarFiltroAnios(this.value);
+            aplicarFiltrosCursos();
+        });
+    }
+    
+    if (filterAnio) {
+        filterAnio.addEventListener('change', aplicarFiltrosCursos);
+    }
+    
+    if (filterTurno) {
+        filterTurno.addEventListener('change', aplicarFiltrosCursos);
+    }
 });
+
+/**
+ * Extensiones de Utils
+ */
+if (typeof Utils !== 'undefined') {
+    Utils.formatDateTime = function(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleString('es-AR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+    
+    Utils.formatDate = function(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-AR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+    
+    Utils.formatDateShort = function(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-AR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    };
+}
+
+console.log('✅ Admin Dashboard Module Loaded - INTEGRADO CON BACKEND');
