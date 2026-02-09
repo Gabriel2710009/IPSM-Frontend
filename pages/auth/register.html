@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Instituto San Marino</title>
+    
+    <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/register.css">
+</head>
+<body class="register-page">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../../index.html" class="logo-link">
+                    <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
+                    <span class="site-title">Instituto San Marino</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="register-main">
+        <div class="container">
+            
+            <!-- Success Message (Hidden by default) -->
+            <div id="successCard" class="success-container" style="display: none;">
+                <div class="success-content">
+                    <div class="success-icon-large">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h1 class="success-title">¡Registro Exitoso!</h1>
+                    <p class="success-message">
+                        Tu solicitud ha sido enviada correctamente.
+                    </p>
+                    <div class="success-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Un administrador revisará tu información y te notificará por email cuando tu cuenta sea aprobada.</p>
+                    </div>
+                    <div class="success-actions">
+                        <a href="login.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Ir al Login
+                        </a>
+                        <a href="../../index.html" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-home"></i> Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerContainer" class="register-container">
+                <div class="register-card">
+                    
+                    <!-- Header -->
+                    <div class="register-header">
+                        <div class="register-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h1>Crear Nueva Cuenta</h1>
+                        <p>Complete el formulario para solicitar acceso al sistema</p>
+                    </div>
+
+                    <!-- Info Alert -->
+                    <div class="info-banner">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Proceso de aprobación</strong>
+                            <p>Tu cuenta será revisada por un administrador. Recibirás una notificación cuando sea aprobada.</p>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="registerForm" class="register-form">
+                        
+                        <!-- Personal Info Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-user"></i>
+                                <h3>Datos Personales</h3>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nombre">
+                                        Nombre <span class="required">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="nombre" 
+                                        name="nombre"
+                                        placeholder="Juan"
+                                        required
+                                        minlength="2"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="apellido">
+                                        Apellido <span class="required">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="apellido" 
+                                        name="apellido"
+                                        placeholder="Pérez"
+                                        required
+                                        minlength="2"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="dni">
+                                        DNI <span class="required">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="dni" 
+                                        name="dni"
+                                        placeholder="12345678"
+                                        required
+                                        maxlength="8"
+                                        pattern="[0-9]{7,8}"
+                                    >
+                                    <span class="input-hint">Sin puntos ni guiones</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="telefono">
+                                        Teléfono
+                                    </label>
+                                    <input 
+                                        type="tel" 
+                                        id="telefono" 
+                                        name="telefono"
+                                        placeholder="+54 266 4123456"
+                                    >
+                                    <span class="input-hint">Opcional</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">
+                                    Email <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email"
+                                    placeholder="usuario@ejemplo.com"
+                                    required
+                                >
+                                <span class="input-hint">Usaremos este email para notificaciones</span>
+                            </div>
+                        </div>
+
+                        <!-- Security Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-lock"></i>
+                                <h3>Seguridad</h3>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">
+                                    Contraseña <span class="required">*</span>
+                                </label>
+                                <div class="password-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        name="password"
+                                        placeholder="••••••••"
+                                        required
+                                        minlength="8"
+                                    >
+                                    <button type="button" class="password-toggle" id="togglePassword">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Password Requirements -->
+                                <div class="password-requirements">
+                                    <p class="requirements-title">La contraseña debe contener:</p>
+                                    <ul>
+                                        <li id="req-length" class="requirement">
+                                            <i class="fas fa-circle"></i>
+                                            <span>Mínimo 8 caracteres</span>
+                                        </li>
+                                        <li id="req-uppercase" class="requirement">
+                                            <i class="fas fa-circle"></i>
+                                            <span>Una letra mayúscula</span>
+                                        </li>
+                                        <li id="req-lowercase" class="requirement">
+                                            <i class="fas fa-circle"></i>
+                                            <span>Una letra minúscula</span>
+                                        </li>
+                                        <li id="req-number" class="requirement">
+                                            <i class="fas fa-circle"></i>
+                                            <span>Un número</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">
+                                    Confirmar Contraseña <span class="required">*</span>
+                                </label>
+                                <div class="password-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="confirmPassword" 
+                                        name="confirmPassword"
+                                        placeholder="••••••••"
+                                        required
+                                        minlength="8"
+                                    >
+                                    <button type="button" class="password-toggle" id="toggleConfirm">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordMatch" class="password-match" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="terminos" required>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">
+                                    Acepto los 
+                                    <a href="#" target="_blank">términos y condiciones</a> 
+                                    y la 
+                                    <a href="#" target="_blank">política de privacidad</a>
+                                    <span class="required">*</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Crear Cuenta</span>
+                        </button>
+
+                        <!-- Login Link -->
+                        <div class="form-footer">
+                            <p>¿Ya tienes una cuenta?</p>
+                            <a href="login.html" class="link-login">
+                                <i class="fas fa-arrow-left"></i>
+                                Iniciar Sesión
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Procesando...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/register.js"></script>
+</body>
+</html>
