@@ -12,6 +12,8 @@ let noticias = [];
 let mensajes = [];
 let pagosPendientes = [];
 let pagosPendientesFiltrados = [];
+let editingConfigId = null;
+let editingNoticiaId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar autenticación
@@ -191,6 +193,11 @@ function initModals() {
     const cursoForm = document.getElementById('cursoForm');
     if (cursoForm) {
         cursoForm.addEventListener('submit', handleCursoSubmit);
+    }
+
+    const noticiaForm = document.getElementById('noticiaForm');
+    if (noticiaForm) {
+        noticiaForm.addEventListener('submit', handleNoticiaSubmit);
     }
 }
 
@@ -642,7 +649,17 @@ function createConfigCard(config) {
  */
 function abrirModalNuevaConfig() {
     const modal = document.getElementById('nuevaConfigModal');
-    document.getElementById('nuevaConfigForm').reset();
+    const form = document.getElementById('nuevaConfigForm');
+    const title = document.getElementById('configModalTitle');
+    const submitBtn = document.getElementById('configSubmitBtn');
+    const nivelSelect = document.getElementById('configNivel');
+
+    editingConfigId = null;
+
+    if (form) form.reset();
+    if (nivelSelect) nivelSelect.disabled = false;
+    if (title) title.textContent = 'Nueva Configuración de Cuota';
+    if (submitBtn) submitBtn.textContent = 'Crear Configuración';
     modal.classList.add('active');
 }
 
@@ -654,22 +671,47 @@ async function handleNuevaConfig(e) {
     
     const nivel = document.getElementById('configNivel').value;
     const nivelId = getNivelId(nivel);
-    
-    const formData = {
-        ciclo_lectivo_id: 2, // 2025
-        nivel_id: nivelId,
-        monto_base: parseFloat(document.getElementById('configMonto').value),
-        monto_con_recargo: parseFloat(document.getElementById('configMonto').value) * 1.10,
-        porcentaje_recargo: parseFloat(document.getElementById('configRecargo').value),
-        monto_matricula: parseFloat(document.getElementById('configMonto').value) * 1.30
-    };
+    const montoBase = parseFloat(document.getElementById('configMonto').value);
+    const porcentajeRecargo = parseFloat(document.getElementById('configRecargo').value);
+
+    if (Number.isNaN(montoBase)) {
+        Utils.showError('Ingrese un monto válido');
+        return;
+    }
+
+    const montoConRecargo = Number.isNaN(porcentajeRecargo)
+        ? montoBase
+        : montoBase * (1 + (porcentajeRecargo / 100));
+
+    const montoMatricula = montoBase * 1.30;
     
     try {
         Utils.showLoader();
+
+        if (editingConfigId) {
+            const updateData = {
+                monto_base: montoBase,
+                monto_con_recargo: montoConRecargo,
+                porcentaje_recargo: Number.isNaN(porcentajeRecargo) ? 0 : porcentajeRecargo,
+                monto_matricula: montoMatricula
+            };
+
+            await API.put(`/api/v1/admin/cuotas/configuracion/${editingConfigId}`, updateData, true);
+            Utils.showSuccess('Configuración actualizada correctamente');
+        } else {
+            const formData = {
+                ciclo_lectivo_id: 2, // 2025
+                nivel_id: nivelId,
+                monto_base: montoBase,
+                monto_con_recargo: montoConRecargo,
+                porcentaje_recargo: Number.isNaN(porcentajeRecargo) ? 0 : porcentajeRecargo,
+                monto_matricula: montoMatricula
+            };
+
+            await API.post('/api/v1/admin/cuotas/configuracion', formData, true);
+            Utils.showSuccess('Configuración creada correctamente');
+        }
         
-        await API.post('/api/v1/admin/cuotas/configuracion', formData, true);
-        
-        Utils.showSuccess('Configuración creada correctamente');
         cerrarModal('nuevaConfigModal');
         await loadConfiguracionesCuotas();
         
@@ -685,7 +727,49 @@ async function handleNuevaConfig(e) {
  * Editar configuración
  */
 async function editarConfig(configId) {
-    Utils.showWarning('Funcionalidad de edición en desarrollo');
+    const modal = document.getElementById('nuevaConfigModal');
+    const form = document.getElementById('nuevaConfigForm');
+    const title = document.getElementById('configModalTitle');
+    const submitBtn = document.getElementById('configSubmitBtn');
+
+    const config = (configuracionesCuotas || []).find(c => c.id === configId);
+    if (!config) {
+        Utils.showError('Configuración no encontrada');
+        return;
+    }
+
+    editingConfigId = configId;
+
+    if (form) form.reset();
+
+    const nivelSelect = document.getElementById('configNivel');
+    if (nivelSelect) {
+        nivelSelect.value = getNivelKey(config.nivel_id, config.nivel_nombre);
+        nivelSelect.disabled = true;
+    }
+
+    const montoInput = document.getElementById('configMonto');
+    if (montoInput) montoInput.value = config.monto_base ?? '';
+
+    const recargoInput = document.getElementById('configRecargo');
+    if (recargoInput) recargoInput.value = config.porcentaje_recargo ?? 0;
+
+    const diaInput = document.getElementById('configDiaVencimiento');
+    if (diaInput && !diaInput.value) diaInput.value = 10;
+
+    const fechaInput = document.getElementById('configFechaInicio');
+    if (fechaInput && !fechaInput.value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        fechaInput.value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    if (title) title.textContent = 'Editar Configuración de Cuota';
+    if (submitBtn) submitBtn.textContent = 'Guardar Cambios';
+
+    if (modal) modal.classList.add('active');
 }
 
 /**
@@ -1192,13 +1276,13 @@ async function loadNoticias() {
     try {
         Utils.showLoader();
         
-        noticias = await API.get('/api/v1/publico/noticias', false);
+        noticias = await API.get('/api/v1/admin/noticias', true);
         
         if (noticias.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon"><i class="fas fa-newspaper"></i></div>
-                    <h3>No hay noticias publicadas</h3>
+                    <h3>No hay noticias</h3>
                     <button class="btn btn-primary mt-md" onclick="abrirModalNuevaNoticia()">
                         <i class="fas fa-plus"></i> Publicar Primera Noticia
                     </button>
@@ -1221,11 +1305,18 @@ async function loadNoticias() {
 }
 
 function createNoticiaCard(noticia) {
+    const estadoBadge = noticia.publicada
+        ? '<span class="badge badge-success">Publicada</span>'
+        : '<span class="badge badge-warning">Borrador</span>';
+    const fechaPublicacion = noticia.fecha_publicacion
+        ? Utils.formatDate(noticia.fecha_publicacion)
+        : 'Sin publicar';
+
     return `
         <div class="card">
             <div class="card-body">
-                <h3>${noticia.titulo}</h3>
-                <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDate(noticia.fecha_publicacion)}</p>
+                <h3>${noticia.titulo} ${estadoBadge}</h3>
+                <p class="text-muted"><i class="fas fa-calendar"></i> ${fechaPublicacion}</p>
                 <p>${noticia.resumen || noticia.contenido.substring(0, 150)}...</p>
                 <div class="action-buttons mt-md">
                     <button class="btn btn-sm btn-outline" onclick="editarNoticia('${noticia.id}')">
@@ -1241,15 +1332,128 @@ function createNoticiaCard(noticia) {
 }
 
 function abrirModalNuevaNoticia() {
-    Utils.showWarning('Funcionalidad en desarrollo');
+    const modal = document.getElementById('noticiaModal');
+    const form = document.getElementById('noticiaForm');
+    const title = document.getElementById('noticiaModalTitle');
+    const submitBtn = document.getElementById('noticiaSubmitBtn');
+
+    editingNoticiaId = null;
+
+    if (form) form.reset();
+    if (title) title.textContent = 'Publicar Noticia';
+    if (submitBtn) submitBtn.textContent = 'Publicar Noticia';
+
+    if (modal) modal.classList.add('active');
 }
 
 function editarNoticia(noticiaId) {
-    Utils.showWarning('Funcionalidad de edición en desarrollo');
+    const modal = document.getElementById('noticiaModal');
+    const form = document.getElementById('noticiaForm');
+    const title = document.getElementById('noticiaModalTitle');
+    const submitBtn = document.getElementById('noticiaSubmitBtn');
+
+    const noticia = (noticias || []).find(n => n.id === noticiaId);
+    if (!noticia) {
+        Utils.showError('Noticia no encontrada');
+        return;
+    }
+
+    editingNoticiaId = noticiaId;
+
+    if (form) form.reset();
+
+    const tituloInput = document.getElementById('noticiaTitulo');
+    if (tituloInput) tituloInput.value = noticia.titulo || '';
+
+    const resumenInput = document.getElementById('noticiaResumen');
+    if (resumenInput) resumenInput.value = noticia.resumen || '';
+
+    const contenidoInput = document.getElementById('noticiaContenido');
+    if (contenidoInput) contenidoInput.value = noticia.contenido || '';
+
+    const imagenUrlInput = document.getElementById('noticiaImagenUrl');
+    if (imagenUrlInput) imagenUrlInput.value = noticia.imagen_url || '';
+
+    const imagenAltInput = document.getElementById('noticiaImagenAlt');
+    if (imagenAltInput) imagenAltInput.value = noticia.imagen_alt || '';
+
+    const categoriaInput = document.getElementById('noticiaCategoria');
+    if (categoriaInput) categoriaInput.value = noticia.categoria || '';
+
+    const publicadaInput = document.getElementById('noticiaPublicada');
+    if (publicadaInput) publicadaInput.checked = !!noticia.publicada;
+
+    if (title) title.textContent = 'Editar Noticia';
+    if (submitBtn) submitBtn.textContent = 'Guardar Cambios';
+
+    if (modal) modal.classList.add('active');
 }
 
 function eliminarNoticia(noticiaId) {
-    Utils.showWarning('Funcionalidad de eliminación en desarrollo');
+    if (!confirm('¿Está seguro de eliminar esta noticia?\nEsta acción no se puede deshacer.')) {
+        return;
+    }
+
+    (async () => {
+        try {
+            Utils.showLoader();
+            await API.delete(`/api/v1/admin/noticias/${noticiaId}`, true);
+            Utils.showSuccess('Noticia eliminada correctamente');
+            await loadNoticias();
+        } catch (error) {
+            console.error('Error al eliminar noticia:', error);
+            Utils.showError(error.message || 'Error al eliminar la noticia');
+        } finally {
+            Utils.hideLoader();
+        }
+    })();
+}
+
+async function handleNoticiaSubmit(e) {
+    e.preventDefault();
+
+    const titulo = document.getElementById('noticiaTitulo').value.trim();
+    const resumen = document.getElementById('noticiaResumen').value.trim();
+    const contenido = document.getElementById('noticiaContenido').value.trim();
+    const imagenUrl = document.getElementById('noticiaImagenUrl').value.trim();
+    const imagenAlt = document.getElementById('noticiaImagenAlt').value.trim();
+    const categoria = document.getElementById('noticiaCategoria').value.trim();
+    const publicada = document.getElementById('noticiaPublicada').checked;
+
+    if (!titulo || !contenido) {
+        Utils.showError('Título y contenido son obligatorios');
+        return;
+    }
+
+    const payload = {
+        titulo,
+        resumen: resumen || null,
+        contenido,
+        imagen_url: imagenUrl || null,
+        imagen_alt: imagenAlt || null,
+        categoria: categoria || null,
+        publicada
+    };
+
+    try {
+        Utils.showLoader();
+
+        if (editingNoticiaId) {
+            await API.put(`/api/v1/admin/noticias/${editingNoticiaId}`, payload, true);
+            Utils.showSuccess('Noticia actualizada correctamente');
+        } else {
+            await API.post('/api/v1/admin/noticias', payload, true);
+            Utils.showSuccess('Noticia publicada correctamente');
+        }
+
+        cerrarModal('noticiaModal');
+        await loadNoticias();
+    } catch (error) {
+        console.error('Error al guardar noticia:', error);
+        Utils.showError(error.message || 'Error al guardar la noticia');
+    } finally {
+        Utils.hideLoader();
+    }
 }
 
 /**
@@ -1459,6 +1663,25 @@ function getNivelId(nivelNombre) {
         'secundario': 3
     };
     return niveles[nivelNombre] || 1;
+}
+
+function getNivelKey(nivelId, nivelNombre) {
+    const mapById = {
+        1: 'inicial',
+        2: 'primario',
+        3: 'secundario'
+    };
+
+    if (mapById[nivelId]) return mapById[nivelId];
+
+    if (nivelNombre) {
+        const normalized = normalizeText(nivelNombre);
+        if (normalized.includes('inicial')) return 'inicial';
+        if (normalized.includes('primario')) return 'primario';
+        if (normalized.includes('secundario')) return 'secundario';
+    }
+
+    return 'inicial';
 }
 
 function cerrarModal(modalId) {

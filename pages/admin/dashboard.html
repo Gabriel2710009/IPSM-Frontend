@@ -515,7 +515,7 @@
     <div id="nuevaConfigModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-cog"></i> Nueva Configuración de Cuota</h3>
+                <h3 id="configModalTitle"><i class="fas fa-cog"></i> Nueva Configuración de Cuota</h3>
                 <button class="modal-close" onclick="cerrarModal('nuevaConfigModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -545,8 +545,56 @@
                         <label class="form-label">Fecha inicio vigencia</label>
                         <input type="date" class="form-control" id="configFechaInicio" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">
+                    <button type="submit" class="btn btn-primary btn-block" id="configSubmitBtn">
                         <i class="fas fa-save"></i> Crear Configuración
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Noticias -->
+    <div id="noticiaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="noticiaModalTitle"><i class="fas fa-newspaper"></i> Publicar Noticia</h3>
+                <button class="modal-close" onclick="cerrarModal('noticiaModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="noticiaForm">
+                    <input type="hidden" id="noticiaId">
+                    <div class="form-group">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" id="noticiaTitulo" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Resumen</label>
+                        <textarea class="form-control" id="noticiaResumen" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contenido</label>
+                        <textarea class="form-control" id="noticiaContenido" rows="6" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Imagen URL</label>
+                        <input type="url" class="form-control" id="noticiaImagenUrl" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Texto alternativo de imagen</label>
+                        <input type="text" class="form-control" id="noticiaImagenAlt" maxlength="200">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <input type="text" class="form-control" id="noticiaCategoria" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="noticiaPublicada" checked>
+                            Publicar inmediatamente
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="noticiaSubmitBtn">
+                        <i class="fas fa-save"></i> Publicar Noticia
                     </button>
                 </form>
             </div>
@@ -577,27 +625,27 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">AÃ±o</label>
+                        <label class="form-label">Año</label>
                         <input type="number" class="form-control" id="cursoAnio" required min="1" max="6">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">DivisiÃ³n</label>
+                        <label class="form-label">División</label>
                         <input type="text" class="form-control" id="cursoDivision" required maxlength="1">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Turno</label>
                         <select class="form-control" id="cursoTurno" required>
                             <option value="">Seleccionar...</option>
-                            <option value="MaÃ±ana">MaÃ±ana</option>
+                            <option value="Mañana">Mañana</option>
                             <option value="Tarde">Tarde</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">OrientaciÃ³n (opcional)</label>
+                        <label class="form-label">Orientación (opcional)</label>
                         <input type="text" class="form-control" id="cursoOrientacion">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Capacidad mÃ¡xima</label>
+                        <label class="form-label">Capacidad máxima</label>
                         <input type="number" class="form-control" id="cursoCapacidad" min="1" max="50" value="30">
                     </div>
                     <div class="form-group">

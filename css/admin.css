@@ -586,6 +586,33 @@
     gap: var(--spacing-xs);
 }
 
+/* Botones de acciÃ³n (Editar / Eliminar) visibles en fondo claro */
+.dashboard-page .btn-outline {
+    background: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.dashboard-page .btn-outline:hover {
+    background: white;
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.dashboard-page .btn-error {
+    background: transparent;
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.dashboard-page .btn-error:hover {
+    background: var(--error-color);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
 /* Tabs */
 .tabs-container {
     background: white;
