@@ -156,7 +156,7 @@ class API {
      * @param {string} endpoint - Endpoint de la API
      * @param {boolean} requireAuth - Si requiere autenticación (default: true)
      */
-    static async delete(endpoint, requireAuth = true) {
+    static async delete(endpoint, dataOrRequireAuth = true, maybeRequireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
         
         console.log('🌐 API DELETE Request:', {
@@ -170,7 +170,17 @@ class API {
             const headers = {
                 'Content-Type': 'application/json'
             };
-            
+
+            let data = null;
+            let requireAuth = true;
+
+            if (typeof dataOrRequireAuth === 'boolean') {
+                requireAuth = dataOrRequireAuth;
+            } else {
+                data = dataOrRequireAuth;
+                requireAuth = typeof maybeRequireAuth === 'boolean' ? maybeRequireAuth : true;
+            }
+
             if (requireAuth) {
                 const authHeaders = this.getAuthHeaders();
                 Object.assign(headers, authHeaders);
@@ -178,7 +188,8 @@ class API {
             
             const response = await fetch(url, {
                 method: 'DELETE',
-                headers: headers
+                headers: headers,
+                body: data ? JSON.stringify(data) : undefined
             });
             
             console.log('📡 API DELETE Response:', {
@@ -625,6 +636,19 @@ class Utils {
         if (!dateString) return '-';
         const date = new Date(dateString);
         return date.toLocaleString('es-AR');
+    }
+
+    /**
+     * Formatea fecha para input type="date" (YYYY-MM-DD)
+     */
+    static formatDateInput(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (Number.isNaN(date.getTime())) return '';
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 }
 

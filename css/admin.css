@@ -171,6 +171,21 @@
     border-color: var(--primary-color);
 }
 
+.pending-relations {
+    flex: 2;
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.relation-select {
+    flex: 1;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius-md);
+    font-size: var(--text-sm);
+    font-family: var(--font-secondary);
+}
+
 /* Gestión de Usuarios */
 .users-table-wrapper {
     overflow-x: auto;

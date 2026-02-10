@@ -12,8 +12,13 @@ let noticias = [];
 let mensajes = [];
 let pagosPendientes = [];
 let pagosPendientesFiltrados = [];
+let listaPadres = [];
+let listaAlumnos = [];
 let editingConfigId = null;
 let editingNoticiaId = null;
+let asignacionCursoId = null;
+let asignacionCursoTipo = null;
+let modalCursoData = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar autenticación
@@ -365,8 +370,16 @@ async function loadUsuariosPendientes() {
     
     try {
         Utils.showLoader();
-        
-        usuariosPendientes = await API.get('/api/v1/auth/pending-users', true);
+
+        const [pendientesResp, padresResp, alumnosResp] = await Promise.all([
+            API.get('/api/v1/auth/pending-users', true),
+            API.get('/api/v1/admin/usuarios/lista/padres', true),
+            API.get('/api/v1/admin/usuarios/lista/alumnos', true)
+        ]);
+
+        usuariosPendientes = pendientesResp || [];
+        listaPadres = Array.isArray(padresResp) ? padresResp : [];
+        listaAlumnos = Array.isArray(alumnosResp) ? alumnosResp : [];
         
         if (usuariosPendientes.length === 0) {
             container.innerHTML = `
@@ -382,6 +395,7 @@ async function loadUsuariosPendientes() {
                     ${usuariosPendientes.map(user => createPendingUserCard(user)).join('')}
                 </div>
             `;
+            applyPendingRelationDefaults();
         }
     } catch (error) {
         console.error('Error al cargar usuarios pendientes:', error);
@@ -418,6 +432,16 @@ function createPendingUserCard(user) {
                     <option value="preceptor">Preceptor</option>
                     <option value="admin">Administrador</option>
                 </select>
+                <div class="pending-relations">
+                    <select class="relation-select" id="rel-padre-${user.id}" style="display:none;">
+                        <option value="">Asignar padre...</option>
+                        ${listaPadres.map(p => `<option value="${p.id}">${p.apellido} ${p.nombre} - DNI ${p.dni}</option>`).join('')}
+                    </select>
+                    <select class="relation-select" id="rel-hijo-${user.id}" style="display:none;">
+                        <option value="">Asignar hijo...</option>
+                        ${listaAlumnos.map(a => `<option value="${a.id}">${a.apellido} ${a.nombre} - DNI ${a.dni}</option>`).join('')}
+                    </select>
+                </div>
                 <button class="btn btn-success" onclick="aprobarUsuario('${user.id}', '${user.nombre} ${user.apellido}')">
                     <i class="fas fa-check"></i> Aprobar
                 </button>
@@ -435,6 +459,8 @@ function createPendingUserCard(user) {
 async function aprobarUsuario(userId, userName) {
     const roleSelect = document.getElementById(`role-${userId}`);
     const selectedRole = roleSelect.value;
+    const padreSelect = document.getElementById(`rel-padre-${userId}`);
+    const hijoSelect = document.getElementById(`rel-hijo-${userId}`);
     
     if (!confirm(`¿Confirmar aprobación de ${userName} como ${selectedRole}?`)) {
         return;
@@ -442,12 +468,21 @@ async function aprobarUsuario(userId, userName) {
     
     try {
         Utils.showLoader();
-        
-        await API.post('/api/v1/auth/approve-user', {
+        const payload = {
             user_id: userId,
             accion: 'aprobar',
             role: selectedRole
-        }, true);
+        };
+
+        if (selectedRole === 'alumno' && padreSelect && padreSelect.value) {
+            payload.padre_id = parseInt(padreSelect.value, 10);
+        }
+
+        if (selectedRole === 'padre' && hijoSelect && hijoSelect.value) {
+            payload.alumno_id = parseInt(hijoSelect.value, 10);
+        }
+
+        await API.post('/api/v1/auth/approve-user', payload, true);
         
         Utils.showSuccess(`Usuario ${userName} aprobado correctamente`);
         await loadUsuariosPendientes();
@@ -490,6 +525,53 @@ async function rechazarUsuario(userId, userName) {
         Utils.hideLoader();
     }
 }
+
+function applyPendingRelationDefaults() {
+    document.querySelectorAll('.role-select').forEach(select => {
+        const id = select.id.replace('role-', '');
+        const padreSelect = document.getElementById(`rel-padre-${id}`);
+        const hijoSelect = document.getElementById(`rel-hijo-${id}`);
+        if (!padreSelect || !hijoSelect) return;
+
+        if (select.value === 'alumno') {
+            padreSelect.style.display = 'block';
+            hijoSelect.style.display = 'none';
+        } else if (select.value === 'padre') {
+            hijoSelect.style.display = 'block';
+            padreSelect.style.display = 'none';
+        } else {
+            padreSelect.style.display = 'none';
+            hijoSelect.style.display = 'none';
+        }
+    });
+}
+
+document.addEventListener('change', function(e) {
+    if (!e.target || !e.target.classList.contains('role-select')) return;
+
+    const id = e.target.id.replace('role-', '');
+    const selectedRole = e.target.value;
+
+    const padreSelect = document.getElementById(`rel-padre-${id}`);
+    const hijoSelect = document.getElementById(`rel-hijo-${id}`);
+
+    if (!padreSelect || !hijoSelect) return;
+
+    if (selectedRole === 'alumno') {
+        padreSelect.style.display = 'block';
+        hijoSelect.style.display = 'none';
+        hijoSelect.value = '';
+    } else if (selectedRole === 'padre') {
+        hijoSelect.style.display = 'block';
+        padreSelect.style.display = 'none';
+        padreSelect.value = '';
+    } else {
+        padreSelect.style.display = 'none';
+        hijoSelect.style.display = 'none';
+        padreSelect.value = '';
+        hijoSelect.value = '';
+    }
+});
 
 /**
  * Gestión de Usuarios
@@ -1034,6 +1116,20 @@ async function loadCursos() {
     try {
         Utils.showLoader();
         cursos = await API.get('/api/v1/admin/cursos', true);
+
+        const docentesCounts = await Promise.all(
+            (cursos || []).map(async (curso) => {
+                try {
+                    const docentes = await API.get(`/api/v1/admin/cursos/${curso.id}/docentes`, true);
+                    return { curso_id: curso.id, count: Array.isArray(docentes) ? docentes.length : 0 };
+                } catch (error) {
+                    return { curso_id: curso.id, count: 0 };
+                }
+            })
+        );
+
+        const countsMap = new Map(docentesCounts.map(item => [item.curso_id, item.count]));
+        cursos = (cursos || []).map(c => ({ ...c, docentes_count: countsMap.get(c.id) || 0 }));
         aplicarFiltrosCursos();
     } catch (error) {
         console.error('Error al cargar cursos:', error);
@@ -1088,11 +1184,18 @@ function createCursoCard(curso) {
                 <p class="text-muted"><i class="fas fa-calendar"></i> Ciclo: ${curso.ciclo_lectivo_nombre || 'N/A'}</p>
                 <p><strong>Turno:</strong> ${turnoLabel}</p>
                 <p><strong>Alumnos:</strong> ${curso.cantidad_alumnos || 0} / ${curso.capacidad_maxima}</p>
+                <p><strong>Docentes:</strong> ${curso.docentes_count != null ? curso.docentes_count : 0}</p>
                 ${curso.orientacion ? `<p><strong>Orientación:</strong> ${curso.orientacion}</p>` : ''}
 
                 <div class="action-buttons mt-md">
                     <button class="btn btn-sm btn-primary" onclick="verAlumnosCurso(${curso.id})">
                         <i class="fas fa-users"></i> Ver Alumnos
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="abrirModalAsignarAlumno(${curso.id})">
+                        <i class="fas fa-user-plus"></i> Agregar Alumno
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="abrirModalAsignarDocente(${curso.id})">
+                        <i class="fas fa-chalkboard-teacher"></i> Agregar Docente
                     </button>
                     <button class="btn btn-sm btn-outline" onclick="abrirModalEditarCurso(${curso.id})">
                         <i class="fas fa-edit"></i> Editar
@@ -1281,9 +1384,12 @@ async function eliminarCurso(cursoId) {
 async function verAlumnosCurso(cursoId) {
     try {
         Utils.showLoader();
-        const alumnos = await API.get(`/api/v1/admin/cursos/${cursoId}/alumnos`, true);
+        const [alumnos, docentes] = await Promise.all([
+            API.get(`/api/v1/admin/cursos/${cursoId}/alumnos`, true),
+            API.get(`/api/v1/admin/cursos/${cursoId}/docentes`, true)
+        ]);
         const curso = (cursos || []).find(c => c.id === cursoId) || { id: cursoId, nivel_nombre: '', anio: '', division: '' };
-        abrirModalAlumnosCurso(curso, alumnos || []);
+        abrirModalAlumnosCurso(curso, alumnos || [], docentes || []);
     } catch (error) {
         console.error('Error al cargar alumnos del curso:', error);
         Utils.showError('Error al cargar alumnos del curso');
@@ -1292,7 +1398,7 @@ async function verAlumnosCurso(cursoId) {
     }
 }
 
-function abrirModalAlumnosCurso(curso, alumnos) {
+function abrirModalAlumnosCurso(curso, alumnos, docentes) {
     const modal = document.getElementById('alumnosCursoModal');
     const container = document.getElementById('alumnosCursoContainer');
     const title = document.getElementById('alumnosCursoModalTitle');
@@ -1303,46 +1409,349 @@ function abrirModalAlumnosCurso(curso, alumnos) {
         title.textContent = `Alumnos - ${curso.nivel_nombre || ''} ${curso.anio || ''}° ${curso.division || ''}`.trim();
     }
 
-    if (!alumnos || alumnos.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon"><i class="fas fa-users"></i></div>
-                <h3>Sin alumnos</h3>
-                <p>No hay alumnos asignados a este curso</p>
-            </div>
-        `;
-    } else {
-        container.innerHTML = `
-            <div class="card">
-                <div class="card-body">
-                    <div class="usuarios-table-container">
-                        <table class="usuarios-table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>DNI</th>
-                                    <th>Email</th>
-                                    <th>Legajo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${alumnos.map(alumno => `
-                                    <tr>
-                                        <td>${alumno.nombre} ${alumno.apellido}</td>
-                                        <td>${alumno.dni}</td>
-                                        <td>${alumno.email || '-'}</td>
-                                        <td>${alumno.legajo}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
+    modalCursoData = {
+        curso,
+        alumnos: Array.isArray(alumnos) ? alumnos : [],
+        docentes: Array.isArray(docentes) ? docentes : [],
+        search: '',
+        sort: 'nombre_asc'
+    };
+
+    renderModalCurso();
 
     modal.classList.add('active');
+}
+
+function renderModalCurso() {
+    const container = document.getElementById('alumnosCursoContainer');
+    if (!container || !modalCursoData) return;
+
+    const { curso } = modalCursoData;
+    const alumnosFiltrados = filtrarYOrdenarModal(modalCursoData.alumnos, modalCursoData.search, modalCursoData.sort);
+    const docentesFiltrados = filtrarYOrdenarModal(modalCursoData.docentes, modalCursoData.search, modalCursoData.sort);
+
+    const filtrosHtml = `
+        <div class="filters-section mb-lg">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label class="filter-label">Buscar</label>
+                    <input type="text" class="filter-input" id="modalCursoSearch" placeholder="Nombre, DNI, email..." value="${modalCursoData.search || ''}">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Ordenar</label>
+                    <select class="filter-select" id="modalCursoSort">
+                        <option value="nombre_asc">Nombre A-Z</option>
+                        <option value="nombre_desc">Nombre Z-A</option>
+                        <option value="dni_asc">DNI asc</option>
+                        <option value="dni_desc">DNI desc</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const alumnosHtml = alumnosFiltrados.length === 0 ? `
+        <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-users"></i></div>
+            <h3>Sin alumnos</h3>
+            <p>No hay alumnos asignados a este curso</p>
+        </div>
+    ` : `
+        <div class="card mb-lg">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-users"></i> Alumnos (${alumnosFiltrados.length})</h3>
+            </div>
+            <div class="card-body">
+                <div class="usuarios-table-container">
+                    <table class="usuarios-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>DNI</th>
+                                <th>Email</th>
+                                <th>Legajo</th>
+                                <th>Libreta</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${alumnosFiltrados.map(alumno => `
+                                <tr>
+                                    <td data-label="Nombre">${alumno.nombre} ${alumno.apellido}</td>
+                                    <td data-label="DNI">${alumno.dni}</td>
+                                    <td data-label="Email">${alumno.email || '-'}</td>
+                                    <td data-label="Legajo">${alumno.legajo}</td>
+                                    <td data-label="Libreta">
+                                        <button class="btn btn-sm btn-outline" onclick="abrirModalLibretas(${alumno.id}, '${alumno.nombre} ${alumno.apellido}')">
+                                            <i class="fas fa-file-pdf"></i> Ver
+                                        </button>
+                                    </td>
+                                    <td data-label="Acciones">
+                                        <button class="btn btn-sm btn-error" onclick="quitarAlumnoCurso(${curso.id}, ${alumno.id})">
+                                            <i class="fas fa-user-minus"></i> Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const docentesHtml = docentesFiltrados.length === 0 ? `
+        <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h3>Sin docentes</h3>
+            <p>No hay docentes asignados a este curso</p>
+        </div>
+    ` : `
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-chalkboard-teacher"></i> Docentes (${docentesFiltrados.length})</h3>
+            </div>
+            <div class="card-body">
+                <div class="usuarios-table-container">
+                    <table class="usuarios-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>DNI</th>
+                                <th>Email</th>
+                                <th>Legajo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${docentesFiltrados.map(docente => `
+                                <tr>
+                                    <td data-label="Nombre">${docente.nombre} ${docente.apellido}</td>
+                                    <td data-label="DNI">${docente.dni}</td>
+                                    <td data-label="Email">${docente.email || '-'}</td>
+                                    <td data-label="Legajo">${docente.legajo || '-'}</td>
+                                    <td data-label="Acciones">
+                                        <button class="btn btn-sm btn-error" onclick="quitarDocenteCurso(${curso.id}, ${docente.id})">
+                                            <i class="fas fa-user-minus"></i> Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = `${filtrosHtml}${alumnosHtml}${docentesHtml}`;
+
+    const sortSelect = document.getElementById('modalCursoSort');
+    if (sortSelect) sortSelect.value = modalCursoData.sort || 'nombre_asc';
+    bindModalCursoFilters();
+}
+
+function bindModalCursoFilters() {
+    const searchInput = document.getElementById('modalCursoSearch');
+    const sortSelect = document.getElementById('modalCursoSort');
+
+    if (searchInput) {
+        searchInput.oninput = (e) => {
+            modalCursoData.search = e.target.value || '';
+            renderModalCurso();
+        };
+    }
+
+    if (sortSelect) {
+        sortSelect.onchange = (e) => {
+            modalCursoData.sort = e.target.value || 'nombre_asc';
+            renderModalCurso();
+        };
+    }
+}
+
+function filtrarYOrdenarModal(lista, search, sort) {
+    let result = Array.isArray(lista) ? lista.slice() : [];
+    const term = normalizeText(search || '');
+
+    if (term) {
+        result = result.filter(item => {
+            const nombre = normalizeText(item.nombre);
+            const apellido = normalizeText(item.apellido);
+            const dni = normalizeText(item.dni);
+            const email = normalizeText(item.email || '');
+            const legajo = normalizeText(item.legajo || '');
+            return nombre.includes(term) || apellido.includes(term) || dni.includes(term) || email.includes(term) || legajo.includes(term);
+        });
+    }
+
+    const sortKey = (item) => `${normalizeText(item.apellido)} ${normalizeText(item.nombre)}`;
+    if (sort === 'nombre_desc') result.sort((a, b) => sortKey(b).localeCompare(sortKey(a)));
+    else if (sort === 'dni_asc') result.sort((a, b) => String(a.dni || '').localeCompare(String(b.dni || '')));
+    else if (sort === 'dni_desc') result.sort((a, b) => String(b.dni || '').localeCompare(String(a.dni || '')));
+    else result.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+
+    return result;
+}
+
+async function quitarAlumnoCurso(cursoId, alumnoId) {
+    if (!confirm('¿Quitar alumno del curso?')) return;
+    try {
+        Utils.showLoader();
+        await API.delete(`/api/v1/admin/cursos/${cursoId}/alumnos`, { alumno_id: alumnoId }, true);
+        Utils.showSuccess('Alumno quitado del curso');
+        await verAlumnosCurso(cursoId);
+        await loadCursos();
+    } catch (error) {
+        console.error('Error al quitar alumno:', error);
+        Utils.showError(error.message || 'Error al quitar alumno');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function quitarDocenteCurso(cursoId, docenteId) {
+    if (!confirm('¿Quitar docente del curso?')) return;
+    try {
+        Utils.showLoader();
+        await API.delete(`/api/v1/admin/cursos/${cursoId}/docentes`, { docente_id: docenteId }, true);
+        Utils.showSuccess('Docente quitado del curso');
+        await verAlumnosCurso(cursoId);
+    } catch (error) {
+        console.error('Error al quitar docente:', error);
+        Utils.showError(error.message || 'Error al quitar docente');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function abrirModalAsignarAlumno(cursoId) {
+    asignacionCursoId = cursoId;
+    asignacionCursoTipo = 'alumno';
+
+    const modal = document.getElementById('cursoAsignacionModal');
+    const title = document.getElementById('cursoAsignacionTitle');
+    const select = document.getElementById('cursoAsignacionSelect');
+    const btn = document.getElementById('cursoAsignacionBtn');
+
+    if (!modal || !select || !btn) return;
+
+    if (title) title.textContent = 'Agregar Alumno al Curso';
+    btn.textContent = 'Agregar Alumno';
+
+    try {
+        Utils.showLoader();
+        const alumnos = await API.get('/api/v1/admin/usuarios/lista/alumnos', true);
+        const options = (alumnos || []).map(a => `<option value="${a.id}">${a.apellido} ${a.nombre} - DNI ${a.dni}</option>`).join('');
+        select.innerHTML = `<option value="">Seleccionar alumno...</option>${options}`;
+        modal.classList.add('active');
+    } catch (error) {
+        console.error('Error al cargar alumnos:', error);
+        Utils.showError('Error al cargar alumnos');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function abrirModalAsignarDocente(cursoId) {
+    asignacionCursoId = cursoId;
+    asignacionCursoTipo = 'docente';
+
+    const modal = document.getElementById('cursoAsignacionModal');
+    const title = document.getElementById('cursoAsignacionTitle');
+    const select = document.getElementById('cursoAsignacionSelect');
+    const btn = document.getElementById('cursoAsignacionBtn');
+
+    if (!modal || !select || !btn) return;
+
+    if (title) title.textContent = 'Agregar Docente al Curso';
+    btn.textContent = 'Agregar Docente';
+
+    try {
+        Utils.showLoader();
+        const docentes = await API.get('/api/v1/admin/usuarios/lista/docentes', true);
+        const options = (docentes || []).map(d => `<option value="${d.id}">${d.apellido} ${d.nombre} - DNI ${d.dni}</option>`).join('');
+        select.innerHTML = `<option value="">Seleccionar docente...</option>${options}`;
+        modal.classList.add('active');
+    } catch (error) {
+        console.error('Error al cargar docentes:', error);
+        Utils.showError('Error al cargar docentes');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function confirmarAsignacionCurso() {
+    const select = document.getElementById('cursoAsignacionSelect');
+    const selectedId = select ? parseInt(select.value, 10) : null;
+
+    if (!asignacionCursoId || !asignacionCursoTipo || !selectedId) {
+        Utils.showError('Seleccione una opciÃ³n');
+        return;
+    }
+
+    try {
+        Utils.showLoader();
+        if (asignacionCursoTipo === 'alumno') {
+            await API.post(`/api/v1/admin/cursos/${asignacionCursoId}/alumnos`, { alumno_id: selectedId }, true);
+            Utils.showSuccess('Alumno agregado al curso');
+        } else if (asignacionCursoTipo === 'docente') {
+            await API.post(`/api/v1/admin/cursos/${asignacionCursoId}/docentes`, { docente_id: selectedId }, true);
+            Utils.showSuccess('Docente agregado al curso');
+        }
+        cerrarModal('cursoAsignacionModal');
+        await loadCursos();
+    } catch (error) {
+        console.error('Error al asignar:', error);
+        Utils.showError(error.message || 'Error al asignar');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function abrirModalLibretas(alumnoId, alumnoNombre) {
+    const modal = document.getElementById('libretasModal');
+    const title = document.getElementById('libretasModalTitle');
+    const container = document.getElementById('libretasContainer');
+
+    if (!modal || !container) return;
+
+    if (title) title.textContent = `Libretas - ${alumnoNombre || ''}`.trim();
+
+    try {
+        Utils.showLoader();
+        const libretas = await API.get(`/api/v1/admin/alumnos/${alumnoId}/libretas`, true);
+        if (!libretas || libretas.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon"><i class="fas fa-file-pdf"></i></div>
+                    <h3>Sin libretas</h3>
+                    <p>No hay libretas generadas para este alumno</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        ${libretas.map(l => `
+                            <div class="matricula-item mb-md">
+                                <p><strong>Ciclo ${l.ciclo_lectivo || '-'}</strong> - Trimestre ${l.trimestre}</p>
+                                <p>Promedio Trimestre: ${l.promedio_trimestre != null ? l.promedio_trimestre.toFixed(2) : '-'}</p>
+                                <p>Promedio Acumulado: ${l.promedio_acumulado != null ? l.promedio_acumulado.toFixed(2) : '-'}</p>
+                                ${l.pdf_url ? `<a class="btn btn-sm btn-outline" href="${l.pdf_url}" target="_blank" rel="noopener">Ver PDF</a>` : '<span class="text-muted">Sin PDF</span>'}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        modal.classList.add('active');
+    } catch (error) {
+        console.error('Error al cargar libretas:', error);
+        Utils.showError('Error al cargar libretas');
+    } finally {
+        Utils.hideLoader();
+    }
 }
 
 /**

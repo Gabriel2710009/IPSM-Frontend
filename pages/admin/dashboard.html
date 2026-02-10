@@ -716,6 +716,24 @@
                             <label class="form-label">Legajo</label>
                             <input type="text" class="form-control" id="editPreceptorLegajo">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Especialidad</label>
+                            <input type="text" class="form-control" id="editPreceptorEspecialidad">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">T&iacute;tulo</label>
+                            <input type="text" class="form-control" id="editPreceptorTitulo">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Ingreso</label>
+                            <input type="date" class="form-control" id="editPreceptorFechaIngreso">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="editPreceptorAutorizaNotas">
+                                Autorizado para Editar Notas
+                            </label>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block">
@@ -998,6 +1016,38 @@
             </div>
             <div class="modal-body">
                 <div id="alumnosCursoContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal AsignaciÃ³n Curso -->
+    <div id="cursoAsignacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cursoAsignacionTitle"><i class="fas fa-user-plus"></i> Asignar</h3>
+                <button class="modal-close" onclick="cerrarModal('cursoAsignacionModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Seleccionar</label>
+                    <select class="form-control" id="cursoAsignacionSelect"></select>
+                </div>
+                <button class="btn btn-primary btn-block" id="cursoAsignacionBtn" onclick="confirmarAsignacionCurso()">
+                    Asignar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Libretas -->
+    <div id="libretasModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="libretasModalTitle"><i class="fas fa-file-pdf"></i> Libretas</h3>
+                <button class="modal-close" onclick="cerrarModal('libretasModal')">&times;</button>
+            </div>
+            <div class="modal-body modal-body-scroll">
+                <div id="libretasContainer"></div>
             </div>
         </div>
     </div>

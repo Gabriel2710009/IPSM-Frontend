@@ -102,13 +102,13 @@ function createUsuarioRow(user) {
     
     return `
         <tr>
-            <td><strong>${user.dni}</strong></td>
-            <td>${user.nombre} ${user.apellido}</td>
-            <td>${user.email}</td>
-            <td>${roleBadge}</td>
-            <td>${estadoBadge}</td>
-            <td>${ultimoAcceso}</td>
-            <td>
+            <td data-label="DNI"><strong>${user.dni}</strong></td>
+            <td data-label="Nombre">${user.nombre} ${user.apellido}</td>
+            <td data-label="Email">${user.email}</td>
+            <td data-label="Rol">${roleBadge}</td>
+            <td data-label="Estado">${estadoBadge}</td>
+            <td data-label="Ãšltimo Acceso">${ultimoAcceso}</td>
+            <td data-label="Acciones">
                 <div class="action-buttons">
                     <button class="btn btn-sm btn-primary" onclick="verPerfilUsuario('${user.id}')">
                         <i class="fas fa-eye"></i> Ver
@@ -249,6 +249,18 @@ function renderPerfilAlumno(perfil) {
                         <span>${perfil.legajo || '-'}</span>
                     </div>
                     <div class="perfil-info-item">
+                        <label>Especialidad:</label>
+                        <span>${perfil.especialidad || '-'}</span>
+                    </div>
+                    <div class="perfil-info-item">
+                        <label>TÃ­tulo:</label>
+                        <span>${perfil.titulo || '-'}</span>
+                    </div>
+                    <div class="perfil-info-item">
+                        <label>Fecha de Ingreso:</label>
+                        <span>${perfil.fecha_ingreso ? Utils.formatDate(perfil.fecha_ingreso) : '-'}</span>
+                    </div>
+                    <div class="perfil-info-item">
                         <label>Nivel:</label>
                         <span>${perfil.nivel_nombre || '-'}</span>
                     </div>
@@ -269,6 +281,13 @@ function renderPerfilAlumno(perfil) {
                         <span>${perfil.promedio_general ? perfil.promedio_general.toFixed(2) : '-'}</span>
                     </div>
                 </div>
+                ${perfil.alumno_id ? `
+                    <div class="mt-md">
+                        <button class="btn btn-sm btn-outline" onclick="abrirModalLibretas(${perfil.alumno_id}, '${perfil.usuario.nombre} ${perfil.usuario.apellido}')">
+                            <i class="fas fa-file-pdf"></i> Ver Libretas
+                        </button>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `;
@@ -402,6 +421,10 @@ function renderPerfilPadre(perfil) {
                     <div class="perfil-info-item">
                         <label>Ocupación:</label>
                         <span>${perfil.ocupacion || '-'}</span>
+                    </div>
+                    <div class="perfil-info-item">
+                        <label>Fecha de Registro:</label>
+                        <span>${perfil.fecha_registro ? Utils.formatDate(perfil.fecha_registro) : '-'}</span>
                     </div>
                     <div class="perfil-info-item">
                         <label>Domicilio:</label>
@@ -787,6 +810,10 @@ function abrirModalEditarUsuario(user, perfil) {
     } else if (user.role === 'preceptor') {
         preceptorFields.style.display = 'block';
         document.getElementById('editPreceptorLegajo').value = perfil.legajo || '';
+        document.getElementById('editPreceptorEspecialidad').value = perfil.especialidad || '';
+        document.getElementById('editPreceptorTitulo').value = perfil.titulo || '';
+        document.getElementById('editPreceptorFechaIngreso').value = perfil.fecha_ingreso ? Utils.formatDateInput(perfil.fecha_ingreso) : '';
+        document.getElementById('editPreceptorAutorizaNotas').checked = !!perfil.puede_editar_notas;
     }
 
     modal.classList.add('active');
@@ -829,6 +856,10 @@ async function handleEditarUsuarioSubmit(e) {
         payload.docente_titulo = document.getElementById('editDocenteTitulo').value.trim();
     } else if (role === 'preceptor') {
         payload.preceptor_legajo = document.getElementById('editPreceptorLegajo').value.trim();
+        payload.preceptor_especialidad = document.getElementById('editPreceptorEspecialidad').value.trim();
+        payload.preceptor_titulo = document.getElementById('editPreceptorTitulo').value.trim();
+        payload.preceptor_fecha_ingreso = document.getElementById('editPreceptorFechaIngreso').value;
+        payload.preceptor_autorizado_editar_notas = document.getElementById('editPreceptorAutorizaNotas').checked;
     }
 
     Object.keys(payload).forEach(key => {

@@ -527,11 +527,53 @@
 
 @media (max-width: 768px) {
     .usuarios-table-container {
-        overflow-x: auto;
+        overflow-x: visible;
     }
     
     .usuarios-table {
-        min-width: 800px;
+        min-width: 0;
+        display: block;
+    }
+
+    .usuarios-table thead {
+        display: none;
+    }
+
+    .usuarios-table tbody {
+        display: block;
+    }
+
+    .usuarios-table tbody tr {
+        display: block;
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--border-radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .usuarios-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-xs) 0;
+        border: none;
+    }
+
+    .usuarios-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--gray-600);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-right: var(--spacing-md);
+    }
+
+    .action-buttons {
+        width: 100%;
+        flex-direction: column;
     }
     
     .cuotas-config-grid {
