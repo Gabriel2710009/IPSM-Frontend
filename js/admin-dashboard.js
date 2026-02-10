@@ -634,11 +634,9 @@ function createConfigCard(config) {
                 <button class="btn btn-sm btn-outline" onclick="editarConfig(${config.id})">
                     <i class="fas fa-edit"></i> Editar
                 </button>
-                ${!isActive ? `
-                    <button class="btn btn-sm btn-error" onclick="eliminarConfig(${config.id})">
-                        <i class="fas fa-trash"></i> Eliminar
-                    </button>
-                ` : ''}
+                <button class="btn btn-sm btn-error" onclick="eliminarConfig(${config.id})">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
             </div>
         </div>
     `;
@@ -1064,10 +1062,10 @@ function createCursoCard(curso) {
                         <button class="btn btn-sm btn-success" onclick="activarCurso(${curso.id})">
                             <i class="fas fa-check"></i> Activar
                         </button>
-                        <button class="btn btn-sm btn-error" onclick="eliminarCurso(${curso.id})">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </button>
                     `}
+                    <button class="btn btn-sm btn-error" onclick="eliminarCurso(${curso.id})">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
                 </div>
             </div>
         </div>
