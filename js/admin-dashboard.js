@@ -68,21 +68,34 @@ function initNavigation() {
             e.preventDefault();
             
             const sectionName = this.getAttribute('data-section');
-            
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            const targetSection = document.getElementById(`section-${sectionName}`);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                loadSectionData(sectionName);
-            }
+            changeSection(sectionName);
         });
     });
+}
+
+/**
+ * Cambia la secci?n visible y carga datos
+ */
+async function changeSection(sectionName) {
+    if (!sectionName) return;
+
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    sidebarLinks.forEach(l => l.classList.remove('active'));
+
+    const targetLink = document.querySelector(`.sidebar-link[data-section="${sectionName}"]`);
+    if (targetLink) {
+        targetLink.classList.add('active');
+    }
+
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    const targetSection = document.getElementById(`section-${sectionName}`);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        await loadSectionData(sectionName);
+    }
 }
 
 /**
@@ -99,10 +112,26 @@ async function loadSectionData(sectionName) {
             await loadUsuariosPendientes();
             break;
         case 'usuarios':
-            await loadUsuarios();
+            if (typeof loadGestionUsuarios === 'function') {
+                await loadGestionUsuarios();
+            } else {
+                await loadUsuarios();
+            }
+            break;
+        case 'gestion-usuarios':
+            if (typeof loadGestionUsuarios === 'function') {
+                await loadGestionUsuarios();
+            } else {
+                await loadUsuarios();
+            }
             break;
         case 'config-cuotas':
             await loadConfiguracionesCuotas();
+            break;
+        case 'config-matriculas':
+            if (typeof loadConfiguracionMatriculas === 'function') {
+                await loadConfiguracionMatriculas();
+            }
             break;
         case 'cuotas':
             await loadCuotasValidacion();

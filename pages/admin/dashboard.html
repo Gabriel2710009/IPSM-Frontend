@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="../../css/admin.css">
+    <link rel="stylesheet" href="../../css/usuarios-matriculas.css">
 </head>
 <body class="dashboard-page">
     <!-- Header Dashboard -->
@@ -58,13 +59,17 @@
                     <span>Usuarios Pendientes</span>
                     <span class="badge badge-warning" id="pendientesBadge" style="display: none;">0</span>
                 </a>
-                <a href="#" class="sidebar-link" data-section="usuarios">
+                <a href="#" class="sidebar-link" data-section="gestion-usuarios">
                     <span class="sidebar-icon"><i class="fas fa-users-cog"></i></span>
                     <span>Gestión de Usuarios</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="config-cuotas">
                     <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
                     <span>Config. Cuotas</span>
+                </a>
+                <a href="#" class="sidebar-link" data-section="config-matriculas">
+                    <span class="sidebar-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                    <span>Configuraci&oacute;n Matr&iacute;culas</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="cuotas">
                     <span class="sidebar-icon"><i class="fas fa-money-check-alt"></i></span>
@@ -211,7 +216,7 @@
             </div>
 
             <!-- Sección Gestión de Usuarios -->
-            <div class="content-section" id="section-usuarios">
+            <div class="content-section" id="section-gestion-usuarios">
                 <h1 class="page-title">
                     <i class="fas fa-users-cog"></i> Gestión de Usuarios
                 </h1>
@@ -250,7 +255,7 @@
                     </div>
                 </div>
                 
-                <div id="usuariosContainer">
+                <div id="gestionUsuariosContainer">
                     <!-- Se carga dinámicamente -->
                 </div>
             </div>
@@ -290,6 +295,58 @@
                     
                     <div class="tab-content" id="tab-secundario">
                         <div id="configSecundarioContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seccion Configuracion de Matriculas -->
+            <div class="content-section" id="section-config-matriculas">
+                <h1 class="page-title">
+                    <i class="fas fa-file-invoice-dollar"></i> Configuraci&oacute;n de Matr&iacute;culas
+                </h1>
+
+                <div class="mb-lg">
+                    <button class="btn btn-primary" onclick="abrirModalNuevaConfigMatricula()">
+                        <i class="fas fa-plus"></i> Nueva Configuraci&oacute;n
+                    </button>
+                </div>
+
+                <div class="info-box mb-lg">
+                    <p><strong><i class="fas fa-info-circle"></i> Modalidades de Pago:</strong></p>
+                    <ul>
+                        <li><strong>Pago &Uacute;nico (Verano):</strong> Un solo pago de la matr&iacute;cula completa</li>
+                        <li><strong>3 Cuotas (Diciembre):</strong> Matr&iacute;cula en 3 pagos durante el mes de diciembre</li>
+                        <li><strong>2 Cuotas (Enero):</strong> Matr&iacute;cula en 2 pagos durante enero</li>
+                        <li><strong>1 Cuota (Febrero):</strong> Pago &uacute;nico en febrero</li>
+                    </ul>
+                    <p class="text-muted text-sm mt-sm">
+                        Las matr&iacute;culas vencen por defecto en marzo (configurable por nivel)
+                    </p>
+                </div>
+
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" data-tab="matricula-inicial">
+                            <i class="fas fa-baby"></i> Inicial
+                        </button>
+                        <button class="tab-button" data-tab="matricula-primario">
+                            <i class="fas fa-child"></i> Primario
+                        </button>
+                        <button class="tab-button" data-tab="matricula-secundario">
+                            <i class="fas fa-graduation-cap"></i> Secundario
+                        </button>
+                    </div>
+
+                    <div class="tab-content active" id="tab-matricula-inicial">
+                        <div id="configMatriculaInicialContainer"></div>
+                    </div>
+
+                    <div class="tab-content" id="tab-matricula-primario">
+                        <div id="configMatriculaPrimarioContainer"></div>
+                    </div>
+
+                    <div class="tab-content" id="tab-matricula-secundario">
+                        <div id="configMatriculaSecundarioContainer"></div>
                     </div>
                 </div>
             </div>
@@ -511,6 +568,123 @@
         </div>
     </div>
 
+    <!-- Modal Perfil de Usuario -->
+    <div id="perfilUsuarioModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="perfilUsuarioModalTitle"><i class="fas fa-user"></i> Perfil de Usuario</h3>
+                <button class="modal-close" onclick="cerrarModal('perfilUsuarioModal')">&times;</button>
+            </div>
+            <div class="modal-body modal-body-scroll">
+                <div id="perfilUsuarioContainer">
+                    <!-- Se carga din&aacute;micamente seg&uacute;n el rol -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Configuracion de Matricula -->
+    <div id="nuevaConfigMatriculaModal" class="modal">
+        <div class="modal-content modal-md">
+            <div class="modal-header">
+                <h3 id="configMatriculaModalTitle"><i class="fas fa-file-invoice-dollar"></i> Nueva Configuraci&oacute;n de Matr&iacute;cula</h3>
+                <button class="modal-close" onclick="cerrarModal('nuevaConfigMatriculaModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="nuevaConfigMatriculaForm">
+                    <div class="form-group">
+                        <label class="form-label">Ciclo Lectivo (A&ntilde;o)</label>
+                        <input type="number" class="form-control" id="configMatriculaCicloAnio" required min="2000" max="2100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nivel</label>
+                        <select class="form-control" id="configMatriculaNivel" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">Inicial</option>
+                            <option value="2">Primario</option>
+                            <option value="3">Secundario</option>
+                        </select>
+                    </div>
+
+                    <hr style="margin: var(--spacing-xl) 0;">
+
+                    <h4 style="margin-bottom: var(--spacing-md);">Montos seg&uacute;n Modalidad de Pago</h4>
+
+                    <div class="form-group">
+                        <label class="form-label">Pago &Uacute;nico (Verano)</label>
+                        <input type="number" class="form-control" id="configMatriculaPagoUnico" required min="0" step="0.01" placeholder="Ej: 120000.00">
+                        <small class="form-help">Monto si paga todo junto en verano</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">3 Cuotas (Diciembre)</label>
+                        <input type="number" class="form-control" id="configMatricula3Cuotas" required min="0" step="0.01" placeholder="Ej: 45000.00">
+                        <small class="form-help">Monto de cada cuota si paga en 3 veces durante diciembre</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">2 Cuotas (Enero)</label>
+                        <input type="number" class="form-control" id="configMatricula2Cuotas" required min="0" step="0.01" placeholder="Ej: 65000.00">
+                        <small class="form-help">Monto de cada cuota si paga en 2 veces durante enero</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">1 Cuota (Febrero)</label>
+                        <input type="number" class="form-control" id="configMatricula1Cuota" required min="0" step="0.01" placeholder="Ej: 130000.00">
+                        <small class="form-help">Monto si paga en una sola cuota en febrero</small>
+                    </div>
+
+                    <hr style="margin: var(--spacing-xl) 0;">
+
+                    <h4 style="margin-bottom: var(--spacing-md);">Vencimiento</h4>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-label">Mes de vencimiento</label>
+                                <select class="form-control" id="configMatriculaMesVenc">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3" selected>Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-label">D&iacute;a de vencimiento</label>
+                                <input type="number" class="form-control" id="configMatriculaDiaVenc" min="1" max="31" value="10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="margin: var(--spacing-xl) 0;">
+
+                    <h4 style="margin-bottom: var(--spacing-md);">Recargo por Mora</h4>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="configMatriculaTieneRecargo" checked>
+                            Aplicar recargo por mora
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Porcentaje de recargo (%)</label>
+                        <input type="number" class="form-control" id="configMatriculaPorcentajeRecargo" min="0" max="100" step="0.01" value="10">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="configMatriculaSubmitBtn">
+                        <i class="fas fa-save"></i> Crear Configuraci&oacute;n
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Nueva Configuración de Cuota -->
     <div id="nuevaConfigModal" class="modal">
         <div class="modal-content">
@@ -707,5 +881,6 @@
     <script src="../../js/config.js"></script>
     <script src="../../js/api.js"></script>
     <script src="../../js/admin-dashboard.js"></script>
+    <script src="/js/admin-usuarios-matriculas.js"></script>
 </body>
 </html>
