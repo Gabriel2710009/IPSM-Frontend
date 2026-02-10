@@ -92,16 +92,22 @@ async function performLogin(dni, password) {
         
         // Mostrar error específico
         let errorMessage = 'Error al iniciar sesión. Verifique sus credenciales.';
+        const detail = (error && error.data && (error.data.detail || error.data.message)) || error.message || '';
         
-        if (error.message) {
-            if (error.message.includes('401') || error.message.includes('credenciales')) {
-                errorMessage = 'DNI o contraseña incorrectos. Por favor, verifique sus datos.';
-            } else if (error.message.includes('403') || error.message.includes('pendiente')) {
+        if (detail) {
+            const msg = detail.toLowerCase();
+            if (msg.includes('usuario no existe')) {
+                errorMessage = 'El usuario no existe.';
+            } else if (msg.includes('contraseña incorrecta')) {
+                errorMessage = 'La contraseña es incorrecta.';
+            } else if (msg.includes('pendiente')) {
                 errorMessage = 'Tu cuenta está pendiente de aprobación por un administrador. Por favor, espera la confirmación.';
-            } else if (error.message.includes('inactiv')) {
+            } else if (msg.includes('desactiv')) {
                 errorMessage = 'Tu cuenta ha sido desactivada. Contacta con secretaría.';
-            } else if (error.message.includes('conexión') || error.message.includes('network') || error.message.includes('Failed to fetch')) {
+            } else if (msg.includes('conexión') || msg.includes('network') || msg.includes('failed to fetch')) {
                 errorMessage = 'No se pudo conectar con el servidor. Verifique su conexión a internet.';
+            } else {
+                errorMessage = detail;
             }
         }
         

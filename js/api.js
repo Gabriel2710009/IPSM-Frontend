@@ -220,7 +220,12 @@ class API {
      * Maneja la respuesta del servidor
      */
     static async handleResponse(response) {
+        if (response.status === 204) {
+            return null;
+        }
+
         const contentType = response.headers.get('content-type');
+        const contentLength = response.headers.get('content-length');
         
         // Si es 401, el token expiró
         if (response.status === 401) {
@@ -239,7 +244,26 @@ class API {
         
         // Intentar parsear JSON si el content-type es JSON
         if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
+            if (contentLength === '0') {
+                if (!response.ok) {
+                    const error = new Error(`Error ${response.status}`);
+                    error.status = response.status;
+                    throw error;
+                }
+                return null;
+            }
+
+            const raw = await response.text();
+            if (!raw) {
+                if (!response.ok) {
+                    const error = new Error(`Error ${response.status}`);
+                    error.status = response.status;
+                    throw error;
+                }
+                return null;
+            }
+
+            const data = JSON.parse(raw);
             
             console.log('📦 Response Data:', data);
             
@@ -266,7 +290,7 @@ class API {
         try {
             return JSON.parse(text);
         } catch {
-            return text;
+            return text || null;
         }
     }
     

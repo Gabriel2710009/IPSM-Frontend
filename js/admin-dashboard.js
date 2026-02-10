@@ -524,7 +524,21 @@ async function handleNuevoUsuario(e) {
         
     } catch (error) {
         console.error('Error al crear usuario:', error);
-        Utils.showError(error.message || 'Error al crear el usuario');
+
+        const detail = (error && error.data && (error.data.detail || error.data.message)) || error.message || '';
+        let errorMessage = 'Error al crear el usuario';
+
+        if (detail) {
+            if (detail.toLowerCase().includes('dni')) {
+                errorMessage = 'Ya existe un usuario con ese DNI';
+            } else if (detail.toLowerCase().includes('email')) {
+                errorMessage = 'Ya existe un usuario con ese email';
+            } else {
+                errorMessage = detail;
+            }
+        }
+
+        Utils.showError(errorMessage);
     } finally {
         Utils.hideLoader();
     }
