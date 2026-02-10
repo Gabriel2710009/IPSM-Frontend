@@ -583,6 +583,149 @@
         </div>
     </div>
 
+    <!-- Modal Editar Usuario -->
+    <div id="editarUsuarioModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-edit"></i> Editar Usuario</h3>
+                <button class="modal-close" onclick="cerrarModal('editarUsuarioModal')">&times;</button>
+            </div>
+            <div class="modal-body modal-body-scroll">
+                <form id="editarUsuarioForm">
+                    <input type="hidden" id="editarUsuarioId">
+
+                    <div class="form-group">
+                        <label class="form-label">DNI</label>
+                        <input type="text" class="form-control" id="editDni" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editNombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="editApellido" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tel&eacute;fono</label>
+                        <input type="text" class="form-control" id="editTelefono">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Rol</label>
+                        <input type="text" class="form-control" id="editRole" readonly>
+                    </div>
+
+                    <div id="editAlumnoFields" style="display: none;">
+                        <hr style="margin: var(--spacing-xl) 0;">
+                        <h4 style="margin-bottom: var(--spacing-md);">Datos de Alumno</h4>
+
+                        <div class="form-group">
+                            <label class="form-label">Legajo</label>
+                            <input type="text" class="form-control" id="editAlumnoLegajo">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nivel (ID)</label>
+                            <input type="number" class="form-control" id="editAlumnoNivelId" min="1" max="3">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">A&ntilde;o/Grado</label>
+                            <input type="number" class="form-control" id="editAlumnoAnio" min="1" max="6">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Divisi&oacute;n</label>
+                            <input type="text" class="form-control" id="editAlumnoDivision" maxlength="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Turno</label>
+                            <input type="text" class="form-control" id="editAlumnoTurno">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Orientaci&oacute;n</label>
+                            <input type="text" class="form-control" id="editAlumnoOrientacion">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ID Padre</label>
+                            <input type="number" class="form-control" id="editAlumnoPadreId">
+                        </div>
+                    </div>
+
+                    <div id="editPadreFields" style="display: none;">
+                        <hr style="margin: var(--spacing-xl) 0;">
+                        <h4 style="margin-bottom: var(--spacing-md);">Datos de Padre</h4>
+
+                        <div class="form-group">
+                            <label class="form-label">Ocupaci&oacute;n</label>
+                            <input type="text" class="form-control" id="editPadreOcupacion">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Domicilio</label>
+                            <input type="text" class="form-control" id="editPadreDomicilio">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tel&eacute;fono Alternativo</label>
+                            <input type="text" class="form-control" id="editPadreTelefonoAlt">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Alternativo</label>
+                            <input type="email" class="form-control" id="editPadreEmailAlt">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Parentesco</label>
+                            <input type="text" class="form-control" id="editPadreParentesco">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="editPadreTutorLegal">
+                                Es tutor legal
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="editDocenteFields" style="display: none;">
+                        <hr style="margin: var(--spacing-xl) 0;">
+                        <h4 style="margin-bottom: var(--spacing-md);">Datos de Docente</h4>
+
+                        <div class="form-group">
+                            <label class="form-label">Legajo</label>
+                            <input type="text" class="form-control" id="editDocenteLegajo">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Especialidad</label>
+                            <input type="text" class="form-control" id="editDocenteEspecialidad">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">T&iacute;tulo</label>
+                            <input type="text" class="form-control" id="editDocenteTitulo">
+                        </div>
+                    </div>
+
+                    <div id="editPreceptorFields" style="display: none;">
+                        <hr style="margin: var(--spacing-xl) 0;">
+                        <h4 style="margin-bottom: var(--spacing-md);">Datos de Preceptor</h4>
+
+                        <div class="form-group">
+                            <label class="form-label">Legajo</label>
+                            <input type="text" class="form-control" id="editPreceptorLegajo">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Nueva Configuracion de Matricula -->
     <div id="nuevaConfigMatriculaModal" class="modal">
         <div class="modal-content modal-md">
@@ -881,6 +1024,6 @@
     <script src="../../js/config.js"></script>
     <script src="../../js/api.js"></script>
     <script src="../../js/admin-dashboard.js"></script>
-    <script src="/js/admin-usuarios-matriculas.js"></script>
+    <script src="../../js/admin-usuarios-matriculas.js"></script>
 </body>
 </html>

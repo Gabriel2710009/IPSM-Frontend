@@ -116,6 +116,12 @@ function createUsuarioRow(user) {
                     <button class="btn btn-sm btn-outline" onclick="editarUsuario('${user.id}')">
                         <i class="fas fa-edit"></i>
                     </button>
+                    <button class="btn btn-sm btn-outline" onclick="cambiarRolUsuario('${user.id}')">
+                        <i class="fas fa-user-tag"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="resetearPasswordUsuario('${user.id}')">
+                        <i class="fas fa-key"></i>
+                    </button>
                     ${user.activo ? `
                         <button class="btn btn-sm btn-error" onclick="desactivarUsuario('${user.id}', '${user.nombre} ${user.apellido}')">
                             <i class="fas fa-ban"></i>
@@ -125,6 +131,9 @@ function createUsuarioRow(user) {
                             <i class="fas fa-check"></i>
                         </button>
                     `}
+                    <button class="btn btn-sm btn-error" onclick="eliminarUsuario('${user.id}', '${user.nombre} ${user.apellido}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </td>
         </tr>
@@ -634,6 +643,215 @@ async function activarUsuario(userId, userName) {
 }
 
 /**
+ * Editar usuario (según rol)
+ */
+async function editarUsuario(userId) {
+    let perfil = null;
+    try {
+        Utils.showLoader();
+        perfil = await API.get(`/api/v1/admin/usuarios/${userId}/perfil`, true);
+    } catch (error) {
+        console.error('Error al cargar perfil:', error);
+        Utils.showError('No se pudo cargar el perfil');
+        return;
+    } finally {
+        Utils.hideLoader();
+    }
+
+    const user = (perfil && perfil.usuario) ? perfil.usuario : (todosLosUsuarios || []).find(u => u.id === userId);
+    if (!user) {
+        Utils.showError('Usuario no encontrado');
+        return;
+    }
+
+    abrirModalEditarUsuario(user, perfil);
+}
+
+/**
+ * Cambiar rol de usuario
+ */
+async function cambiarRolUsuario(userId) {
+    const user = (todosLosUsuarios || []).find(u => u.id === userId);
+    if (!user) {
+        Utils.showError('Usuario no encontrado');
+        return;
+    }
+
+    const nuevoRol = prompt('Nuevo rol (admin, preceptor, docente, padre, alumno)', user.role || '');
+    if (!nuevoRol || nuevoRol.trim() === user.role) return;
+
+    try {
+        Utils.showLoader();
+        await API.put(`/api/v1/admin/usuarios/${userId}/role`, { role: nuevoRol.trim() }, true);
+        Utils.showSuccess('Rol actualizado');
+        await loadGestionUsuarios();
+    } catch (error) {
+        console.error('Error al cambiar rol:', error);
+        Utils.showError(error.message || 'Error al cambiar rol');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+/**
+ * Resetear contraseña de usuario
+ */
+async function resetearPasswordUsuario(userId) {
+    if (!confirm('¿Resetear contraseña? Se generará una temporal si no ingresas una.')) return;
+
+    const nueva = prompt('Nueva contraseña (dejar vacío para generar automáticamente)', '');
+    const payload = {};
+    if (nueva && nueva.trim()) payload.password = nueva.trim();
+
+    try {
+        Utils.showLoader();
+        const resp = await API.post(`/api/v1/admin/usuarios/${userId}/reset-password`, payload, true);
+        const temp = resp && resp.password_temporal ? resp.password_temporal : null;
+        if (temp) {
+            alert(`Contraseña temporal: ${temp}`);
+        }
+        Utils.showSuccess('Contraseña reseteada');
+    } catch (error) {
+        console.error('Error al resetear contraseña:', error);
+        Utils.showError(error.message || 'Error al resetear contraseña');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+/**
+ * Eliminar usuario (soft delete)
+ */
+async function eliminarUsuario(userId, userName) {
+    if (!confirm(`¿Eliminar a ${userName}? Esta acción desactiva y marca como eliminado.`)) return;
+
+    try {
+        Utils.showLoader();
+        await API.delete(`/api/v1/admin/usuarios/${userId}/eliminar`, true);
+        Utils.showSuccess('Usuario eliminado');
+        await loadGestionUsuarios();
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        Utils.showError(error.message || 'Error al eliminar usuario');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+function abrirModalEditarUsuario(user, perfil) {
+    const modal = document.getElementById('editarUsuarioModal');
+    const form = document.getElementById('editarUsuarioForm');
+
+    if (!modal || !form) return;
+
+    document.getElementById('editarUsuarioId').value = user.id;
+    document.getElementById('editDni').value = user.dni || '';
+    document.getElementById('editNombre').value = user.nombre || '';
+    document.getElementById('editApellido').value = user.apellido || '';
+    document.getElementById('editEmail').value = user.email || '';
+    document.getElementById('editTelefono').value = user.telefono || '';
+    document.getElementById('editRole').value = user.role || '';
+
+    const alumnoFields = document.getElementById('editAlumnoFields');
+    const padreFields = document.getElementById('editPadreFields');
+    const docenteFields = document.getElementById('editDocenteFields');
+    const preceptorFields = document.getElementById('editPreceptorFields');
+
+    alumnoFields.style.display = 'none';
+    padreFields.style.display = 'none';
+    docenteFields.style.display = 'none';
+    preceptorFields.style.display = 'none';
+
+    if (user.role === 'alumno') {
+        alumnoFields.style.display = 'block';
+        document.getElementById('editAlumnoLegajo').value = perfil.legajo || '';
+        document.getElementById('editAlumnoNivelId').value = perfil.nivel_id || '';
+        document.getElementById('editAlumnoAnio').value = perfil.anio || '';
+        document.getElementById('editAlumnoDivision').value = perfil.division || '';
+        document.getElementById('editAlumnoTurno').value = perfil.turno || '';
+        document.getElementById('editAlumnoOrientacion').value = perfil.orientacion || '';
+        document.getElementById('editAlumnoPadreId').value = perfil.padre_id || '';
+    } else if (user.role === 'padre') {
+        padreFields.style.display = 'block';
+        document.getElementById('editPadreOcupacion').value = perfil.ocupacion || '';
+        document.getElementById('editPadreDomicilio').value = perfil.domicilio || '';
+        document.getElementById('editPadreTelefonoAlt').value = perfil.telefono_alternativo || '';
+        document.getElementById('editPadreEmailAlt').value = perfil.email_alternativo || '';
+        document.getElementById('editPadreParentesco').value = perfil.parentesco || '';
+        document.getElementById('editPadreTutorLegal').checked = !!perfil.es_tutor_legal;
+    } else if (user.role === 'docente') {
+        docenteFields.style.display = 'block';
+        document.getElementById('editDocenteLegajo').value = perfil.legajo || '';
+        document.getElementById('editDocenteEspecialidad').value = perfil.especialidad || '';
+        document.getElementById('editDocenteTitulo').value = perfil.titulo || '';
+    } else if (user.role === 'preceptor') {
+        preceptorFields.style.display = 'block';
+        document.getElementById('editPreceptorLegajo').value = perfil.legajo || '';
+    }
+
+    modal.classList.add('active');
+}
+
+async function handleEditarUsuarioSubmit(e) {
+    e.preventDefault();
+
+    const userId = document.getElementById('editarUsuarioId').value;
+    if (!userId) return;
+
+    const payload = {
+        dni: document.getElementById('editDni').value.trim(),
+        nombre: document.getElementById('editNombre').value.trim(),
+        apellido: document.getElementById('editApellido').value.trim(),
+        email: document.getElementById('editEmail').value.trim(),
+        telefono: document.getElementById('editTelefono').value.trim()
+    };
+
+    const role = (document.getElementById('editRole').value || '').toLowerCase();
+
+    if (role === 'alumno') {
+        payload.legajo = document.getElementById('editAlumnoLegajo').value.trim();
+        payload.nivel_id = parseInt(document.getElementById('editAlumnoNivelId').value || '0', 10) || undefined;
+        payload.anio = parseInt(document.getElementById('editAlumnoAnio').value || '0', 10) || undefined;
+        payload.division = document.getElementById('editAlumnoDivision').value.trim();
+        payload.turno = document.getElementById('editAlumnoTurno').value.trim();
+        payload.orientacion = document.getElementById('editAlumnoOrientacion').value.trim();
+        payload.padre_id = parseInt(document.getElementById('editAlumnoPadreId').value || '0', 10) || undefined;
+    } else if (role === 'padre') {
+        payload.ocupacion = document.getElementById('editPadreOcupacion').value.trim();
+        payload.domicilio = document.getElementById('editPadreDomicilio').value.trim();
+        payload.telefono_alternativo = document.getElementById('editPadreTelefonoAlt').value.trim();
+        payload.email_alternativo = document.getElementById('editPadreEmailAlt').value.trim();
+        payload.parentesco = document.getElementById('editPadreParentesco').value.trim();
+        payload.es_tutor_legal = document.getElementById('editPadreTutorLegal').checked;
+    } else if (role === 'docente') {
+        payload.docente_legajo = document.getElementById('editDocenteLegajo').value.trim();
+        payload.docente_especialidad = document.getElementById('editDocenteEspecialidad').value.trim();
+        payload.docente_titulo = document.getElementById('editDocenteTitulo').value.trim();
+    } else if (role === 'preceptor') {
+        payload.preceptor_legajo = document.getElementById('editPreceptorLegajo').value.trim();
+    }
+
+    Object.keys(payload).forEach(key => {
+        if (payload[key] === '' || payload[key] === undefined) {
+            delete payload[key];
+        }
+    });
+
+    try {
+        Utils.showLoader();
+        await API.put(`/api/v1/admin/usuarios/${userId}`, payload, true);
+        Utils.showSuccess('Usuario actualizado correctamente');
+        cerrarModal('editarUsuarioModal');
+        await loadGestionUsuarios();
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        Utils.showError(error.message || 'Error al actualizar usuario');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+/**
  * =============================================
  * CONFIGURACIÓN DE MATRÍCULAS
  * =============================================
@@ -903,6 +1121,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const configMatriculaForm = document.getElementById('nuevaConfigMatriculaForm');
     if (configMatriculaForm) {
         configMatriculaForm.addEventListener('submit', handleNuevaConfigMatricula);
+    }
+
+    const editarUsuarioForm = document.getElementById('editarUsuarioForm');
+    if (editarUsuarioForm) {
+        editarUsuarioForm.addEventListener('submit', handleEditarUsuarioSubmit);
     }
 });
 
