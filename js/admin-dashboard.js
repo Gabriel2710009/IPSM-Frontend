@@ -653,11 +653,16 @@ function abrirModalNuevaConfig() {
     const title = document.getElementById('configModalTitle');
     const submitBtn = document.getElementById('configSubmitBtn');
     const nivelSelect = document.getElementById('configNivel');
+    const cicloInput = document.getElementById('configCicloLectivoAnio');
 
     editingConfigId = null;
 
     if (form) form.reset();
     if (nivelSelect) nivelSelect.disabled = false;
+    if (cicloInput) {
+        cicloInput.value = getCurrentYear();
+        cicloInput.disabled = false;
+    }
     if (title) title.textContent = 'Nueva Configuración de Cuota';
     if (submitBtn) submitBtn.textContent = 'Crear Configuración';
     modal.classList.add('active');
@@ -671,8 +676,14 @@ async function handleNuevaConfig(e) {
     
     const nivel = document.getElementById('configNivel').value;
     const nivelId = getNivelId(nivel);
+    const cicloLectivoAnio = parseInt(document.getElementById('configCicloLectivoAnio').value, 10);
     const montoBase = parseFloat(document.getElementById('configMonto').value);
     const porcentajeRecargo = parseFloat(document.getElementById('configRecargo').value);
+
+    if (Number.isNaN(cicloLectivoAnio)) {
+        Utils.showError('Ingrese un año de ciclo lectivo válido');
+        return;
+    }
 
     if (Number.isNaN(montoBase)) {
         Utils.showError('Ingrese un monto válido');
@@ -700,7 +711,7 @@ async function handleNuevaConfig(e) {
             Utils.showSuccess('Configuración actualizada correctamente');
         } else {
             const formData = {
-                ciclo_lectivo_id: 2, // 2025
+                ciclo_lectivo_anio: cicloLectivoAnio,
                 nivel_id: nivelId,
                 monto_base: montoBase,
                 monto_con_recargo: montoConRecargo,
@@ -731,6 +742,7 @@ async function editarConfig(configId) {
     const form = document.getElementById('nuevaConfigForm');
     const title = document.getElementById('configModalTitle');
     const submitBtn = document.getElementById('configSubmitBtn');
+    const cicloInput = document.getElementById('configCicloLectivoAnio');
 
     const config = (configuracionesCuotas || []).find(c => c.id === configId);
     if (!config) {
@@ -746,6 +758,11 @@ async function editarConfig(configId) {
     if (nivelSelect) {
         nivelSelect.value = getNivelKey(config.nivel_id, config.nivel_nombre);
         nivelSelect.disabled = true;
+    }
+
+    if (cicloInput) {
+        cicloInput.value = extractYear(config.ciclo_lectivo_nombre) || getCurrentYear();
+        cicloInput.disabled = true;
     }
 
     const montoInput = document.getElementById('configMonto');
@@ -1047,6 +1064,9 @@ function createCursoCard(curso) {
                         <button class="btn btn-sm btn-success" onclick="activarCurso(${curso.id})">
                             <i class="fas fa-check"></i> Activar
                         </button>
+                        <button class="btn btn-sm btn-error" onclick="eliminarCurso(${curso.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
                     `}
                 </div>
             </div>
@@ -1065,7 +1085,8 @@ function abrirModalNuevoCurso() {
     form.reset();
     document.getElementById('cursoId').value = '';
     document.getElementById('cursoActivo').checked = true;
-    document.getElementById('cursoCicloLectivoId').disabled = false;
+    document.getElementById('cursoCicloLectivoAnio').value = getCurrentYear();
+    document.getElementById('cursoCicloLectivoAnio').disabled = false;
     document.getElementById('cursoNivelId').disabled = false;
     document.getElementById('cursoAnio').disabled = false;
     document.getElementById('cursoDivision').disabled = false;
@@ -1092,7 +1113,7 @@ function abrirModalEditarCurso(cursoId) {
 
     form.reset();
     document.getElementById('cursoId').value = curso.id;
-    document.getElementById('cursoCicloLectivoId').value = curso.ciclo_lectivo_id || '';
+    document.getElementById('cursoCicloLectivoAnio').value = extractYear(curso.ciclo_lectivo_nombre) || getCurrentYear();
     document.getElementById('cursoNivelId').value = curso.nivel_id || '';
     document.getElementById('cursoAnio').value = curso.anio || '';
     document.getElementById('cursoDivision').value = curso.division || '';
@@ -1100,7 +1121,7 @@ function abrirModalEditarCurso(cursoId) {
     document.getElementById('cursoOrientacion').value = curso.orientacion || '';
     document.getElementById('cursoCapacidad').value = curso.capacidad_maxima || '';
     document.getElementById('cursoActivo').checked = !!curso.activo;
-    document.getElementById('cursoCicloLectivoId').disabled = true;
+    document.getElementById('cursoCicloLectivoAnio').disabled = true;
     document.getElementById('cursoNivelId').disabled = true;
     document.getElementById('cursoAnio').disabled = true;
     document.getElementById('cursoDivision').disabled = true;
@@ -1115,7 +1136,7 @@ async function handleCursoSubmit(e) {
     e.preventDefault();
 
     const cursoId = document.getElementById('cursoId').value;
-    const cicloLectivoId = parseInt(document.getElementById('cursoCicloLectivoId').value, 10);
+    const cicloLectivoAnio = parseInt(document.getElementById('cursoCicloLectivoAnio').value, 10);
     const nivelId = parseInt(document.getElementById('cursoNivelId').value, 10);
     const anio = parseInt(document.getElementById('cursoAnio').value, 10);
     const division = document.getElementById('cursoDivision').value.trim().toUpperCase();
@@ -1137,13 +1158,13 @@ async function handleCursoSubmit(e) {
             await API.put(`/api/v1/admin/cursos/${cursoId}`, updateData, true);
             Utils.showSuccess('Curso actualizado correctamente');
         } else {
-            if (Number.isNaN(cicloLectivoId) || Number.isNaN(nivelId) || Number.isNaN(anio) || !division || !turno) {
+            if (Number.isNaN(cicloLectivoAnio) || Number.isNaN(nivelId) || Number.isNaN(anio) || !division || !turno) {
                 Utils.showError('Complete todos los campos obligatorios');
                 return;
             }
 
             const createData = {
-                ciclo_lectivo_id: cicloLectivoId,
+                ciclo_lectivo_anio: cicloLectivoAnio,
                 nivel_id: nivelId,
                 anio: anio,
                 division: division,
@@ -1194,6 +1215,23 @@ async function activarCurso(cursoId) {
     } catch (error) {
         console.error('Error al activar curso:', error);
         Utils.showError(error.message || 'Error al activar el curso');
+    } finally {
+        Utils.hideLoader();
+    }
+}
+
+async function eliminarCurso(cursoId) {
+    if (!confirm('¿Eliminar este curso de forma permanente?\nEsta acción no se puede deshacer.')) return;
+
+    try {
+        Utils.showLoader();
+        await API.delete(`/api/v1/admin/cursos/${cursoId}?hard=true`, true);
+        Utils.showSuccess('Curso eliminado');
+        await loadCursos();
+        await loadEstadisticas();
+    } catch (error) {
+        console.error('Error al eliminar curso:', error);
+        Utils.showError(error.message || 'Error al eliminar el curso');
     } finally {
         Utils.hideLoader();
     }
@@ -1378,7 +1416,7 @@ function editarNoticia(noticiaId) {
     if (imagenAltInput) imagenAltInput.value = noticia.imagen_alt || '';
 
     const categoriaInput = document.getElementById('noticiaCategoria');
-    if (categoriaInput) categoriaInput.value = noticia.categoria || '';
+    if (categoriaInput) categoriaInput.value = mapCategoriaValue(noticia.categoria);
 
     const publicadaInput = document.getElementById('noticiaPublicada');
     if (publicadaInput) publicadaInput.checked = !!noticia.publicada;
@@ -1617,6 +1655,12 @@ function normalizeText(value) {
         .toLowerCase();
 }
 
+function mapCategoriaValue(value) {
+    const normalized = normalizeText(value);
+    const options = ['institucional', 'academico', 'deportes', 'cultural', 'comunidad', 'eventos'];
+    return options.includes(normalized) ? normalized : '';
+}
+
 function getMesNumero(mesValor) {
     if (mesValor === null || mesValor === undefined) return null;
     if (typeof mesValor === 'number') return mesValor;
@@ -1650,6 +1694,16 @@ function formatMonto(monto) {
     const num = typeof monto === 'number' ? monto : parseFloat(monto);
     if (Number.isNaN(num)) return monto;
     return num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function getCurrentYear() {
+    return new Date().getFullYear();
+}
+
+function extractYear(value) {
+    if (!value) return null;
+    const match = String(value).match(/(20\\d{2})/);
+    return match ? parseInt(match[1], 10) : null;
 }
 
 function capitalize(str) {

@@ -158,7 +158,7 @@ async function loadNoticias() {
         
         if (noticias && noticias.length > 0) {
             noticiasContainer.innerHTML = noticias.map(noticia => `
-                <article class="noticia-card">
+                <article class="noticia-card" onclick="verNoticia('${noticia.id}')">
                     <img src="${noticia.imagen_url || noticia.imagen || fallbackImage}" 
                          alt="${noticia.titulo}"
                          onerror="this.src='${fallbackImage}'">
