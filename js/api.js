@@ -158,6 +158,16 @@ class API {
      */
     static async delete(endpoint, dataOrRequireAuth = true, maybeRequireAuth = true) {
         const url = `${CONFIG.API_BASE_URL}${endpoint}`;
+
+        let data = null;
+        let requireAuth = true;
+
+        if (typeof dataOrRequireAuth === 'boolean') {
+            requireAuth = dataOrRequireAuth;
+        } else {
+            data = dataOrRequireAuth;
+            requireAuth = typeof maybeRequireAuth === 'boolean' ? maybeRequireAuth : true;
+        }
         
         console.log('🌐 API DELETE Request:', {
             endpoint,
@@ -170,16 +180,6 @@ class API {
             const headers = {
                 'Content-Type': 'application/json'
             };
-
-            let data = null;
-            let requireAuth = true;
-
-            if (typeof dataOrRequireAuth === 'boolean') {
-                requireAuth = dataOrRequireAuth;
-            } else {
-                data = dataOrRequireAuth;
-                requireAuth = typeof maybeRequireAuth === 'boolean' ? maybeRequireAuth : true;
-            }
 
             if (requireAuth) {
                 const authHeaders = this.getAuthHeaders();
