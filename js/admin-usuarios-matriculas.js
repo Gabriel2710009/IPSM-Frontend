@@ -729,11 +729,21 @@ async function resetearPasswordUsuario(userId) {
     try {
         Utils.showLoader();
         const resp = await API.post(`/api/v1/admin/usuarios/${userId}/reset-password`, payload, true);
+        const emailEnviado = !!(resp && resp.email_enviado);
+        const destino = resp && resp.email_destino ? resp.email_destino : null;
         const temp = resp && resp.password_temporal ? resp.password_temporal : null;
-        if (temp) {
-            alert(`Contraseña temporal: ${temp}`);
+
+        if (emailEnviado) {
+            const msg = destino
+                ? `Contraseña reseteada y enviada por email a ${destino}`
+                : 'Contraseña reseteada y enviada por email';
+            Utils.showSuccess(msg);
+        } else if (temp) {
+            alert(`No se pudo enviar el email. Contraseña temporal: ${temp}`);
+            Utils.showWarning('No se pudo enviar por email. Comparte la contraseña temporal manualmente.');
+        } else {
+            Utils.showSuccess('Contraseña reseteada');
         }
-        Utils.showSuccess('Contraseña reseteada');
     } catch (error) {
         console.error('Error al resetear contraseña:', error);
         Utils.showError(error.message || 'Error al resetear contraseña');
