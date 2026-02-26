@@ -118,7 +118,7 @@
                 <!-- Nivel Inicial -->
                 <div class="nivel-card">
                     <div class="nivel-image">
-                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/Inicial.jpg" alt="Nivel Inicial">
+                        <img src="https://i.postimg.cc/N9sWkKbd/ciro-inicia.png" alt="Nivel Inicial">
                     </div>
                     <div class="nivel-content">
                         <h3>Nivel Inicial</h3>
@@ -131,7 +131,7 @@
                 <!-- Nivel Primario -->
                 <div class="nivel-card">
                     <div class="nivel-image">
-                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/Primario.jpg" alt="Nivel Primario">
+                        <img src="https://live.staticflickr.com/65535/55085914885_d93be590e8_b.jpg" alt="Nivel Primario">
                     </div>
                     <div class="nivel-content">
                         <h3>Nivel Primario</h3>
@@ -144,7 +144,7 @@
                 <!-- Nivel Secundario -->
                 <div class="nivel-card">
                     <div class="nivel-image">
-                        <img src="https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/secundario.jpg" alt="Nivel Secundario">
+                        <img src="https://live.staticflickr.com/65535/55085914955_42208f8219_b.jpg" alt="Nivel Secundario">
                     </div>
                     <div class="nivel-content">
                         <h3>Nivel Secundario</h3>
@@ -164,26 +164,33 @@
             
             <div class="valores-grid">
                 <div class="valor-item">
-                    <div class="valor-icon">📚</div>
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
                     <h3>Excelencia Académica</h3>
                     <p>Compromiso con la calidad educativa y la actualización constante</p>
                 </div>
 
-                
                 <div class="valor-item">
-                    <div class="valor-icon">🤝</div>
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
                     <h3>Respeto y Convivencia</h3>
                     <p>Promovemos el respeto mutuo y la construcción de vínculos saludables</p>
                 </div>
                 
                 <div class="valor-item">
-                    <div class="valor-icon">💡</div>
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
                     <h3>Innovación</h3>
                     <p>Incorporamos nuevas metodologías y tecnologías educativas</p>
                 </div>
                 
                 <div class="valor-item">
-                    <div class="valor-icon">🌱</div>
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
                     <h3>Desarrollo Integral</h3>
                     <p>Formación completa: intelectual, emocional, social y física</p>
                 </div>
@@ -191,40 +198,64 @@
         </div>
     </section>
 
+
     <!-- Sección Contacto -->
     <section id="contacto" class="contacto-section">
         <div class="container">
             <h2 class="section-title text-center">Contacto</h2>
             
             <div class="row">
+                <!-- INFO -->
                 <div class="col-6">
                     <div class="contacto-info">
                         <h3>Información de Contacto</h3>
                         
                         <div class="contacto-item">
-                            <strong>📍 Dirección:</strong>
-                            <p><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank">Colon 168, San Luis, Argentina</a></p>
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <strong>Dirección:</strong>
+                            </div>
+                            <p>
+                                <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank">
+                                    Colon 168, San Luis, Argentina
+                                </a>
+                            </p>
                         </div>
                         
                         <div class="contacto-item">
-                            <strong>📞 Teléfono:</strong>
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-phone"></i>
+                                <strong>Teléfono:</strong>
+                            </div>
                             <p><a href="tel:+542664431659">+54 (266) 4431659</a></p>
                         </div>
                         
                         <div class="contacto-item">
-                            <strong>✉️ Email:</strong>
-                            <p><a href="mailto:institutosanmarino.direccion@gmail.com">institutosanmarino.direccion@gmail.com</a></p>
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-envelope"></i>
+                                <strong>Email:</strong>
+                            </div>
+                            <p>
+                                <a href="mailto:institutosanmarino.direccion@gmail.com">
+                                    institutosanmarino.direccion@gmail.com
+                                </a>
+                            </p>
                         </div>
                         
                         <div class="contacto-item">
-                            <strong>🕐 Horario de atención:</strong>
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-clock"></i>
+                                <strong>Horario de atención:</strong>
+                            </div>
                             <p>Lunes a Viernes: 8:00 - 15:00hs</p>
                         </div>
                     </div>
                 </div>
                 
+                <!-- FORMULARIO -->
                 <div class="col-6">
                     <form class="contacto-form" id="contactoForm">
+                        
                         <div class="form-group">
                             <label class="form-label" for="nombre">Nombre completo</label>
                             <input type="text" class="form-control" id="nombre" required>
@@ -245,12 +276,17 @@
                             <textarea class="form-control" id="mensaje" rows="5" required></textarea>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block">Enviar mensaje</button>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar mensaje
+                        </button>
+                        
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- INSCRIPCIONES -->
     <section class="section">
@@ -263,7 +299,7 @@
                 <a href="#" class="btn btn-contacto" onclick="enviarWhatsAppInicial(); return false;">
                     <i class="fab fa-whatsapp"></i> Solicitar Entrevista
                 </a>
-                <a href="#" class="btn btn-entrevista" onclick="enviarWhatsAppInicial(); return false;">
+                <a href="https://wa.me/5492664004015" class="btn btn-entrevista">
                     <i class="fas fa-calendar-check"></i> Contactar
                 </a>
             </div>
@@ -299,14 +335,26 @@
                 
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>📍 <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
-                    <p>📞 <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
-                    <p>✉️ <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
+                    <p><i class="fa-solid fa-location-dot"></i> 
+                        <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">
+                            Colon 168, San Luis
+                        </a>
+                    </p>
+                    <p><i class="fa-solid fa-phone"></i> 
+                        <a href="tel:+542664431659" style="color: inherit;">
+                            +54 (266) 4431659
+                        </a>
+                    </p>
+                    <p><i class="fa-solid fa-envelope"></i> 
+                        <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">
+                            institutosanmarino.direccion@gmail.com
+                        </a>
+                    </p>
                 </div>
-            </div>
+
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>

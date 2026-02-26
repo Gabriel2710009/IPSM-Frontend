@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reglamento - Instituto San Marino</title>
-    <link rel="stylesheet" href="/IPSM-Frontend/css/reglamento.css">
+    <link rel="stylesheet" href="./css/styles.css"> 
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="./css/reglamento.css">
+
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
@@ -89,9 +92,9 @@
                 <nav class="nav" id="mainNav">
                     <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html" class="nav-link">Inicio</a>
                     <a href="noticias.html" class="nav-link active">Noticias</a>
-                    <a href="../index.html#niveles" class="nav-link">Niveles</a>
-                    <a href="../reglamento.html" class="nav-link">Reglamento</a>
-                    <a href="../index.html#contacto" class="nav-link">Contacto</a>
+                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html#niveles" class="nav-link">Niveles</a>
+                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/reglamento.html" class="nav-link">Reglamento</a>
+                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html#contacto" class="nav-link">Contacto</a>
                     <a href="auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
                     <div class="social-icons">
                         <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -132,15 +135,14 @@
 
             <!-- Visor de PDF -->
             <div id="pdf-content">
-                <!-- PLACEHOLDER: Aquí se cargará el PDF cuando esté disponible -->
-                <div class="pdf-placeholder">
-                    <i class="fas fa-file-pdf"></i>
-                    <h3>Reglamento Institucional</h3>
-                    <p>El documento del reglamento será agregado próximamente.</p>
-                    <p style="font-size: 1rem; margin-top: 1rem; color: var(--primary-color);">
-                        Para cargar el PDF, coloque el archivo en: <strong>/documents/reglamento.pdf</strong>
-                    </p>
-                </div>
+                <iframe 
+                    src="https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf" 
+                    class="pdf-viewer"
+                    title="Reglamento Institucional"
+                    type="application/pdf">
+                    <p>Su navegador no puede mostrar PDFs.
+                    <a href="https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf" download>Haga clic aquí para descargar el documento.</a></p>
+                </iframe>
             </div>
         </div>
     </section>
@@ -195,84 +197,33 @@
                 
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>📍 <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
-                    <p>📞 <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
-                    <p>✉️ <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
+                    <p><i class="fa-solid fa-location-dot"></i><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
+                    <p><i class="fa-solid fa-phone"></i> <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
+                    <p><i class="fa-solid fa-envelope"></i> <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Instituto Privado San Marino. Todos los derechos reservados.</p>
+                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
     <script>
         // Ruta del PDF - REEMPLAZAR cuando se suba el documento
-        const PDF_PATH = '../documents/reglamento.pdf';
-
-        // Cargar PDF cuando esté disponible
-        window.addEventListener('DOMContentLoaded', function() {
-            cargarPDF();
-        });
-
-        function cargarPDF() {
-            // Verificar si existe el PDF
-            fetch(PDF_PATH, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        // Si existe el PDF, mostrarlo
-                        document.getElementById('pdf-content').innerHTML = `
-                            <iframe 
-                                src="${PDF_PATH}" 
-                                class="pdf-viewer"
-                                title="Reglamento Institucional"
-                                type="application/pdf">
-                                <p>Su navegador no puede mostrar PDFs. 
-                                <a href="${PDF_PATH}" download>Haga clic aquí para descargar el documento.</a></p>
-                            </iframe>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    // Si no existe, mantener el placeholder
-                    console.log('PDF no encontrado aún');
-                });
-        }
+        const PDF_PATH = 'https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf';
 
         function descargarPDF() {
-            // Verificar si existe el PDF
-            fetch(PDF_PATH, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        // Descargar PDF
-                        const link = document.createElement('a');
-                        link.href = PDF_PATH;
-                        link.download = 'reglamento-instituto-san-marino.pdf';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    } else {
-                        alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
-                    }
-                })
-                .catch(error => {
-                    alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
-                });
+            const link = document.createElement('a');
+            link.href = PDF_PATH;
+            link.download = 'reglamento-instituto-san-marino.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function imprimirPDF() {
-            fetch(PDF_PATH, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        window.open(PDF_PATH, '_blank');
-                    } else {
-                        alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
-                    }
-                })
-                .catch(error => {
-                    alert('El documento del reglamento aún no está disponible. Por favor, intente más tarde.');
-                });
+            window.open(PDF_PATH, '_blank');
         }
 
         function consultarPorWhatsApp() {
@@ -287,5 +238,7 @@ Muchas gracias.`;
             window.open(urlWhatsApp, '_blank');
         }
     </script>
+    <script src="../js/home.js"></script>
+    <script src="../js/styles.js"></script>
 </body>
 </html>
