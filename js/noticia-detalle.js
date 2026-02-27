@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JavaScript para Detalle de Noticia
  * Instituto Privado San Marino
  */
@@ -27,19 +27,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Inicializa el menú móvil
+ * Inicializa el menu movil
  */
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
-    
+
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', function() {
             const isOpen = mainNav.classList.toggle('active');
             document.body.classList.toggle('menu-open', isOpen);
         });
-        
-        // Cerrar menú al hacer clic en un enlace
+
+        // Cerrar menu al hacer clic en un enlace
         const navLinks = mainNav.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
@@ -47,8 +47,8 @@ function initMobileMenu() {
                 document.body.classList.remove('menu-open');
             });
         });
-        
-        // Cerrar menú al hacer clic fuera
+
+        // Cerrar menu al hacer clic fuera
         document.addEventListener('click', function(event) {
             if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
                 mainNav.classList.remove('active');
@@ -58,7 +58,6 @@ function initMobileMenu() {
     }
 }
 
-
 /**
  * Carga la noticia desde la URL
  */
@@ -66,37 +65,35 @@ async function loadNoticiaFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
     const id = urlParams.get('id');
-    
+
     if (!slug && !id) {
         window.location.href = 'noticias.html';
         return;
     }
-    
+
     try {
         showLoader();
-        
-        // Intentar cargar desde la API
+
         let noticia;
-        
+
         if (id) {
-            noticia = normalizeNoticia(await API.get(`${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${id}`));
+            noticia = normalizeNoticia(await API.get(`${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${id}`, false));
         } else {
-            // Si solo tenemos slug, buscar todas y filtrar
-            const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS)).map(normalizeNoticia);
+            const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS, false)).map(normalizeNoticia);
             noticia = noticias.find(n => slugify(n.titulo) === slug);
         }
-        
+
         if (noticia) {
             currentNoticia = noticia;
-            mostrarNoticia(noticia);
+            await mostrarNoticia(noticia);
             loadNoticiasRelacionadas(noticia.id, noticia.categorias);
             updateMetaTags(noticia);
         } else {
-            mostrarNoticiaEjemplo(slug, id);
+            await mostrarNoticiaEjemplo(slug, id);
         }
     } catch (error) {
         console.error('Error al cargar noticia:', error);
-        mostrarNoticiaEjemplo(slug, id);
+        await mostrarNoticiaEjemplo(slug, id);
     } finally {
         hideLoader();
     }
@@ -105,63 +102,188 @@ async function loadNoticiaFromURL() {
 /**
  * Muestra la noticia completa
  */
-function mostrarNoticia(noticia) {
+async function mostrarNoticia(noticia) {
     const articulo = document.getElementById('noticiaArticulo');
     const breadcrumbTitle = document.getElementById('breadcrumbTitle');
-    
+
+    if (!articulo) return;
+
     // Actualizar breadcrumb
-    breadcrumbTitle.textContent = noticia.titulo;
-    
-    // Construir HTML
-    const html = `
+    if (breadcrumbTitle) {
+        breadcrumbTitle.textContent = noticia.titulo || 'Noticia';
+    }
+
+    const contenidoHTML = await renderNoticiaCompleta(noticia);
+    articulo.innerHTML = construirArticulo(noticia, contenidoHTML);
+}
+
+/**
+ * Escapa HTML basico para evitar inyecciones en texto de bloques.
+ */
+function escapeHTML(value) {
+    if (value === null || value === undefined) return '';
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+/**
+ * Obtiene bloques editoriales desde backend publico.
+ */
+async function obtenerBloques(noticiaId) {
+    if (!noticiaId) return [];
+
+    try {
+        const endpoint = `${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${noticiaId}/bloques`;
+        const data = await API.get(endpoint, false);
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error('Error al obtener bloques:', error);
+        return [];
+    }
+}
+
+/**
+ * Renderiza bloques editoriales semanticos.
+ */
+function renderBloques(bloques) {
+    if (!Array.isArray(bloques) || bloques.length === 0) {
+        return '';
+    }
+
+    return bloques.map((bloque) => {
+        if (!bloque || typeof bloque !== 'object') return '';
+
+        const tipo = (bloque.tipo || '').toLowerCase().trim();
+        const contenido = escapeHTML(bloque.contenido || '');
+        const caption = escapeHTML(bloque.caption || '');
+        const imagenUrl = bloque.imagen_url || '';
+
+        if (tipo === 'parrafo') {
+            if (!contenido) return '';
+            return `<p class="nota-parrafo">${contenido}</p>`;
+        }
+
+        if (tipo === 'subtitulo') {
+            if (!contenido) return '';
+            return `<h2 class="nota-subtitulo">${contenido}</h2>`;
+        }
+
+        if (tipo === 'imagen') {
+            if (!imagenUrl) return '';
+            const alt = caption || 'Imagen de la noticia';
+            return `
+                <figure class="nota-figure">
+                    <img src="${imagenUrl}" alt="${alt}" loading="lazy">
+                    ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+                </figure>
+            `;
+        }
+
+        if (tipo === 'quote') {
+            if (!contenido) return '';
+            return `<blockquote class="nota-quote"><p>${contenido}</p></blockquote>`;
+        }
+
+        return '';
+    }).join('');
+}
+
+/**
+ * Render hibrido: bloques si existen, si no contenido legacy.
+ */
+async function renderNoticiaCompleta(noticia) {
+    const bloques = await obtenerBloques(noticia.id);
+
+    if (bloques.length > 0) {
+        const htmlBloques = renderBloques(bloques);
+        if (htmlBloques.trim()) {
+            return htmlBloques;
+        }
+    }
+
+    return formatearContenido(noticia.contenido);
+}
+
+/**
+ * Formatea contenido legacy.
+ */
+function formatearContenido(contenido) {
+    if (!contenido) return '<p>Contenido no disponible.</p>';
+
+    const contenidoStr = String(contenido);
+    const pareceHTML = /<[a-z][\s\S]*>/i.test(contenidoStr);
+
+    if (pareceHTML) {
+        return contenidoStr;
+    }
+
+    return contenidoStr
+        .split('\n\n')
+        .filter(p => p && p.trim())
+        .map(p => `<p>${escapeHTML(p.trim())}</p>`)
+        .join('');
+}
+
+/**
+ * Construye el articulo principal con estructura editorial.
+ */
+function construirArticulo(noticia, contenidoHTML) {
+    const imagenPrincipal = noticia.imagen || getDefaultNewsImage();
+    const titulo = escapeHTML(noticia.titulo || 'Noticia');
+    const resumen = noticia.resumen ? escapeHTML(noticia.resumen) : '';
+    const autor = escapeHTML(noticia.autor || 'Redaccion');
+    const fecha = formatDate(noticia.fecha);
+    const imagenAlt = escapeHTML(noticia.imagen_alt || noticia.titulo || 'Imagen de la noticia');
+
+    return `
         <div class="noticia-header">
-            <img src="${noticia.imagen || getDefaultNewsImage()}" 
-                 alt="${noticia.titulo}" 
-                 class="noticia-header-imagen">
+            <img src="${imagenPrincipal}" alt="${imagenAlt}" class="noticia-header-imagen">
             <div class="noticia-header-overlay">
-                ${noticia.categorias ? `
+                ${noticia.categorias && noticia.categorias.length > 0 ? `
                     <div class="noticia-categorias">
-                        ${noticia.categorias.map(cat => `<span class="categoria-badge">${cat}</span>`).join('')}
+                        ${noticia.categorias.map(cat => `<span class="categoria-badge">${escapeHTML(cat)}</span>`).join('')}
                     </div>
                 ` : ''}
-                <h1 class="noticia-titulo">${noticia.titulo}</h1>
+                <h1 class="noticia-titulo">${titulo}</h1>
                 <div class="noticia-meta">
                     <div class="noticia-meta-item">
                         <i class="fas fa-calendar"></i>
-                        <span>${formatDate(noticia.fecha)}</span>
+                        <span>${fecha}</span>
                     </div>
                     <div class="noticia-meta-item">
                         <i class="fas fa-user"></i>
-                        <span>${noticia.autor || 'Redacción'}</span>
+                        <span>${autor}</span>
                     </div>
                     ${noticia.tiempo_lectura ? `
                         <div class="noticia-meta-item">
                             <i class="fas fa-clock"></i>
-                            <span>${noticia.tiempo_lectura} min de lectura</span>
+                            <span>${escapeHTML(noticia.tiempo_lectura)} min de lectura</span>
                         </div>
                     ` : ''}
                 </div>
             </div>
         </div>
-        
+
         <div class="noticia-contenido">
-            ${noticia.resumen ? `
-                <div class="noticia-resumen">
-                    ${noticia.resumen}
-                </div>
+            ${resumen ? `
+                <div class="noticia-bajada">${resumen}</div>
             ` : ''}
-            
+
             <div class="noticia-cuerpo">
-                ${formatearContenido(noticia.contenido)}
+                ${contenidoHTML || '<p>Contenido no disponible.</p>'}
             </div>
-            
+
             ${noticia.etiquetas && noticia.etiquetas.length > 0 ? `
                 <div class="noticia-etiquetas">
                     <h3><i class="fas fa-tags"></i> Etiquetas</h3>
                     <div class="etiquetas-list">
                         ${noticia.etiquetas.map(tag => `
                             <span class="etiqueta-badge">
-                                <i class="fas fa-tag"></i> ${tag}
+                                <i class="fas fa-tag"></i> ${escapeHTML(tag)}
                             </span>
                         `).join('')}
                     </div>
@@ -169,24 +291,6 @@ function mostrarNoticia(noticia) {
             ` : ''}
         </div>
     `;
-    
-    articulo.innerHTML = html;
-}
-
-/**
- * Formatea el contenido de la noticia
- */
-function formatearContenido(contenido) {
-    if (!contenido) return '<p>Contenido no disponible.</p>';
-    
-    // Convertir saltos de línea a párrafos
-    let formatted = contenido
-        .split('\n\n')
-        .filter(p => p.trim())
-        .map(p => `<p>${p.trim()}</p>`)
-        .join('');
-    
-    return formatted;
 }
 
 /**
@@ -194,27 +298,24 @@ function formatearContenido(contenido) {
  */
 async function loadNoticiasRelacionadas(currentId, categorias) {
     const container = document.getElementById('noticiasRelacionadas');
-    
+
     try {
-        const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS)).map(normalizeNoticia);
-        
-        // Filtrar noticias relacionadas (misma categoría, pero diferente ID)
+        const noticias = (await API.get(CONFIG.ENDPOINTS.PUBLICO.NOTICIAS, false)).map(normalizeNoticia);
+
         let relacionadas = noticias.filter(n => {
             if (n.id === currentId) return false;
             if (!categorias || !n.categorias) return false;
             return categorias.some(cat => n.categorias.includes(cat));
         });
-        
-        // Si no hay relacionadas por categoría, mostrar las más recientes
+
         if (relacionadas.length === 0) {
             relacionadas = noticias
                 .filter(n => n.id !== currentId)
                 .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
         }
-        
-        // Tomar solo las primeras 3
+
         relacionadas = relacionadas.slice(0, 3);
-        
+
         if (relacionadas.length > 0) {
             container.innerHTML = relacionadas.map(n => createRelacionadaCard(n)).join('');
         } else {
@@ -233,10 +334,10 @@ function createRelacionadaCard(noticia) {
     return `
         <div class="noticia-relacionada-item" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
             <div class="noticia-relacionada-imagen">
-                <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
+                <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${escapeHTML(noticia.titulo)}" loading="lazy">
             </div>
             <div class="noticia-relacionada-contenido">
-                <div class="noticia-relacionada-titulo">${truncateText(noticia.titulo, 60)}</div>
+                <div class="noticia-relacionada-titulo">${truncateText(escapeHTML(noticia.titulo || ''), 60)}</div>
                 <div class="noticia-relacionada-fecha">${formatDate(noticia.fecha)}</div>
             </div>
         </div>
@@ -246,31 +347,25 @@ function createRelacionadaCard(noticia) {
 /**
  * Muestra noticia de ejemplo si falla la API
  */
-function mostrarNoticiaEjemplo(slug, id) {
+async function mostrarNoticiaEjemplo(slug, id) {
     const noticiasEjemplo = {
         'inicio-del-ciclo-lectivo-2025': {
             id: 1,
             titulo: 'Inicio del Ciclo Lectivo 2025',
-            resumen: 'Este lunes 4 de marzo damos inicio al nuevo ciclo lectivo con renovadas energías y proyectos innovadores para todos nuestros estudiantes.',
-            contenido: `Con gran alegría damos la bienvenida al ciclo lectivo 2025. Este año trae importantes novedades pedagógicas y tecnológicas que beneficiarán a toda nuestra comunidad educativa.
-
-El acto de inicio se realizará el lunes 4 de marzo a las 8:00hs en el patio principal del instituto. Se solicita puntualidad y la presencia de todos los estudiantes con su uniforme completo.
-
-Recordamos a las familias que pueden consultar los horarios y materias en nuestra plataforma virtual, accesible desde la web institucional.
-
-¡Les deseamos un excelente año lectivo lleno de aprendizajes y logros!`,
+            resumen: 'Este lunes 4 de marzo damos inicio al nuevo ciclo lectivo con renovadas energias y proyectos innovadores para todos nuestros estudiantes.',
+            contenido: `Con gran alegria damos la bienvenida al ciclo lectivo 2025. Este ano trae importantes novedades pedagogicas y tecnologicas que beneficiaran a toda nuestra comunidad educativa.\n\nEl acto de inicio se realizara el lunes 4 de marzo a las 8:00hs en el patio principal del instituto. Se solicita puntualidad y la presencia de todos los estudiantes con su uniforme completo.\n\nRecordamos a las familias que pueden consultar los horarios y materias en nuestra plataforma virtual, accesible desde la web institucional.\n\nLes deseamos un excelente ano lectivo lleno de aprendizajes y logros!`,
             fecha: '2025-02-28',
             imagen: 'https://ebmbaeuwvigvlxvyvqwc.supabase.co/storage/v1/object/public/LOGOS%20IPSM/Inicial.jpg',
-            autor: 'Dirección',
-            categorias: ['Institucional', 'Académico'],
+            autor: 'Direccion',
+            categorias: ['Institucional', 'Academico'],
             etiquetas: ['ciclo lectivo', 'bienvenida', '2025'],
             tiempo_lectura: 3
         }
     };
-    
+
     const noticia = normalizeNoticia(noticiasEjemplo[slug] || noticiasEjemplo['inicio-del-ciclo-lectivo-2025']);
     currentNoticia = noticia;
-    mostrarNoticia(noticia);
+    await mostrarNoticia(noticia);
     updateMetaTags(noticia);
 }
 
@@ -282,19 +377,19 @@ function initShareButtons() {
     const shareFacebook = document.getElementById('shareFacebook');
     const shareInstagram = document.getElementById('shareInstagram');
     const shareLink = document.getElementById('shareLink');
-    
+
     if (shareWhatsapp) {
         shareWhatsapp.addEventListener('click', () => compartirWhatsApp());
     }
-    
+
     if (shareFacebook) {
         shareFacebook.addEventListener('click', () => compartirFacebook());
     }
-    
+
     if (shareInstagram) {
         shareInstagram.addEventListener('click', () => compartirInstagram());
     }
-    
+
     if (shareLink) {
         shareLink.addEventListener('click', () => copiarEnlace());
     }
@@ -305,10 +400,10 @@ function initShareButtons() {
  */
 function compartirWhatsApp() {
     if (!currentNoticia) return;
-    
-    const texto = `📰 ${currentNoticia.titulo}\n\n${currentNoticia.resumen}\n\n🔗 ${window.location.href}`;
+
+    const texto = `Noticia: ${currentNoticia.titulo}\n\n${currentNoticia.resumen || ''}\n\n${window.location.href}`;
     const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-    
+
     window.open(url, '_blank');
 }
 
@@ -324,7 +419,7 @@ function compartirFacebook() {
  * Compartir en Instagram (abre Instagram con instrucciones)
  */
 function compartirInstagram() {
-    showToast('Instagram no permite compartir enlaces directamente. Copia el enlace y compártelo en tu historia o publicación.', 'info');
+    showToast('Instagram no permite compartir enlaces directamente. Copia el enlace y compartelo en tu historia o publicacion.', 'info');
     copiarEnlace();
 }
 
@@ -333,45 +428,44 @@ function compartirInstagram() {
  */
 function copiarEnlace() {
     const url = window.location.href;
-    
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(() => {
-            showToast('¡Enlace copiado al portapapeles!', 'success');
+            showToast('Enlace copiado al portapapeles.', 'success');
         }).catch(err => {
             console.error('Error al copiar:', err);
             showToast('Error al copiar el enlace', 'error');
         });
     } else {
-        // Fallback para navegadores antiguos
         const textarea = document.createElement('textarea');
         textarea.value = url;
         textarea.style.position = 'fixed';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
         textarea.select();
-        
+
         try {
             document.execCommand('copy');
-            showToast('¡Enlace copiado al portapapeles!', 'success');
+            showToast('Enlace copiado al portapapeles.', 'success');
         } catch (err) {
             showToast('Error al copiar el enlace', 'error');
         }
-        
+
         document.body.removeChild(textarea);
     }
 }
 
 /**
- * Muestra un toast de notificación
+ * Muestra un toast de notificacion
  */
 function showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
     if (!toast) return;
-    
+
     toast.textContent = message;
     toast.className = `toast ${type}`;
     toast.classList.add('show');
-    
+
     setTimeout(() => {
         toast.classList.remove('show');
     }, 3000);
@@ -381,16 +475,17 @@ function showToast(message, type = 'info') {
  * Actualiza las meta tags para SEO y redes sociales
  */
 function updateMetaTags(noticia) {
-    // Title
-    document.getElementById('pageTitle').textContent = `${noticia.titulo} - Instituto San Marino`;
-    
-    // Meta description
-    document.getElementById('metaDescription').setAttribute('content', noticia.resumen || noticia.titulo);
-    
-    // Open Graph
-    document.getElementById('ogTitle').setAttribute('content', noticia.titulo);
-    document.getElementById('ogDescription').setAttribute('content', noticia.resumen || noticia.titulo);
-    document.getElementById('ogImage').setAttribute('content', noticia.imagen || '');
+    const pageTitle = document.getElementById('pageTitle');
+    const metaDescription = document.getElementById('metaDescription');
+    const ogTitle = document.getElementById('ogTitle');
+    const ogDescription = document.getElementById('ogDescription');
+    const ogImage = document.getElementById('ogImage');
+
+    if (pageTitle) pageTitle.textContent = `${noticia.titulo} - Instituto San Marino`;
+    if (metaDescription) metaDescription.setAttribute('content', noticia.resumen || noticia.titulo || 'Noticia');
+    if (ogTitle) ogTitle.setAttribute('content', noticia.titulo || 'Noticia');
+    if (ogDescription) ogDescription.setAttribute('content', noticia.resumen || noticia.titulo || 'Noticia');
+    if (ogImage) ogImage.setAttribute('content', noticia.imagen || '');
 }
 
 /**
@@ -404,7 +499,7 @@ function verNoticia(slug, id) {
  * Convierte texto a slug
  */
 function slugify(text) {
-    return text
+    return (text || '')
         .toString()
         .toLowerCase()
         .normalize('NFD')
@@ -419,7 +514,9 @@ function slugify(text) {
  * Formatea fecha
  */
 function formatDate(dateString) {
+    if (!dateString) return '';
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString('es-AR', options);
 }
@@ -428,6 +525,7 @@ function formatDate(dateString) {
  * Trunca texto
  */
 function truncateText(text, maxLength) {
+    if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
 }
