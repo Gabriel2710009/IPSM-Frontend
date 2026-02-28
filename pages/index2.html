@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instituto Privado San Marino - Educación de excelencia desde inicial hasta secundario">
+    <title>Instituto Privado San Marino - Inicio</title>
+    
+    <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        institucional: '#002855', /* Azul Oxford */
+                        dorado: '#C5A059',      /* Dorado Champán */
+                        confort: '#F8FAFC'      /* Blanco Nube */
+                    },
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-video-container {
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 40, 85, 0.1);
+        }
+        .btn-hover-effect {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-hover-effect:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(197, 160, 89, 0.3);
+        }
+        .nivel-card {
+            transition: all 0.5s ease;
+        }
+        .nivel-card:hover img {
+            transform: scale(1.1);
+        }
+        /* WhatsApp Floating Pulse */
+        .wa-float {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            animation: pulse-wa 2s infinite;
+        }
+        @keyframes pulse-wa {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+    </style>
+</head>
+<body class="bg-confort text-gray-800">
+
+    <header class="fixed w-full z-50 transition-all duration-500 py-3 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo" class="h-14 w-14 drop-shadow-sm">
+                <div class="hidden sm:block">
+                    <h1 class="font-heading font-extrabold text-institucional text-xl tracking-tight leading-none">SAN MARINO</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-dorado font-bold">Excelencia Educativa</p>
+                </div>
+            </div>
+            
+            <nav class="hidden lg:flex items-center gap-8 font-semibold text-institucional/80 text-sm">
+                <a href="index.html" class="hover:text-dorado transition-colors relative group">Inicio<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-dorado transition-all group-hover:w-full"></span></a>
+                <a href="#noticias" class="hover:text-dorado transition-colors">Noticias</a>
+                <a href="#niveles" class="hover:text-dorado transition-colors">Niveles</a>
+                <a href="#contacto" class="hover:text-dorado transition-colors">Contacto</a>
+                <div class="flex gap-3 ml-4 border-l pl-6 border-gray-200">
+                    <a href="https://www.instagram.com/institutosanmarino.sl" class="hover:text-dorado"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/institutosanmarino.sl" class="hover:text-dorado"><i class="fab fa-facebook-f"></i></a>
+                </div>
+                <a href="pages/auth/login.html" class="bg-institucional text-white px-6 py-2 rounded-full font-heading hover:bg-dorado transition-all shadow-md">Ingresar</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/dvdik8dux/video/upload/v1770605327/video_u5xk9o.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-institucional/70 via-institucional/40 to-confort"></div>
+
+        <div class="relative z-10 text-center px-4" data-aos="fade-up" data-aos-duration="1500">
+            <h2 class="text-white font-heading font-extrabold text-5xl md:text-7xl mb-6 leading-tight drop-shadow-2xl">
+                Formando el futuro con <br><span class="text-dorado">excelencia académica</span>
+            </h2>
+            <p class="text-white/90 text-xl md:text-2xl font-light mb-10 max-w-3xl mx-auto drop-shadow-lg">
+                Más de 35 años educando con compromiso e innovación.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#contacto" class="btn-hover-effect bg-dorado text-white px-10 py-4 rounded-full font-heading font-bold text-lg shadow-xl">Contáctanos</a>
+                <a href="#niveles" class="btn-hover-effect bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-full font-heading font-bold text-lg">Nuestros Niveles</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 bg-confort">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div data-aos="fade-right">
+                <span class="text-dorado font-bold tracking-widest uppercase text-sm">Trayectoria</span>
+                <h3 class="text-4xl md:text-5xl font-heading font-bold text-institucional mt-2 mb-6">Bienvenidos al Instituto</h3>
+                <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                    Somos una institución educativa privada con más de 35 años de trayectoria en la formación integral de nuestros estudiantes. Nuestro compromiso es brindar educación de calidad desde nivel inicial hasta secundario.
+                </p>
+                <div class="flex gap-8 mb-8">
+                    <div class="border-l-4 border-dorado pl-4">
+                        <span class="block text-3xl font-bold text-institucional">1990</span>
+                        <span class="text-sm text-gray-500 uppercase">Fundación</span>
+                    </div>
+                    <div class="border-l-4 border-dorado pl-4">
+                        <span class="block text-3xl font-bold text-institucional">100%</span>
+                        <span class="text-sm text-gray-500 uppercase">Compromiso</span>
+                    </div>
+                </div>
+                <a href="#niveles" class="inline-flex items-center gap-2 text-institucional font-bold border-b-2 border-dorado pb-1 hover:text-dorado transition-all">
+                    Ver nuestra propuesta pedagógica <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="relative" data-aos="zoom-in" data-aos-delay="200">
+                <div class="absolute -inset-4 border-2 border-dorado/30 rounded-2xl rotate-3"></div>
+                <img src="https://i.postimg.cc/2SMCBt9Z/unnamed.jpg" alt="Fachada" class="relative z-10 rounded-2xl shadow-2xl w-full h-[500px] object-cover">
+            </div>
+        </div>
+    </section>
+
+    <section id="niveles" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-center font-heading font-extrabold text-4xl text-institucional mb-16" data-aos="fade-down">Nuestros Niveles Educativos</h2>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="nivel-card group bg-confort rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772256361/DIA_DE_LA_BANDERA_-_ISM_21_gflfuk.jpg" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-institucional/20 group-hover:bg-transparent transition-all"></div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h4 class="font-heading font-bold text-2xl text-institucional mb-2">Nivel Inicial</h4>
+                        <p class="text-dorado font-bold mb-4">Sala de 3, 4 y 5 años</p>
+                        <p class="text-gray-500 mb-6 text-sm">Estimulamos el desarrollo integral mediante el juego y un ambiente seguro.</p>
+                        <a href="pages/niveles/inicial.html" class="bg-institucional text-white px-8 py-3 rounded-full inline-block hover:bg-dorado transition-all shadow-md">Conocer más</a>
+                    </div>
+                </div>
+
+                <div class="nivel-card group bg-confort rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://live.staticflickr.com/65535/55085914885_d93be590e8_b.jpg" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-institucional/20 group-hover:bg-transparent transition-all"></div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h4 class="font-heading font-bold text-2xl text-institucional mb-2">Nivel Primario</h4>
+                        <p class="text-dorado font-bold mb-4">1° a 6° grado</p>
+                        <p class="text-gray-500 mb-6 text-sm">Fomentamos competencias fundamentales y habilidades sociales sólidas.</p>
+                        <a href="pages/niveles/primario.html" class="bg-institucional text-white px-8 py-3 rounded-full inline-block hover:bg-dorado transition-all shadow-md">Conocer más</a>
+                    </div>
+                </div>
+
+                <div class="nivel-card group bg-confort rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="500">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772252276/f09f87a6f09f87b7-marchamos-con-el-corazon-lleno-de-orgullo-y-emocion.como-cada-25-de-mayo-nuestra-escuela-d_vpr6dj.jpg" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="absolute inset-0 bg-institucional/20 group-hover:bg-transparent transition-all"></div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h4 class="font-heading font-bold text-2xl text-institucional mb-2">Nivel Secundario</h4>
+                        <p class="text-dorado font-bold mb-4">1° a 6° año</p>
+                        <p class="text-gray-500 mb-6 text-sm">Preparación pre-universitaria con enfoque en pensamiento crítico.</p>
+                        <a href="pages/niveles/secundario.html" class="bg-institucional text-white px-8 py-3 rounded-full inline-block hover:bg-dorado transition-all shadow-md">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-24 bg-confort">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="bg-white rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
+                <div class="md:w-2/5 bg-institucional p-12 text-white">
+                    <h3 class="font-heading font-bold text-3xl mb-8">Hablemos</h3>
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 rounded-full bg-dorado/20 flex items-center justify-center text-dorado">
+                                <i class="fas fa-location-dot"></i>
+                            </div>
+                            <p class="text-sm">Colon 168, San Luis, Argentina</p>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 rounded-full bg-dorado/20 flex items-center justify-center text-dorado">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <p class="text-sm">+54 (266) 4431659</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-16 p-8 bg-white/10 rounded-3xl border border-white/10">
+                        <h4 class="font-bold text-dorado mb-4">Solicitar Vacante</h4>
+                        <p class="text-sm text-gray-300 mb-6">Iniciá el proceso de inscripción de forma directa vía WhatsApp.</p>
+                        <button onclick="enviarWhatsAppInicial()" class="w-full bg-dorado py-4 rounded-xl font-bold hover:bg-white hover:text-institucional transition-all">
+                            <i class="fab fa-whatsapp mr-2"></i> Solicitar Entrevista
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="md:w-3/5 p-12">
+                    <form id="contactoForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase text-gray-400">Nombre</label>
+                                <input type="text" class="w-full bg-gray-50 border-none rounded-xl py-4 px-6 focus:ring-2 focus:ring-dorado outline-none" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase text-gray-400">Email</label>
+                                <input type="email" class="w-full bg-gray-50 border-none rounded-xl py-4 px-6 focus:ring-2 focus:ring-dorado outline-none" required>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase text-gray-400">Tu Mensaje</label>
+                            <textarea rows="4" class="w-full bg-gray-50 border-none rounded-xl py-4 px-6 focus:ring-2 focus:ring-dorado outline-none" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-institucional text-white py-5 rounded-xl font-heading font-bold text-lg hover:shadow-2xl transition-all">
+                            Enviar Mensaje <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-institucional text-white/60 py-16 px-4 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-20 mb-6">
+                <p class="max-w-sm mb-6">Educación de excelencia con valores que trascienden el aula. Formando líderes desde 1990.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-dorado transition-all"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-dorado transition-all"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-dorado transition-all"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Navegación</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-dorado">Reglamento Escolar</a></li>
+                    <li><a href="#" class="hover:text-dorado">Sistema Académico</a></li>
+                    <li><a href="#" class="hover:text-dorado">Noticias</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Contacto</h4>
+                <p class="text-sm mb-2">institutosanmarino.direccion@gmail.com</p>
+                <p class="text-sm">+54 (266) 4431659</p>
+                <p class="text-sm mt-4 text-gray-500">San Luis, Argentina</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center text-[10px] uppercase tracking-widest">
+            © 2026 Instituto Privado San Marino. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5492664004015" class="wa-float fixed bottom-10 right-10 z-50 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        
+        // WhatsApp Logic del archivo original
+        function enviarWhatsAppInicial() {
+            const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor). Solicito una entrevista para mi hijo/a...`;
+            const numeroWhatsApp = '5492664004015'; 
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        // Efecto scroll header
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (window.scrollY > 100) {
+                nav.classList.add('shadow-xl');
+                nav.style.padding = '10px 0';
+            } else {
+                nav.classList.remove('shadow-xl');
+                nav.style.padding = '20px 0';
+            }
+        });
+    </script>
+</body>
+</html>
