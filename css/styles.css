@@ -168,7 +168,7 @@ img {
 
 .logo {
     height: 60px;
-    width: auto;
+    width: 70px;
     transition: transform var(--transition-normal);
 }
 

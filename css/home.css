@@ -1,5 +1,5 @@
-/**
- * Estilos específicos para la página principal
+﻿/**
+ * Estilos especÃ­ficos para la pÃ¡gina principal
  */
 
 /* Hero Section */
@@ -355,7 +355,7 @@
     }
 }
 
-/* Botón "Niveles" */
+/* BotÃ³n "Niveles" */
 .dropdown-toggle {
   background: transparent;
   border: none;
@@ -399,7 +399,7 @@
   color: var(--primary-dark);
 }
 
-/* Estado activo (si lo querés marcar) */
+/* Estado activo (si lo querÃ©s marcar) */
 .dropdown-link.active {
   background: var(--secondary-color); /* rojo */
   color: var(--white);
@@ -432,7 +432,7 @@
     }
 
     .logo {
-        height: 56px;
+        height: 60px;
         width: auto;
     }
 
@@ -482,3 +482,42 @@
         max-width: 100%;
     }
 }
+
+/* Hero de niveles: evita repeticion + overlay suave + responsive */
+.hero.hero-nivel {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: clamp(320px, 52vh, 540px);
+}
+
+.hero.hero-nivel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(.5px);
+    -webkit-backdrop-filter: blur(.5px);
+    z-index: 1;
+}
+
+.hero.hero-nivel .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .hero.hero-nivel {
+        min-height: 360px;
+        padding: var(--spacing-2xl) 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero.hero-nivel {
+        min-height: 320px;
+        background-position: center top;
+    }
+}
+
+
