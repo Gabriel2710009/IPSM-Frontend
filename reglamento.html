@@ -720,7 +720,8 @@
         let currentPage = 1;
         let totalPages = 0;
         let baseScale = 1;
-        let zoomFactor = 1.15;
+        const getDefaultZoom = () => (window.innerWidth <= 900 ? 1 : 1.15);
+        let zoomFactor = getDefaultZoom();
         let textIndex = [];
         let searchMatches = [];
         let currentMatchIndex = -1;
@@ -746,7 +747,9 @@
             if (token !== renderToken) return;
 
             const viewportAt1 = page.getViewport({ scale: 1 });
-            const containerWidth = Math.max(320, pdfCanvasFrame.clientWidth - 30);
+            const minViewerWidth = window.innerWidth <= 900 ? 240 : 320;
+            const horizontalPadding = window.innerWidth <= 900 ? 18 : 30;
+            const containerWidth = Math.max(minViewerWidth, pdfCanvasFrame.clientWidth - horizontalPadding);
             baseScale = containerWidth / viewportAt1.width;
             const viewport = page.getViewport({ scale: baseScale * zoomFactor });
             const dpr = window.devicePixelRatio || 1;
@@ -893,7 +896,7 @@
         });
 
         zoomResetBtn.addEventListener('click', () => {
-            zoomFactor = 1.15;
+            zoomFactor = getDefaultZoom();
             renderPage(currentPage);
         });
 

@@ -315,11 +315,15 @@ footer.bg-institucional { background: #002855 !important; color: rgba(255,255,25
 /* Header controls alignment */
 .header-controls { display: inline-flex; align-items: center; gap: .75rem; }
 .menu-toggle {
-  background: transparent !important;
-  line-height: 0;
+  background: rgba(255,255,255,0.85) !important;
+  line-height: 1;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
+  transition: background-color .2s ease;
+}
+body.dark-theme .menu-toggle {
+  background: rgba(30, 41, 59, 0.92) !important;
 }
 @media (min-width: 901px) {
   .header-controls { margin-left: auto; order: 3; }
@@ -342,6 +346,22 @@ footer.bg-institucional { background: #002855 !important; color: rgba(255,255,25
 }
 /* Mobile nav: smooth open/close + alignments */
 @media (max-width: 900px) {
+  body.menu-open .menu-toggle {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    z-index: auto !important;
+    background: rgba(255,255,255,0.85) !important;
+  }
+  body.dark-theme.menu-open .menu-toggle {
+    background: rgba(30, 41, 59, 0.92) !important;
+  }
+  body.menu-open #themeToggle {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.92);
+  }
   #mainNav {
     display: flex !important;
     opacity: 0;
@@ -349,12 +369,26 @@ footer.bg-institucional { background: #002855 !important; color: rgba(255,255,25
     pointer-events: none;
     transform: translateY(-10px) scale(.98);
     transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+    overflow-x: hidden;
   }
   #mainNav.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: translateY(0) scale(1);
+  }
+  #mainNav .nav-link,
+  #mainNav .nav-item,
+  #mainNav .social-group {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #mainNav .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   #mainNav .login-link,
   #mainNav .nav-link.bg-institucional,
@@ -393,7 +427,7 @@ html, body { overflow-x: hidden; }
   .text-4xl { font-size: 2rem !important; line-height: 1.2 !important; }
   .text-2xl { font-size: 1.38rem !important; line-height: 1.25 !important; }
   .h-14.w-14 { width: 46px !important; height: 46px !important; }
-  .theme-toggle, .menu-toggle { width: 40px; height: 40px; }
+  .theme-toggle { width: 40px; height: 40px; }
   .header-controls { gap: .45rem !important; }
 }
 
