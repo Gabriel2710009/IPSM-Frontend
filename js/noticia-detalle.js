@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
+    const nivelesDropdown = document.getElementById('nivelesDropdown');
+    const nivelesBtn = document.getElementById('nivelesBtn');
 
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', function() {
@@ -39,20 +41,38 @@ function initMobileMenu() {
             document.body.classList.toggle('menu-open', isOpen);
         });
 
-        // Cerrar menu al hacer clic en un enlace
-        const navLinks = mainNav.querySelectorAll('.nav-link');
+        if (nivelesBtn && nivelesDropdown) {
+            nivelesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                nivelesDropdown.classList.toggle('open');
+            });
+        }
+
+        const navLinks = mainNav.querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-link');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 mainNav.classList.remove('active');
                 document.body.classList.remove('menu-open');
+                if (nivelesDropdown) nivelesDropdown.classList.remove('open');
             });
         });
 
-        // Cerrar menu al hacer clic fuera
         document.addEventListener('click', function(event) {
             if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
                 mainNav.classList.remove('active');
                 document.body.classList.remove('menu-open');
+            }
+            if (nivelesDropdown && !nivelesDropdown.contains(event.target)) {
+                nivelesDropdown.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                mainNav.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                if (nivelesDropdown) nivelesDropdown.classList.remove('open');
             }
         });
     }
@@ -545,3 +565,4 @@ function hideLoader() {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.remove('active');
 }
+

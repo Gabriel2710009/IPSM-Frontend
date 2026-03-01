@@ -1131,3 +1131,116 @@ img {
         max-width: 100%;
     }
 }
+
+/* ===============================
+   Header Motion Overrides (Global)
+   =============================== */
+.menu-toggle {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-bar {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+    transition: transform 0.28s ease, opacity 0.2s ease, top 0.28s ease;
+}
+
+.menu-bar.bar-1 { top: 14px; }
+.menu-bar.bar-2 { top: 21px; }
+.menu-bar.bar-3 { top: 28px; }
+
+.menu-toggle.is-open .menu-bar.bar-1,
+body.menu-open .menu-toggle .menu-bar.bar-1 {
+    top: 21px;
+    transform: rotate(45deg);
+}
+
+.menu-toggle.is-open .menu-bar.bar-2,
+body.menu-open .menu-toggle .menu-bar.bar-2 {
+    opacity: 0;
+}
+
+.menu-toggle.is-open .menu-bar.bar-3,
+body.menu-open .menu-toggle .menu-bar.bar-3 {
+    top: 21px;
+    transform: rotate(-45deg);
+}
+
+@media (min-width: 768px) {
+    .dropdown .dropdown-menu {
+        display: block;
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.26s ease, transform 0.26s ease;
+    }
+
+    .dropdown.open .dropdown-menu {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+        visibility: visible;
+    }
+
+    .dropdown.open .dropdown-toggle::after {
+        transform: rotate(180deg);
+    }
+}
+
+@media (max-width: 767px) {
+    .dropdown-menu {
+        margin-left: 0 !important;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+        overflow: hidden;
+        transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .dropdown.open .dropdown-menu {
+        max-height: 320px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .dropdown.open .dropdown-toggle::after {
+        transform: rotate(180deg);
+    }
+}
+
+/* ===============================
+   Color Utilities (Compat)
+   =============================== */
+.text-dorado {
+    color: #C5A059 !important;
+}
+
+.text-institucional {
+    color: #002855 !important;
+}
+
+.bg-institucional {
+    background-color: #002855 !important;
+}
+
+.border-dorado {
+    border-color: #C5A059 !important;
+}
+
+.hover\:text-dorado:hover {
+    color: #C5A059 !important;
+}
+
+.hover\:bg-dorado:hover {
+    background-color: #C5A059 !important;
+    color: #ffffff !important;
+}

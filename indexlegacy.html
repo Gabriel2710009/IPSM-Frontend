@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instituto Privado San Marino - Educación de excelencia desde inicial hasta secundario">
+    <meta name="keywords" content="escuela, instituto, educación, San Marino, inicial, primario, secundario">
+    <title>Instituto Privado San Marino - Inicio</title>
+    
+    <!-- Faviconope -->
+      <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-container">
+                        <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html" class="logo-link">
+                            <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
+                        </a>
+                        <div>
+                            <h1 class="site-title">Instituto Privado San Marino</h1>
+                            <p class="site-subtitle">Educación con valores desde 1990</p>
+                        </div>
+                    </div>
+                    
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                        ☰
+                    </button>
+                    
+                    <nav class="nav" id="mainNav">
+                        <a href="index.html" class="nav-link active">Inicio</a>
+                        <a href="#noticias" class="nav-link">Noticias</a>
+                        <a href="#niveles" class="nav-link">Niveles</a>
+                        <a href="reglamento.html" class="nav-link">Reglamento</a>
+                        <a href="#contacto" class="nav-link">Contacto</a>
+                        <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+         <video class="hero-bg" autoplay muted loop playsinline>
+             <source src="https://res.cloudinary.com/dvdik8dux/video/upload/v1770605327/video_u5xk9o.mp4" type="video/mp4">
+               </video>
+
+                <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+         <h1 class="hero-title">Formando el futuro con excelencia académica</h1>
+          <p class="hero-subtitle">Más de 35 años educando con compromiso, innovación y valores</p>
+            <a href="#contacto" class="btn btn-primary btn-lg">Contáctanos</a>
+            <a href="#niveles" class="btn btn-secondary btn-lg">Conoce nuestros niveles</a>
+                
+        </div>
+    </section>
+
+
+    <!-- Sección Bienvenida -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h2>Bienvenidos al Instituto San Marino</h2>
+                    <p>Somos una institución educativa privada con más de 35 años de trayectoria en la formación integral de nuestros estudiantes. Nuestro compromiso es brindar educación de calidad desde nivel inicial hasta secundario.</p>
+                    <p>Contamos con un equipo docente altamente capacitado, infraestructura moderna y una propuesta pedagógica que integra valores tradicionales con innovación educativa.</p>
+                    <a href="#niveles" class="btn btn-primary">Ver nuestros niveles</a>
+                </div>
+                <div class="col-6">
+                    <img src="https://i.postimg.cc/2SMCBt9Z/unnamed.jpg'" alt="Frente del Instituto San Marino" class="welcome-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Noticias -->
+    <section id="noticias" class="noticias-section">
+        <div class="container">
+            <h2 class="section-title text-center">Últimas Noticias</h2>
+            <p class="section-subtitle text-center">Mantente informado sobre las actividades y logros de nuestra comunidad educativa</p>
+            
+            <div class="noticias-grid" id="noticiasContainer">
+                <!-- Las noticias se cargarán dinámicamente desde la API -->
+            </div>
+            
+            <div class="text-center mt-xl">
+                <a href="pages/noticias.html" class="btn btn-primary">Ver todas las noticias</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Niveles -->
+    <section id="niveles" class="niveles-section">
+        <div class="container">
+            <h2 class="section-title text-center">Nuestros Niveles Educativos</h2>
+            
+            <div class="niveles-grid">
+                <!-- Nivel Inicial -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772256361/DIA_DE_LA_BANDERA_-_ISM_21_gflfuk.jpg" alt="Nivel Inicial" onclick="window.location.href='pages/niveles/inicial.html'">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Inicial</h3>
+                        <p>Sala de 3, 4 y 5 años</p>
+                        <p>Estimulamos el desarrollo integral de los más pequeños en un ambiente seguro y estimulante, promoviendo el juego como herramienta principal de aprendizaje.</p>
+                        <a href="pages/niveles/inicial.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+
+                <!-- Nivel Primario -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="https://live.staticflickr.com/65535/55085914885_d93be590e8_b.jpg" alt="Nivel Primario" onclick="window.location.href='pages/niveles/primario.html'">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Primario</h3>
+                        <p>1° a 6° grado</p>
+                        <p>Formación académica sólida con énfasis en competencias fundamentales: lectoescritura, matemática, ciencias y desarrollo de habilidades sociales.</p>
+                        <a href="pages/niveles/primario.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+
+                <!-- Nivel Secundario -->
+                <div class="nivel-card">
+                    <div class="nivel-image">
+                        <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772252276/f09f87a6f09f87b7-marchamos-con-el-corazon-lleno-de-orgullo-y-emocion.como-cada-25-de-mayo-nuestra-escuela-d_vpr6dj.jpg" alt="Nivel Secundario" onclick="window.location.href='pages/niveles/secundario.html'">
+                    </div>
+                    <div class="nivel-content">
+                        <h3>Nivel Secundario</h3>
+                        <p>1° a 6° año</p>
+                        <p>Preparación integral para la vida universitaria y profesional, con orientaciones específicas y desarrollo de pensamiento crítico.</p>
+                        <a href="pages/niveles/secundario.html" class="btn btn-primary">Conocer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Valores -->
+    <section class="valores-section">
+        <div class="container">
+            <h2 class="section-title text-center">Nuestros Valores</h2>
+            
+            <div class="valores-grid">
+                <div class="valor-item">
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <h3>Excelencia Académica</h3>
+                    <p>Compromiso con la calidad educativa y la actualización constante</p>
+                </div>
+
+                <div class="valor-item">
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <h3>Respeto y Convivencia</h3>
+                    <p>Promovemos el respeto mutuo y la construcción de vínculos saludables</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovación</h3>
+                    <p>Incorporamos nuevas metodologías y tecnologías educativas</p>
+                </div>
+                
+                <div class="valor-item">
+                    <div class="valor-icon">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <h3>Desarrollo Integral</h3>
+                    <p>Formación completa: intelectual, emocional, social y física</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="contacto-section">
+        <div class="container">
+            <h2 class="section-title text-center">Contacto</h2>
+            
+            <div class="row">
+                <!-- INFO -->
+                <div class="col-6">
+                    <div class="contacto-info">
+                        <h3>Información de Contacto</h3>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <strong>Dirección:</strong>
+                            </div>
+                            <p>
+                                <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank">
+                                    Colon 168, San Luis, Argentina
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-phone"></i>
+                                <strong>Teléfono:</strong>
+                            </div>
+                            <p><a href="tel:+542664431659">+54 (266) 4431659</a></p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-envelope"></i>
+                                <strong>Email:</strong>
+                            </div>
+                            <p>
+                                <a href="mailto:institutosanmarino.direccion@gmail.com">
+                                    institutosanmarino.direccion@gmail.com
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-label">
+                                <i class="fa-solid fa-clock"></i>
+                                <strong>Horario de atención:</strong>
+                            </div>
+                            <p>Lunes a Viernes: 8:00 - 15:00hs</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FORMULARIO -->
+                <div class="col-6">
+                    <form class="contacto-form" id="contactoForm">
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="nombre">Nombre completo</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="mensaje">Mensaje</label>
+                            <textarea class="form-control" id="mensaje" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar mensaje
+                        </button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- INSCRIPCIONES -->
+    <section class="section">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">¡Inscribí a tu hijo/a!</h2>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+                Completá el formulario de WhatsApp y nos pondremos en contacto a la brevedad.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-contacto" onclick="enviarWhatsAppInicial(); return false;">
+                    <i class="fab fa-whatsapp"></i> Solicitar Entrevista
+                </a>
+                <a href="https://wa.me/5492664004015" class="btn btn-entrevista">
+                    <i class="fas fa-calendar-check"></i> Contactar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto San Marino</h3>
+                    <p>Educación de excelencia desde 1990</p>
+                    <p>Formando ciudadanos responsables y comprometidos con la sociedad</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="index.html">Inicio</a><br>
+                    <a href="#noticias">Noticias</a><br>
+                    <a href="#niveles">Niveles</a><br>
+                    <a href="#contacto">Contacto</a><br>
+                    <a href="reglamento.html">Reglamento</a><br>
+                    <a href="pages/auth/login.html">Acceso Sistema</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Niveles</h3>
+                    <a href="pages/niveles/inicial.html">Nivel Inicial</a><br>
+                    <a href="pages/niveles/primario.html">Nivel Primario</a><br>
+                    <a href="pages/niveles/secundario.html">Nivel Secundario</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fa-solid fa-location-dot"></i> 
+                        <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">
+                            Colon 168, San Luis
+                        </a>
+                    </p>
+                    <p><i class="fa-solid fa-phone"></i> 
+                        <a href="tel:+542664431659" style="color: inherit;">
+                            +54 (266) 4431659
+                        </a>
+                    </p>
+                    <p><i class="fa-solid fa-envelope"></i> 
+                        <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">
+                            institutosanmarino.direccion@gmail.com
+                        </a>
+                    </p>
+                </div>
+
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/5492664004015?text=Hola%20%F0%9F%91%8B" class="whatsapp-float" target="_blank" aria-label="Chat en WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/home.js"></script>
+     <script>
+        function enviarWhatsAppInicial() {
+            const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor).
+
+Solicito una entrevista para mi hijo/a:
+- Nombre completo del niño/a: ___________
+- DNI del niño/a: ___________
+- Fecha de nacimiento: ___________
+- Nivel solicitado: (Inicial / Primario / Secundario)
+- Turno preferido: ___________ (Normal / Jornada Completa)
+
+Contacto:
+- Teléfono: ___________
+- Email: ___________
+
+Muchas gracias.`;
+
+            const numeroWhatsApp = '5492664004015'; 
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>

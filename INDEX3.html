@@ -154,15 +154,50 @@
 
         .menu-toggle {
             display: none;
-            border: none;
-            background: transparent;
-            color: #002855;
-            font-size: 2rem;
-            line-height: 1;
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: rgba(255,255,255,0.85);
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
         body.dark-theme .menu-toggle {
-            color: #f8fafc;
+            background: rgba(30, 41, 59, 0.92);
+            border-color: rgba(148, 163, 184, 0.45);
+        }
+
+        .menu-bar {
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            border-radius: 2px;
+            background: #002855;
+            transition: transform .28s ease, opacity .2s ease, top .28s ease;
+        }
+
+        body.dark-theme .menu-bar {
+            background: #f8fafc;
+        }
+
+        .menu-bar.bar-1 { top: 14px; }
+        .menu-bar.bar-2 { top: 21px; }
+        .menu-bar.bar-3 { top: 28px; }
+
+        body.menu-open .menu-bar.bar-1 {
+            top: 21px;
+            transform: rotate(45deg);
+        }
+
+        body.menu-open .menu-bar.bar-2 {
+            opacity: 0;
+        }
+
+        body.menu-open .menu-bar.bar-3 {
+            top: 21px;
+            transform: rotate(-45deg);
         }
 
         .icon-chip {
@@ -327,7 +362,7 @@
             transform: translateY(-2px);
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 900px) {
             .menu-toggle {
                 display: block;
             }
@@ -362,7 +397,7 @@
 </head>
 <body class="font-sans">
 
-    <header class="fixed w-full z-50 transition-all duration-500 py-3 glass-nav">
+    <header class="fixed top-0 w-full z-50 transition-all duration-500 py-3 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
             <div class="flex items-center gap-4">
                 <a href="index.html" aria-label="Inicio">
@@ -378,7 +413,11 @@
                 <button id="themeToggle" class="theme-toggle" aria-label="Cambiar modo oscuro o claro" title="Cambiar tema">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
-                <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                    <span class="menu-bar bar-1"></span>
+                    <span class="menu-bar bar-2"></span>
+                    <span class="menu-bar bar-3"></span>
+                </button>
             </div>
 
             <nav id="mainNav" class="lg:flex lg:items-center lg:gap-8 lg:font-semibold lg:text-institucional/80 lg:text-sm">
@@ -666,3 +705,6 @@
     </script>
 </body>
 </html>
+
+
+

@@ -1,365 +1,1009 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reglamento - Instituto San Marino</title>
-    <link rel="stylesheet" href="./css/reglamento.css">
+    <meta name="description" content="Reglamento institucional del Instituto Privado San Marino">
+    <title>Reglamento - Instituto Privado San Marino</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
-   
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        institucional: '#002855',
+                        dorado: '#C5A059',
+                        confort: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
     <style>
-        .pdf-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        :root {
+            --bg-main: #f8fafc;
+            --bg-alt: #ffffff;
+            --text-main: #1f2937;
+            --text-soft: #5b6472;
+            --card-bg: #ffffff;
+            --card-border: #dbe4f0;
+            --icon-bg: #eef2ff;
+            --icon-color: #002855;
+            --hero-overlay: rgba(0, 40, 85, 0.74);
+            --hero-overlay-2: rgba(2, 6, 23, 0.56);
+            --wa: #22c55e;
+            --wa-hover: #16a34a;
         }
 
-        .pdf-viewer {
-            width: 100%;
-            height: 800px;
-            border: 2px solid var(--accent-color);
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
+        body.dark-theme {
+            --bg-main: #0b1220;
+            --bg-alt: #111827;
+            --text-main: #e5e7eb;
+            --text-soft: #cbd5e1;
+            --card-bg: #1f2937;
+            --card-border: #374151;
+            --icon-bg: #1e293b;
+            --icon-color: #f8fafc;
+            --hero-overlay: rgba(2, 6, 23, 0.9);
+            --hero-overlay-2: rgba(15, 23, 42, 0.72);
+            --wa: #16a34a;
+            --wa-hover: #15803d;
         }
 
-        .pdf-actions {
-            display: flex;
-            gap: 1rem;
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Lato', sans-serif;
+            transition: background-color .35s ease, color .35s ease;
+        }
+
+        .section-main { background: var(--bg-main); }
+        .section-alt { background: var(--bg-alt); }
+        .text-soft { color: var(--text-soft); }
+        .text-institucional { color: #002855; }
+        .text-dorado { color: #C5A059; }
+        .bg-institucional { background-color: #002855; }
+        .bg-dorado { background-color: #C5A059; }
+
+        body.dark-theme .text-institucional,
+        body.dark-theme h1.text-institucional,
+        body.dark-theme h2.text-institucional,
+        body.dark-theme h3.text-institucional,
+        body.dark-theme h4.text-institucional {
+            color: #f8fafc !important;
+        }
+
+        body.dark-theme #mainNav,
+        body.dark-theme #mainNav .nav-link {
+            color: #e5e7eb !important;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 40, 85, 0.12);
+        }
+
+        body.dark-theme .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+        }
+
+        .card-surface {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            border-radius: 1rem;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .nav-link {
+            color: #002855;
+            font-weight: 700;
+            transition: color .2s ease;
+        }
+
+        .nav-link:hover { color: #C5A059; }
+        body.dark-theme .nav-link { color: #e5e7eb; }
+        body.dark-theme .nav-link:hover { color: #C5A059; }
+
+        .hero-title-box {
+            background: rgba(2, 6, 23, 0.4);
+            backdrop-filter: blur(9px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.2rem;
+            padding: 1.8rem 1.3rem;
+        }
+
+        .icon-chip {
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 9999px;
+            background: var(--icon-bg);
+            color: var(--icon-color);
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            transition: all 0.25s ease;
+        }
+
+        .icon-chip:hover {
+            transform: translateY(-2px);
+            background: #C5A059;
+            color: #fff;
+        }
+
+        .theme-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.38);
+            background: rgba(255, 255, 255, 0.85);
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #002855;
+            font-size: 1rem;
+        }
+
+        body.dark-theme .theme-toggle {
+            background: rgba(30, 41, 59, 0.92);
+            color: #f8fafc;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: transparent;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0;
+        }
+
+        .menu-bar {
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            border-radius: 2px;
+            background: #002855;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform .28s ease, opacity .2s ease;
+        }
+
+        .menu-bar.bar-1 { transform: translate(-50%, calc(-50% - 7px)); }
+        .menu-bar.bar-3 { transform: translate(-50%, calc(-50% + 7px)); }
+
+        body.dark-theme .menu-bar { background: #f8fafc; }
+        body.menu-open .menu-bar.bar-1 { transform: translate(-50%, -50%) rotate(45deg); }
+        body.menu-open .menu-bar.bar-2 { opacity: 0; }
+        body.menu-open .menu-bar.bar-3 { transform: translate(-50%, -50%) rotate(-45deg); }
+
+        .dropdown { position: relative; }
+        .dropdown-toggle::after {
+            content: '\25BE';
+            font-size: .72rem;
+            margin-left: .4rem;
+            transition: transform .25s ease;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 220px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: .9rem;
+            box-shadow: 0 14px 30px rgba(2, 6, 23, .18);
+            padding: .5rem;
+            opacity: 0;
+            transform: translateY(10px) scale(.98);
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity .28s ease, transform .28s ease;
+        }
+
+        .dropdown.open .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        .dropdown.open .dropdown-toggle::after { transform: rotate(180deg); }
+
+        .dropdown-link {
+            display: block;
+            border-radius: .65rem;
+            padding: .58rem .72rem;
+            font-weight: 700;
+            color: #002855;
+        }
+
+        .dropdown-link:hover { background: rgba(197, 160, 89, .18); }
+        .dropdown-link.active-level { background: rgba(197, 160, 89, .22); }
+        body.dark-theme .dropdown-link { color: #e5e7eb; }
+
+        .pdf-shell {
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            overflow: hidden;
+            background: var(--bg-alt);
+        }
+
+        .pdf-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            padding: .8rem;
+            border-bottom: 1px solid var(--card-border);
+            background: rgba(0, 40, 85, 0.04);
+        }
+
+        body.dark-theme .pdf-toolbar {
+            background: rgba(148, 163, 184, 0.08);
+        }
+
+        .pdf-toolbar-left,
+        .pdf-toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
             flex-wrap: wrap;
         }
 
-        .pdf-placeholder {
-            background: var(--bg-light);
-            border: 3px dashed var(--accent-color);
-            border-radius: 12px;
-            padding: 4rem 2rem;
-            text-align: center;
-            min-height: 400px;
+        .pdf-toolbar-title {
+            font-size: .72rem;
+            letter-spacing: .12em;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #002855;
+        }
+
+        body.dark-theme .pdf-toolbar-title { color: #e5e7eb; }
+
+        .pdf-page-chip {
+            font-size: .75rem;
+            font-weight: 700;
+            padding: .25rem .55rem;
+            border-radius: .5rem;
+            background: rgba(197, 160, 89, .2);
+            color: #8b6a2f;
+        }
+
+        .pdf-tool-btn {
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: .6rem;
+            padding: .45rem .7rem;
+            font-weight: 700;
+            font-size: .85rem;
+            transition: all .2s ease;
+        }
+
+        .pdf-tool-btn:hover {
+            border-color: #C5A059;
+            color: #C5A059;
+        }
+
+        .pdf-search {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            border-radius: .65rem;
+            padding: .2rem;
+        }
+
+        .pdf-search input {
+            border: 0;
+            background: transparent;
+            color: var(--text-main);
+            font-size: .82rem;
+            padding: .35rem .45rem;
+            min-width: 170px;
+            outline: none;
+        }
+
+        .pdf-status {
+            font-size: .74rem;
+            font-weight: 700;
+            color: var(--text-soft);
+        }
+
+        .pdf-viewer-wrap {
+            position: relative;
+            border-radius: 0 0 1rem 1rem;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+            padding: 14px;
+            min-height: 520px;
+        }
+
+        body.dark-theme .pdf-viewer-wrap {
+            background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+        }
+
+        .pdf-loading {
+            position: absolute;
+            inset: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: .5rem;
+            background: rgba(248, 250, 252, 0.8);
+            color: #002855;
+            font-weight: 700;
+            z-index: 2;
+            transition: opacity .25s ease, visibility .25s ease;
         }
 
-        .pdf-placeholder i {
-            font-size: 5rem;
-            color: var(--accent-color);
-            margin-bottom: 2rem;
+        body.dark-theme .pdf-loading {
+            background: rgba(17, 24, 39, 0.82);
+            color: #e5e7eb;
         }
 
-        .pdf-placeholder h3 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        .pdf-loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        .pdf-placeholder p {
-            color: var(--text-light);
-            font-size: 1.2rem;
+        .pdf-canvas-frame {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            overflow: auto;
+            max-height: 78vh;
+            min-height: 520px;
+            border: 2px solid #C5A059;
+            border-radius: .9rem;
+            background: linear-gradient(180deg, #f8fafc 0%, #ecf2f8 100%);
+            padding: 12px;
+        }
+
+        body.dark-theme .pdf-canvas-frame {
+            background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+        }
+
+        .pdf-canvas {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(0, 40, 85, .14);
+            border-radius: .3rem;
+        }
+
+        .pdf-native-fallback {
+            width: 100%;
+            max-height: 78vh;
+            min-height: 520px;
+            border: 2px solid #C5A059;
+            border-radius: .9rem;
+            background: #fff;
+            display: none;
+        }
+
+        .btn-hover-effect {
+            transition: all 0.3s ease;
+        }
+
+        .btn-hover-effect:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(197, 160, 89, 0.28);
+        }
+
+        .wa-float {
+            background: var(--wa);
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.45);
+            animation: pulse-wa 2s infinite;
+        }
+
+        .wa-float:hover { background: var(--wa-hover); }
+
+        @keyframes pulse-wa {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45); }
+            70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: inline-flex; }
+
+            #mainNav {
+                position: fixed;
+                top: 84px;
+                right: 1rem;
+                left: 1rem;
+                background: var(--bg-alt);
+                border-radius: 1rem;
+                box-shadow: 0 15px 35px rgba(2, 6, 23, 0.24);
+                border: 1px solid var(--card-border);
+                padding: 1rem;
+                display: flex !important;
+                flex-direction: column;
+                gap: .9rem;
+                z-index: 60;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(-10px) scale(.98);
+                transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+            }
+
+            #mainNav.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0) scale(1);
+            }
+
+            .dropdown-menu {
+                position: static;
+                min-width: 100%;
+                margin-top: .55rem;
+                max-height: 0;
+                padding: 0 .5rem;
+                opacity: 0;
+                transform: translateY(-6px);
+                overflow: hidden;
+                box-shadow: none;
+            }
+
+            .dropdown.open .dropdown-menu {
+                max-height: 260px;
+                padding: .5rem;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .login-link {
+                align-self: flex-start;
+                padding: .45rem .8rem !important;
+                font-size: .88rem !important;
+                border-radius: 999px;
+            }
+
+            .social-group { order: 60; }
+
+            .pdf-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pdf-search input {
+                min-width: 120px;
+            }
+        }
+
+        @media (min-width: 901px) {
+            .menu-toggle { display: none !important; }
+
+            #mainNav {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                display: flex !important;
+                align-items: center;
+                gap: 2rem;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html" class="logo-link">
-                        <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
-                    </a>
-                    <div>
-                        <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Educación con valores desde 1990</p>
+    <header class="fixed top-0 w-full z-50 transition-all duration-500 py-3 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="index.html">
+                    <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-14 w-14" alt="Logo">
+                </a>
+                <div class="block leading-tight">
+                    <h1 class="font-heading font-extrabold text-institucional text-xl leading-none">SAN MARINO</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-dorado font-bold">Reglamento</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                    <span class="menu-bar bar-1"></span>
+                    <span class="menu-bar bar-2"></span>
+                    <span class="menu-bar bar-3"></span>
+                </button>
+            </div>
+
+            <nav id="mainNav" class="lg:flex lg:items-center lg:gap-8 lg:font-semibold lg:text-institucional/80 lg:text-sm">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="pages/noticias.html" class="nav-link">Noticias</a>
+                <div class="nav-item dropdown" id="nivelesDropdown">
+                    <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">Niveles</button>
+                    <div class="dropdown-menu" id="nivelesMenu">
+                        <a href="pages/niveles/inicial.html" class="dropdown-link">Inicial</a>
+                        <a href="pages/niveles/primario.html" class="dropdown-link">Primario</a>
+                        <a href="pages/niveles/secundario.html" class="dropdown-link">Secundario</a>
                     </div>
                 </div>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Menú" onclick="toggleMenu(event)">
-                    ☰
-                </button>
-                
-                <nav class="nav" id="mainNav">
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html" class="nav-link">Inicio</a>
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/pages/noticias.html" class="nav-link">Noticias</a>
-                    <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">
-                            Niveles
-                        </button>
-                        <div class="dropdown-menu" id="nivelesMenu">
-                            <a href="/IPSM-Frontend/pages/niveles/inicial.html" class="dropdown-link">Inicial</a>
-                            <a href="/IPSM-Frontend/pages/niveles/primario.html" class="dropdown-link">Primario</a>
-                            <a href="/IPSM-Frontend/pages/niveles/secundario.html" class="dropdown-link">Secundario</a>
-                        </div>
-                    </div>
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/reglamento.html" class="nav-link active">Reglamento</a>
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/index.html#contacto" class="nav-link">Contacto</a>
-                    <a href="https://gabriel2710009.github.io/IPSM-Frontend/pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-                    </div>
-                </nav>
-            </div>
+                <a href="reglamento.html" class="nav-link text-dorado font-bold">Reglamento</a>
+                <a href="pages/auth/login.html" class="login-link nav-link bg-institucional text-white px-6 py-2 rounded-full font-heading">Ingresar</a>
+                <div class="social-group flex gap-3 lg:ml-4 lg:border-l lg:pl-6 lg:border-gray-200">
+                    <a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/institutosanmarino.sl" class="icon-chip" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="icon-chip" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                </div>
+            </nav>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero" style="background: var(--primary-color);">
-        <div class="container">
-            <h1 class="hero-title">Reglamento Institucional</h1>
-            <p class="hero-subtitle">
-                Aquí encontrarás todas las normas, derechos y obligaciones que rigen nuestra institución educativa.
-            </p>
-        </div>
-    </section>
-
-    <!-- PDF VIEWER SECTION -->
-    <section class="section">
-        <div class="pdf-container">
-            <!-- Botones de acción -->
-            <div class="pdf-actions">
-                <button class="btn btn-primary" onclick="descargarPDF()">
-                    <i class="fas fa-download"></i> Descargar Reglamento
-                </button>
-                <button class="btn btn-accent" onclick="imprimirPDF()">
-                    <i class="fas fa-print"></i> Imprimir
-                </button>
-                <a href="#" class="btn btn-whatsapp" onclick="consultarPorWhatsApp(); return false;">
-                    <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
-                </a>
-            </div>
-
-            <!-- Visor de PDF -->
-            <div id="pdf-content">
-                <iframe 
-                    src="https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf" 
-                    class="pdf-viewer"
-                    title="Reglamento Institucional"
-                    type="application/pdf">
-                    <p>Su navegador no puede mostrar PDFs.
-                    <a href="https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf" download>Haga clic aquí para descargar el documento.</a></p>
-                </iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- INFORMACIÓN ADICIONAL -->
-    <section class=" section section-primary">
-        <div class="container">
-
-            <h2 class="section-title section-title-light">
-                Aspectos Destacados 
-            </h2>
-            
-            
-            <div class="valores-grid">
-                <div class="valor-item">
-                    <i class="fas fa-gavel" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
-                    <h3>Normas de Convivencia</h3>
-                    <p>Reglas claras que promueven un ambiente de respeto y colaboración entre todos los miembros de la comunidad educativa.</p>
-                </div>
-                <div class="valor-item">
-                    <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
-                    <h3>Derechos y Deberes</h3>
-                    <p>Conocé los derechos y responsabilidades de estudiantes, familias y personal de la institución.</p>
-                </div>
-                <div class="valor-item ">
-                    <i class="fas fa-clipboard-check" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
-                    <h3>Evaluación y Promoción</h3>
-                    <p>Sistema de evaluación transparente y criterios de promoción para cada nivel educativo.</p>
+    <section class="relative min-h-[66vh] flex items-center justify-center overflow-hidden">
+        <img src="https://i.postimg.cc/2SMCBt9Z/unnamed.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Reglamento">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, var(--hero-overlay), var(--hero-overlay-2));"></div>
+        <div class="relative z-10 text-center px-4">
+            <div class="hero-title-box max-w-4xl mx-auto" data-aos="zoom-in">
+                <h2 class="text-white font-heading font-extrabold text-4xl md:text-6xl mb-5">Reglamento Institucional</h2>
+                <p class="text-white/95 text-lg md:text-2xl mb-8">Normas, derechos y obligaciones para toda la comunidad educativa.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="btn-hover-effect bg-dorado text-white px-8 py-3 rounded-full font-heading font-bold" onclick="descargarPDF()">
+                        <i class="fas fa-download mr-2"></i> Descargar
+                    </button>
+                    <a href="#documento" class="btn-hover-effect bg-white/15 border border-white/35 text-white px-8 py-3 rounded-full font-heading font-bold">
+                        Ver documento
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-       <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Instituto San Marino</h3>
-                    <p>Educación de excelencia desde 1990</p>
+    <section id="documento" class="py-20 section-main">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="card-surface p-6 md:p-8">
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <button class="bg-institucional text-white px-5 py-3 rounded-full font-heading font-bold btn-hover-effect" onclick="descargarPDF()">
+                        <i class="fas fa-download mr-2"></i> Descargar Reglamento
+                    </button>
+                    <button class="bg-dorado text-white px-5 py-3 rounded-full font-heading font-bold btn-hover-effect" onclick="imprimirPDF()">
+                        <i class="fas fa-print mr-2"></i> Imprimir
+                    </button>
+                    <a href="#" onclick="consultarPorWhatsApp(); return false;" class="px-5 py-3 rounded-full font-heading font-bold text-white btn-hover-effect" style="background: var(--wa);">
+                        <i class="fab fa-whatsapp mr-2"></i> Consultar por WhatsApp
+                    </a>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <a href="../../index.html">Inicio</a><br>
-                    <a href="inicial.html">Nivel Inicial</a><br>
-                    <a href="primario.html">Nivel Primario</a><br>
-                    <a href="secundario.html">Nivel Secundario</a><br>
-                    <a href="reglamento.html">Reglamento</a><br>
-                    <a href="../../index.html#contacto">Contacto</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contacto</h3>
-                    <p><i class="fa-solid fa-location-dot"></i><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
-                    <p><i class="fa-solid fa-phone"></i> <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
-                    <p><i class="fa-solid fa-envelope"></i> <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
+
+                <div class="pdf-shell">
+                    <div class="pdf-toolbar">
+                        <div class="pdf-toolbar-left">
+                            <span class="pdf-toolbar-title">Visor</span>
+                            <span class="pdf-page-chip" id="pageLabel">PÃ¡gina 1 / 1</span>
+                            <span class="text-xs font-bold px-2 py-1 rounded-md bg-dorado/20 text-dorado" id="zoomLabel">Zoom 115%</span>
+                        </div>
+                        <div class="pdf-toolbar-right">
+                            <button class="pdf-tool-btn" type="button" id="prevPageBtn" title="PÃ¡gina anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="nextPageBtn" title="PÃ¡gina siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="zoomOutBtn"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="zoomResetBtn">Reset</button>
+                            <button class="pdf-tool-btn" type="button" id="zoomInBtn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                            <div class="pdf-search">
+                                <input type="search" id="pdfSearchInput" placeholder="Buscar texto...">
+                                <button class="pdf-tool-btn" type="button" id="searchBtn" title="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                            <button class="pdf-tool-btn" type="button" id="searchPrevBtn" title="Coincidencia anterior"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="searchNextBtn" title="Siguiente coincidencia"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="openPdfBtn"><i class="fa-solid fa-up-right-from-square mr-1"></i>Abrir</button>
+                        </div>
+                    </div>
+                    <div class="pdf-viewer-wrap">
+                        <div class="pdf-loading" id="pdfLoading">
+                            <i class="fa-solid fa-file-pdf text-2xl"></i>
+                            <span>Cargando reglamento...</span>
+                        </div>
+                        <div class="pdf-canvas-frame" id="pdfCanvasFrame">
+                            <canvas id="pdfCanvas" class="pdf-canvas" aria-label="Visor PDF"></canvas>
+                            <iframe id="pdfNativeFallback" class="pdf-native-fallback" title="Reglamento PDF"></iframe>
+                        </div>
+                    </div>
+                    <div class="px-3 py-2 border-t border-[var(--card-border)]">
+                        <span class="pdf-status" id="searchStatus">Listo para buscar en el documento.</span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
+        </div>
+    </section>
+
+    <section class="py-20 section-alt">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-center text-4xl font-heading font-extrabold text-institucional mb-12" data-aos="fade-down">Aspectos Destacados</h3>
+            <div class="grid md:grid-cols-3 gap-7">
+                <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-gavel text-dorado mr-2"></i>Normas de Convivencia</h4>
+                    <p class="text-soft">Reglas claras para sostener un clima de respeto, diÃ¡logo y trabajo colaborativo.</p>
+                </article>
+                <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="220">
+                    <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-shield-alt text-dorado mr-2"></i>Derechos y Deberes</h4>
+                    <p class="text-soft">Marco institucional para estudiantes, familias y personal docente y no docente.</p>
+                </article>
+                <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="340">
+                    <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-clipboard-check text-dorado mr-2"></i>EvaluaciÃ³n y PromociÃ³n</h4>
+                    <p class="text-soft">Criterios transparentes para seguimiento pedagÃ³gico y acreditaciÃ³n por nivel.</p>
+                </article>
             </div>
+        </div>
+    </section>
+
+    <footer class="bg-institucional text-white/80 py-16 px-4 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-20 mb-6" alt="Logo IPSM">
+                <p class="max-w-sm mb-6">EducaciÃ³n de excelencia con valores que trascienden el aula.</p>
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/institutosanmarino.sl" class="icon-chip" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="icon-chip" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">NavegaciÃ³n</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="index.html" class="hover:text-dorado">Inicio</a></li>
+                    <li><a href="pages/niveles/inicial.html" class="hover:text-dorado">Nivel Inicial</a></li>
+                    <li><a href="pages/niveles/primario.html" class="hover:text-dorado">Nivel Primario</a></li>
+                    <li><a href="pages/niveles/secundario.html" class="hover:text-dorado">Nivel Secundario</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Contacto</h4>
+                <p class="text-sm mb-2"><a href="mailto:institutosanmarino.direccion@gmail.com" class="hover:text-dorado">institutosanmarino.direccion@gmail.com</a></p>
+                <p class="text-sm mb-2"><a href="tel:+542664431659" class="hover:text-dorado">+54 (266) 4431659</a></p>
+                <p class="text-sm mt-4"><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" rel="noopener noreferrer" class="hover:text-dorado">Colon 168, San Luis, Argentina</a></p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center text-[10px] uppercase tracking-widest">
+            &copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.
         </div>
     </footer>
 
+    <a href="https://wa.me/5492664004015?text=Hola%20%F0%9F%91%8B" target="_blank" class="wa-float fixed bottom-10 right-10 z-50 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl" aria-label="Chat en WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Ruta del PDF - REEMPLAZAR cuando se suba el documento
-        const PDF_PATH = 'https://archive.org/download/d0f2c964-abab-4758-a282-84036aaedfef/d0f2c964-abab-4758-a282-84036aaedfef.pdf';
+        AOS.init();
 
-        // Menú móvil (copiado de home.js para evitar choques)
-        let __menuInit = false;
+        const PDF_PATH = 'docs/reglamento.pdf';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        function initMobileMenu() {
-            if (__menuInit) return;
-            __menuInit = true;
+        const pdfCanvas = document.getElementById('pdfCanvas');
+        const pdfCanvasFrame = document.getElementById('pdfCanvasFrame');
+        const pdfNativeFallback = document.getElementById('pdfNativeFallback');
+        const pdfCtx = pdfCanvas.getContext('2d', { alpha: false });
+        const pdfLoading = document.getElementById('pdfLoading');
+        const pageLabel = document.getElementById('pageLabel');
+        const zoomLabel = document.getElementById('zoomLabel');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomResetBtn = document.getElementById('zoomResetBtn');
+        const pdfSearchInput = document.getElementById('pdfSearchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchPrevBtn = document.getElementById('searchPrevBtn');
+        const searchNextBtn = document.getElementById('searchNextBtn');
+        const searchStatus = document.getElementById('searchStatus');
+        const openPdfBtn = document.getElementById('openPdfBtn');
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let baseScale = 1;
+        let zoomFactor = 1.15;
+        let textIndex = [];
+        let searchMatches = [];
+        let currentMatchIndex = -1;
+        let renderToken = 0;
+        const isFileProtocol = window.location.protocol === 'file:';
 
-            const menuToggle = document.getElementById('menuToggle');
-            const mainNav = document.getElementById('mainNav');
-            if (!menuToggle || !mainNav) return;
+        function updateToolbar() {
+            zoomLabel.textContent = `Zoom ${Math.round(zoomFactor * 100)}%`;
+            pageLabel.textContent = `PÃ¡gina ${currentPage} / ${totalPages || 1}`;
+            prevPageBtn.disabled = currentPage <= 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+        }
 
-            const dropdowns = mainNav.querySelectorAll('.dropdown');
+        async function renderPage(pageNumber) {
+            if (!pdfDoc) return;
 
-            // asegurar estado cerrado al iniciar
-            mainNav.classList.remove('active');
-            document.body.classList.remove('menu-open');
-            menuToggle.textContent = '☰';
+            const token = ++renderToken;
+            pdfLoading.classList.remove('hidden');
+            currentPage = Math.min(Math.max(pageNumber, 1), totalPages);
+            updateToolbar();
 
-            function openMenu() {
-                mainNav.classList.add('active');
-                document.body.classList.add('menu-open');
-                menuToggle.textContent = '✕';
+            const page = await pdfDoc.getPage(currentPage);
+            if (token !== renderToken) return;
+
+            const viewportAt1 = page.getViewport({ scale: 1 });
+            const containerWidth = Math.max(320, pdfCanvasFrame.clientWidth - 30);
+            baseScale = containerWidth / viewportAt1.width;
+            const viewport = page.getViewport({ scale: baseScale * zoomFactor });
+            const dpr = window.devicePixelRatio || 1;
+
+            pdfCanvas.width = Math.floor(viewport.width * dpr);
+            pdfCanvas.height = Math.floor(viewport.height * dpr);
+            pdfCanvas.style.width = `${Math.floor(viewport.width)}px`;
+            pdfCanvas.style.height = `${Math.floor(viewport.height)}px`;
+
+            pdfCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            pdfCtx.clearRect(0, 0, viewport.width, viewport.height);
+
+            await page.render({
+                canvasContext: pdfCtx,
+                viewport
+            }).promise;
+
+            if (token !== renderToken) return;
+            pdfLoading.classList.add('hidden');
+            updateToolbar();
+        }
+
+        async function loadPdf() {
+            if (isFileProtocol) {
+                pdfCanvas.style.display = 'none';
+                pdfNativeFallback.style.display = 'block';
+                pdfNativeFallback.src = PDF_PATH;
+                pdfLoading.classList.add('hidden');
+                pageLabel.textContent = 'PÃ¡gina - / -';
+                searchStatus.textContent = 'Modo local file://: visor bÃ¡sico activo. Para buscador y pÃ¡ginas, abrÃ­ con http://localhost.';
+                prevPageBtn.disabled = true;
+                nextPageBtn.disabled = true;
+                searchBtn.disabled = true;
+                searchPrevBtn.disabled = true;
+                searchNextBtn.disabled = true;
+                pdfSearchInput.disabled = true;
+                zoomOutBtn.disabled = true;
+                zoomInBtn.disabled = true;
+                zoomResetBtn.disabled = true;
+                return;
             }
 
-            function closeMenu() {
-                mainNav.classList.remove('active');
-                document.body.classList.remove('menu-open');
-                menuToggle.textContent = '☰';
-                dropdowns.forEach(d => d.classList.remove('open'));
+            pdfLoading.classList.remove('hidden');
+            try {
+                pdfDoc = await pdfjsLib.getDocument(PDF_PATH).promise;
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+                await renderPage(currentPage);
+                searchStatus.textContent = 'Documento listo.';
+            } catch (error) {
+                searchStatus.textContent = 'No se pudo cargar el PDF.';
+                console.error(error);
+            } finally {
+                pdfLoading.classList.add('hidden');
+            }
+        }
+
+        async function buildTextIndex() {
+            if (!pdfDoc || textIndex.length) return;
+            searchStatus.textContent = 'Indexando texto del PDF...';
+            for (let i = 1; i <= pdfDoc.numPages; i += 1) {
+                const page = await pdfDoc.getPage(i);
+                const content = await page.getTextContent();
+                const pageText = content.items.map((item) => item.str).join(' ').toLowerCase();
+                textIndex.push(pageText);
+            }
+            searchStatus.textContent = 'Ãndice listo.';
+        }
+
+        async function executeSearch(goNext = true) {
+            const query = (pdfSearchInput.value || '').trim().toLowerCase();
+            if (!query) {
+                searchMatches = [];
+                currentMatchIndex = -1;
+                searchStatus.textContent = 'EscribÃ­ un texto para buscar.';
+                return;
             }
 
-            window.openMenu = openMenu;
-            window.closeMenu = closeMenu;
-
-            // failsafe: cerrar por si quedó abierto en cache
-            closeMenu();
-
-            dropdowns.forEach(dropdown => {
-                const toggle = dropdown.querySelector('.dropdown-toggle');
-                if (!toggle) return;
-
-                toggle.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    dropdowns.forEach(d => {
-                        if (d !== dropdown) d.classList.remove('open');
-                    });
-
-                    dropdown.classList.toggle('open');
-                });
+            await buildTextIndex();
+            searchMatches = [];
+            textIndex.forEach((pageText, index) => {
+                if (pageText.includes(query)) searchMatches.push(index + 1);
             });
 
-            mainNav
-                .querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-link')
-                .forEach(link => {
-                    link.addEventListener('click', closeMenu);
-                });
+            if (!searchMatches.length) {
+                currentMatchIndex = -1;
+                searchStatus.textContent = `Sin coincidencias para "${query}".`;
+                return;
+            }
 
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-                    closeMenu();
-                }
-            });
+            if (currentMatchIndex < 0 || !searchMatches.includes(currentPage)) {
+                currentMatchIndex = 0;
+            } else if (goNext) {
+                currentMatchIndex = (currentMatchIndex + 1) % searchMatches.length;
+            } else {
+                currentMatchIndex = (currentMatchIndex - 1 + searchMatches.length) % searchMatches.length;
+            }
+
+            const targetPage = searchMatches[currentMatchIndex];
+            searchStatus.textContent = `Coincidencia ${currentMatchIndex + 1} de ${searchMatches.length} (pÃ¡gina ${targetPage}).`;
+            await renderPage(targetPage);
         }
-
-        // Dropdown de niveles en mobile (copiado de home.js)
-        function initNivelesDropdown() {
-            const btn = document.getElementById('nivelesBtn');
-            const menu = document.getElementById('nivelesMenu');
-
-            if (!btn || !menu) return;
-
-            btn.addEventListener('click', function (e) {
-                if (window.innerWidth < 768) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    menu.classList.toggle('open');
-                    btn.parentElement?.classList.toggle('open');
-                }
-            });
-
-            menu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.remove('open');
-                    btn.parentElement?.classList.remove('open');
-                });
-            });
-
-            document.addEventListener('click', function (e) {
-                if (window.innerWidth < 768) {
-                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.remove('open');
-                        btn.parentElement?.classList.remove('open');
-                    }
-                }
-            });
-        }
-
-        function toggleMenu(e) {
-            e?.stopPropagation?.();
-            initMobileMenu();
-            const mainNav = document.getElementById('mainNav');
-            if (!mainNav) return;
-            mainNav.classList.contains('active') ? window.closeMenu?.() : window.openMenu?.();
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            initMobileMenu();
-            initNivelesDropdown();
-        });
 
         function descargarPDF() {
-            const link = document.createElement('a');
-            link.href = PDF_PATH;
-            link.download = 'reglamento-instituto-san-marino.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const a = document.createElement('a');
+            a.href = PDF_PATH;
+            a.download = 'Reglamento-Instituto-San-Marino.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function imprimirPDF() {
-            window.open(PDF_PATH, '_blank');
+            const win = window.open(PDF_PATH, '_blank');
+            if (win) {
+                win.onload = () => {
+                    win.focus();
+                    win.print();
+                };
+            }
         }
 
         function consultarPorWhatsApp() {
-            const mensaje = `Hola, tengo una consulta sobre el reglamento institucional del Instituto San Marino.
-
-Mi consulta es: _____________________
-
-Muchas gracias.`;
-
-            const numeroWhatsApp = '5492664004015'; // REEMPLAZAR con el número real
-            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-            window.open(urlWhatsApp, '_blank');
+            const mensaje = 'Hola, quisiera realizar una consulta sobre el reglamento institucional del Instituto San Marino.';
+            window.open(`https://wa.me/5492664004015?text=${encodeURIComponent(mensaje)}`, '_blank');
         }
 
-    </script>
+        prevPageBtn.addEventListener('click', () => {
+            renderPage(currentPage - 1);
+        });
 
+        nextPageBtn.addEventListener('click', () => {
+            renderPage(currentPage + 1);
+        });
+
+        zoomOutBtn.addEventListener('click', () => {
+            zoomFactor = Math.max(0.8, zoomFactor - 0.1);
+            renderPage(currentPage);
+        });
+
+        zoomInBtn.addEventListener('click', () => {
+            zoomFactor = Math.min(2.2, zoomFactor + 0.1);
+            renderPage(currentPage);
+        });
+
+        zoomResetBtn.addEventListener('click', () => {
+            zoomFactor = 1.15;
+            renderPage(currentPage);
+        });
+
+        searchBtn.addEventListener('click', () => executeSearch(true));
+        searchNextBtn.addEventListener('click', () => executeSearch(true));
+        searchPrevBtn.addEventListener('click', () => executeSearch(false));
+
+        pdfSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                executeSearch(true);
+            }
+        });
+
+        openPdfBtn.addEventListener('click', () => {
+            window.open(PDF_PATH, '_blank');
+        });
+
+        window.addEventListener('resize', () => {
+            if (pdfDoc) renderPage(currentPage);
+        });
+
+        loadPdf();
+
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        function applyTheme(mode) {
+            const isDark = mode === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('ipsm_theme', mode);
+        }
+
+        const storedTheme = localStorage.getItem('ipsm_theme');
+        if (storedTheme) {
+            applyTheme(storedTheme);
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(prefersDark ? 'dark' : 'light');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const darkActive = document.body.classList.contains('dark-theme');
+            applyTheme(darkActive ? 'light' : 'dark');
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const nivelesDropdown = document.getElementById('nivelesDropdown');
+        const nivelesBtn = document.getElementById('nivelesBtn');
+
+        function closeMenu() {
+            mainNav.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            nivelesDropdown.classList.remove('open');
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mainNav.classList.toggle('active');
+            document.body.classList.toggle('menu-open', mainNav.classList.contains('active'));
+        });
+
+        nivelesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            nivelesDropdown.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nivelesDropdown.contains(e.target)) {
+                nivelesDropdown.classList.remove('open');
+            }
+            if (window.innerWidth <= 1024 && mainNav.classList.contains('active') && !mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        mainNav.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) closeMenu();
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (!nav) return;
+            if (window.scrollY > 100) {
+                nav.classList.add('shadow-xl');
+                nav.style.padding = '10px 0';
+            } else {
+                nav.classList.remove('shadow-xl');
+                nav.style.padding = '12px 0';
+            }
+        });
+    </script>
 </body>
 </html>
+

@@ -1,449 +1,613 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Nivel Inicial - Instituto Privado San Marino">
-    <title>Nivel Inicial - Instituto San Marino</title>
-    
+    <meta name="keywords" content="nivel inicial, sala de 3, sala de 4, sala de 5, instituto san marino">
+    <title>Nivel Inicial - Instituto Privado San Marino</title>
+
     <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/home.css">
 
-    
-    <link rel="stylesheet" href="../../css/styles.css">
-    <link rel="stylesheet" href="../../css/home.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-alt: #eef3fa;
+            --text-main: #1f2937;
+            --text-soft: #5b6472;
+            --card-bg: #ffffff;
+            --card-border: #dbe4f0;
+            --icon-bg: #edf2ff;
+            --icon-color: #002855;
+            --wa: #22c55e;
+            --wa-hover: #16a34a;
+            --hero-overlay: rgba(0, 40, 85, 0.75);
+            --hero-overlay-2: rgba(2, 6, 23, 0.58);
+        }
+        body.dark-theme {
+            --bg-main: #0b1220;
+            --bg-alt: #111827;
+            --text-main: #e5e7eb;
+            --text-soft: #cbd5e1;
+            --card-bg: #1f2937;
+            --card-border: #374151;
+            --icon-bg: #1e293b;
+            --icon-color: #f8fafc;
+            --wa: #16a34a;
+            --wa-hover: #15803d;
+            --hero-overlay: rgba(2, 6, 23, 0.9);
+            --hero-overlay-2: rgba(15, 23, 42, 0.72);
+        }
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Lato', sans-serif;
+            transition: background-color .35s ease, color .35s ease;
+        }
+        .section-main { background: var(--bg-main); }
+        .section-alt { background: var(--bg-alt); }
+        .text-soft { color: var(--text-soft); }
+        .card-surface {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            border-radius: 1rem;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 40, 85, 0.12);
+        }
+        body.dark-theme .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+        }
+        body.dark-theme .text-institucional,
+        body.dark-theme h1.text-institucional,
+        body.dark-theme h2.text-institucional,
+        body.dark-theme h3.text-institucional,
+        body.dark-theme h4.text-institucional { color: #f8fafc !important; }
+        body.dark-theme #mainNav,
+        body.dark-theme #mainNav .nav-link { color: #e5e7eb !important; }
+        body.dark-theme #mainNav .nav-link:hover { color: #C5A059 !important; }
+
+        .theme-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.38);
+            background: rgba(255, 255, 255, 0.85);
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #002855;
+            font-size: 1rem;
+            transition: all .2s ease;
+        }
+        body.dark-theme .theme-toggle {
+            background: rgba(30, 41, 59, 0.92);
+            color: #f8fafc;
+            border-color: rgba(148, 163, 184, 0.45);
+        }
+        .theme-toggle:hover { transform: translateY(-1px); }
+
+        .menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: rgba(255,255,255,0.85);
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        body.dark-theme .menu-toggle {
+            background: rgba(30, 41, 59, 0.92);
+            border-color: rgba(148, 163, 184, 0.45);
+        }
+        .menu-bar {
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            border-radius: 2px;
+            background: #002855;
+            transition: transform .28s ease, opacity .2s ease, top .28s ease;
+        }
+        body.dark-theme .menu-bar { background: #f8fafc; }
+        .menu-bar.bar-1 { top: 14px; }
+        .menu-bar.bar-2 { top: 21px; }
+        .menu-bar.bar-3 { top: 28px; }
+        body.menu-open .menu-bar.bar-1 { top: 21px; transform: rotate(45deg); }
+        body.menu-open .menu-bar.bar-2 { opacity: 0; }
+        body.menu-open .menu-bar.bar-3 { top: 21px; transform: rotate(-45deg); }
+
+        .icon-chip {
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 9999px;
+            background: var(--icon-bg);
+            color: var(--icon-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+        .icon-chip:hover { transform: translateY(-2px); background: #C5A059; color: #fff; }
+
+        .dropdown { position: relative; }
+        .dropdown-toggle::after {
+            content: '\25BE';
+            font-size: .72rem;
+            margin-left: .4rem;
+            transition: transform .25s ease;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 220px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: .9rem;
+            box-shadow: 0 14px 30px rgba(2, 6, 23, 0.18);
+            padding: .5rem;
+            opacity: 0;
+            transform: translateY(10px) scale(.98);
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity .28s ease, transform .28s ease, visibility .28s;
+            z-index: 100;
+        }
+        .dropdown.open .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+        .dropdown.open .dropdown-toggle::after { transform: rotate(180deg); }
+        .dropdown-link {
+            display: block;
+            border-radius: .65rem;
+            padding: .58rem .72rem;
+            font-weight: 700;
+            color: #002855;
+        }
+        .dropdown-link:hover { background: rgba(197,160,89,.16); }
+        .dropdown-link.active-level { background: rgba(197,160,89,.22); }
+        body.dark-theme .dropdown-link { color: #e5e7eb; }
+
+        .hero-title-box {
+            background: rgba(2, 6, 23, 0.4);
+            backdrop-filter: blur(9px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.2rem;
+            padding: 1.8rem 1.3rem;
+        }
+
+        .wa-float {
+            background: var(--wa);
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.45);
+            animation: pulse-wa 2s infinite;
+        }
+        .wa-float:hover { background: var(--wa-hover); }
+        @keyframes pulse-wa {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45); }
+            70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .activity-card, .sala-card, .info-card { transition: transform .25s ease, box-shadow .25s ease; }
+        .activity-card:hover, .sala-card:hover, .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px rgba(2, 6, 23, 0.15);
+        }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            margin-bottom: 0.5rem;
+        }
+        .check-item i { color: #22c55e; margin-top: 0.2rem; }
+        .clickable-image { cursor: pointer; }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: inline-flex; }
+            #mainNav {
+                position: fixed;
+                top: 84px;
+                right: 1rem;
+                left: 1rem;
+                background: var(--bg-alt);
+                border-radius: 1rem;
+                box-shadow: 0 15px 35px rgba(2, 6, 23, 0.24);
+                border: 1px solid var(--card-border);
+                padding: 1rem;
+                display: none;
+                flex-direction: column;
+                gap: 0.9rem;
+                z-index: 60;
+            }
+            #mainNav.active { display: flex; animation: navDrop .28s ease; }
+            @keyframes navDrop {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .dropdown-menu {
+                position: static;
+                min-width: 100%;
+                margin-top: .55rem;
+                max-height: 0;
+                padding: 0 .5rem;
+                opacity: 0;
+                transform: translateY(-6px);
+                overflow: hidden;
+            }
+            .dropdown.open .dropdown-menu {
+                max-height: 260px;
+                padding: .5rem;
+                opacity: 1;
+                transform: translateY(0);
+            }
+            #mainNav .social-group {
+                border-left: none;
+                padding-left: 0;
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-title-box h2 { font-size: 2.1rem !important; }
+            .hero-title-box p { font-size: 1rem !important; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .hero-title-box h2 { font-size: 2.9rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title-box { padding: 1.15rem .95rem; }
+        }
+
+        /* Responsive fino para móvil y tablet */
+        @media (max-width: 900px) {
+            .py-24 { padding-top: 4.5rem !important; padding-bottom: 4.5rem !important; }
+            .hero-title-box h2 { font-size: clamp(1.8rem, 8vw, 2.6rem) !important; }
+            .hero-title-box p { font-size: clamp(.95rem, 4vw, 1.2rem) !important; }
+            .max-w-7xl > .grid,
+            .max-w-6xl > .grid { gap: 1.25rem !important; }
+            .card-surface { border-radius: .9rem; }
+        }
+        @media (min-width: 901px) and (max-width: 1200px) {
+            .py-24 { padding-top: 5.5rem !important; padding-bottom: 5.5rem !important; }
+            .hero-title-box h2 { font-size: clamp(2.5rem, 4vw, 3.3rem) !important; }
+        }
+    </style>
+<style id="ipsm-hotfix-v2">
+/* Hotfix visual + menu mobile */
+.text-dorado { color: #C5A059 !important; }
+.text-institucional { color: #002855 !important; }
+.bg-institucional { background-color: #002855 !important; }
+.bg-dorado { background-color: #C5A059 !important; }
+.hover\\:bg-dorado:hover { background-color: #C5A059 !important; color: #fff !important; }
+.hover\\:text-dorado:hover { color: #C5A059 !important; }
+footer.bg-institucional { background: #002855 !important; color: rgba(255,255,255,.85) !important; }
+/* Header controls alignment */
+.header-controls { display: inline-flex; align-items: center; gap: .75rem; }
+.menu-toggle {
+  background: transparent !important;
+  line-height: 0;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 901px) {
+  .header-controls { margin-left: auto; order: 3; }
+  .menu-toggle { display: none !important; }
+  #mainNav {
+    order: 2;
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center;
+    gap: 2rem;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+/* Mobile nav: smooth open/close + alignments */
+@media (max-width: 900px) {
+  #mainNav {
+    display: flex !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-10px) scale(.98);
+    transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+  }
+  #mainNav.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+  #mainNav .login-link,
+  #mainNav .nav-link.bg-institucional,
+  #mainNav a.bg-institucional {
+    order: 50;
+    align-self: flex-start;
+    text-align: left !important;
+    width: auto;
+    padding: .45rem .8rem !important;
+    font-size: .88rem !important;
+    border-radius: 999px;
+    line-height: 1.1;
+  }
+  #mainNav .social-group {
+    order: 60;
+  }
+}
+/* Dropdown + icon colors consistency */
+.dropdown-link { color: #002855 !important; }
+body.dark-theme .dropdown-link { color: #e5e7eb !important; }
+.icon-chip { color: var(--icon-color, #002855) !important; }
+body.dark-theme .icon-chip { color: #f8fafc !important; }
+</style>
 </head>
 <body>
-    <!-- Header -->
-        <header class="header">
-            <div class="container">
-                <div class="header-content">
-                    <div class="logo-container">
-                        <a href="../../index.html" class="logo-link">
-                            <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
-                        </a>
-                        <div>
-                            <h1 class="site-title">Instituto Privado San Marino</h1>
-                            <p class="site-subtitle">Educación con valores desde 1990</p>
-                        </div>
-                    </div>
-                    
-                    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-                        ☰
-                    </button>
-                    
-                    <nav class="nav" id="mainNav">
-                        <a href="../../index.html" class="nav-link active">Inicio</a>
-                        <a href="https://gabriel2710009.github.io/IPSM-Frontend/pages/noticias.html" class="nav-link">Noticias</a>
-                        <div class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">
-                            Niveles
-                        </button>
-                        <div class="dropdown-menu" id="nivelesMenu">
-                            <a href="/IPSM-Frontend/pages/niveles/inicial.html" class="dropdown-link">Inicial</a>
-                            <a href="/IPSM-Frontend/pages/niveles/primario.html" class="dropdown-link">Primario</a>
-                            <a href="/IPSM-Frontend/pages/niveles/secundario.html" class="dropdown-link">Secundario</a>
-                        </div>
-                        </div>
-
-                        <a href="https://gabriel2710009.github.io/IPSM-Frontend/reglamento.html" class="nav-link">Reglamento</a>
-                        <a href="../../index.html#contacto" class="nav-link">Contacto</a>
-                        <a href="pages/auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                        <div class="social-icons">
-                            <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                            <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
-
-    <!-- Hero Nivel -->
-    <section class="hero hero-nivel" style="background-image: url('https://res.cloudinary.com/dlacbkpaf/image/upload/v1772256361/DIA_DE_LA_BANDERA_-_ISM_21_gflfuk.jpg');">
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title">Nivel Inicial</h2>
-                <p class="hero-subtitle">Sala de 3, 4 y 5 años | Educación temprana con amor y dedicación</p>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Contenido Principal -->
-    <section class="welcome-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h2>Nuestro Nivel Inicial</h2>
-                    <p>Nuestra propuesta académica para el Nivel Inicial se distingue por ofrecer un <strong>cuerpo docente altamente especializado</strong> en todas las áreas, garantizando una enseñanza personalizada que potencie el desarrollo integral de cada niño.</p>
-                    
-                    <p>Integramos actividades prácticas como la participación en una <strong>huerta educativa</strong>, clases de <strong>inglés y computación</strong>, así como experiencias en <strong>música y expresión corporal</strong>.</p>
-                    
-                    <h3>Pilares de Nuestra Educación</h3>
-                    <ul>
-                    <li><i class="fa-solid fa-circle-check"></i> Cuerpo docente especializado</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Enseñanza personalizada</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Huerta educativa</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Inglés y computación</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Música y expresión corporal</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Educación física como pilar fundamental</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Educación vial</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Jornada extendida opcional (8 a 15hs)</li>
-
-                    </ul>
-                    
-                    <p class="mt-md"><strong>La educación física</strong> se considera un pilar fundamental en nuestro enfoque pedagógico, promoviendo la actividad física y el bienestar desde temprana edad.</p>
-                </div>
-                
-                <div class="col-6">
-                    <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772255190/DSC07205_blp6eh.jpg" alt="Nivel Inicial" class="welcome-image">
-                    
-                    <div class="card mt-lg">
-                        <div class="card-header">
-                            <h3 class="card-title">Salas Disponibles</h3>
-                        </div>
-                        <div class="card-body">
-                            <div style="padding: var(--spacing-md) 0; border-bottom: 1px solid var(--gray-200);">
-                                <strong>Sala de 3 años</strong>
-                                <p>Primera experiencia escolar. Juego y socialización como eje principal del aprendizaje.</p>
-                            </div>
-                            <div style="padding: var(--spacing-md) 0; border-bottom: 1px solid var(--gray-200);">
-                                <strong>Sala de 4 años</strong>
-                                <p>Desarrollo de autonomía y habilidades básicas. Exploración del entorno.</p>
-                            </div>
-                            <div style="padding: var(--spacing-md) 0;">
-                                <strong>Sala de 5 años</strong>
-                                <p>Preparación para primaria. Iniciación en lecto-escritura y matemática.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Actividades -->
-    <section class="valores-section">
-        <div class="container">
-            <h2 class="section-title text-center">Actividades Curriculares</h2>
-            
-            <div class="valores-grid">
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-seedling"></i>
-                    </div>
-                    <h3>Huerta Educativa</h3>
-                    <p>Actividades prácticas que conectan a los niños con la naturaleza</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-language"></i>
-                    </div>
-                    <h3>Inglés</h3>
-                    <p>Introducción al idioma de forma lúdica y natural</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-computer"></i>
-                    </div>
-                    <h3>Computación</h3>
-                    <p>Primeros acercamientos a la tecnología educativa</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-music"></i>
-                    </div>
-                    <h3>Música</h3>
-                    <p>Desarrollo del sentido rítmico y musical</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-masks-theater"></i>
-                    </div>
-                    <h3>Expresión Corporal</h3>
-                    <p>Movimiento, creatividad y expresión artística</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-futbol"></i>
-                    </div>
-                    <h3>Educación Física</h3>
-                    <p>Pilar fundamental para el desarrollo físico y motor</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-traffic-light"></i>
-                    </div>
-                    <h3>Educación Vial</h3>
-                    <p>Formación en seguridad y normas de tránsito</p>
-                </div>
-                
-                <div class="valor-item">
-                    <div class="valor-icon">
-                        <i class="fa-solid fa-palette"></i>
-                    </div>
-                    <h3>Arte</h3>
-                    <p>Estimulación de la creatividad y expresión plástica</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Jornada Extendida -->
-    <section class="contacto-section">
-        <div class="container">
-            <h2 class="section-title text-center">Jornada Extendida</h2>
-            <p class="text-center mb-xl" style="font-size: var(--text-lg);">
-                Para brindar una experiencia educativa más completa, ofrecemos jornada extendida opcional
-            </p>
-            
-            <div class="card" style="max-width: 900px; margin: 0 auto;">
-                <div class="card-header">
-                   <h3 class="card-title">
-                 <i class="fa-solid fa-calendar-days"></i>
-                Horario: 8:00 a 15:00 hs - Lunes a Jueves
-                </h3>
-                </div>
-                <div class="card-body">
-                    <strong>Fecha de Inicio:</strong> Lunes 8 de abril</p>
-                    <p>Proporcionando un entorno enriquecido y equitativo que favorece el desarrollo pleno de cada niño.</p>
-                    
-                    <h4 class="mt-lg mb-md">Actividades Incluidas:</h4>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong><i class="fa-solid fa-futbol"></i></strong>
-                        <p>Sumérgete en un mundo de diversión y movimiento, donde cada salto, carrera y golpe de balón se convierte en una lección de trabajo en equipo y superación personal. Nuestro taller de deportes no solo fortalece el cuerpo, sino también los valores de compañerismo, disciplina y perseverancia.</p>
-                    </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong><i class="fa-solid fa-book-open"></i></strong>
-                        <p>Descubre el placer de aprender y dominar nuevos conocimientos de manera divertida y efectiva. Nuestro apoyo escolar transforma las tareas en desafíos emocionantes y los contenidos en aventuras intelectuales que estimulan la curiosidad y el pensamiento crítico.</p>
-                    </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong><i class="fa-solid fa-utensils"></i> Taller de Cocina para niños</strong>
-                        <p>¡Conviértete en un chef en miniatura y descubre el fascinante mundo de la gastronomía! En nuestro taller de cocina, los pequeños exploradores aprenderán a mezclar colores, sabores y texturas mientras desarrollan habilidades culinarias, creatividad y autonomía.</p>
-                    </div>
-                    
-                    <div style="margin-bottom: var(--spacing-md);">
-                        <strong><i class="fa-solid fa-paint-brush"></i> Taller de Arte</strong>
-                        <p>Despierta tu lado más creativo y libera tu imaginación en nuestro taller de arte. Desde la pintura hasta la escultura, pasando por la danza y el teatro, cada sesión es un viaje emocionante hacia la expresión personal, la sensibilidad estética y la apreciación del arte en todas sus formas.</p>
-                    </div>
-                    
-                    <div>
-                        <strong><i class="fa-solid fa-swimmer"></i> Clases de Natación (una vez por semana)</strong>
-                        <p>Las clases de natación no solo enseñan técnicas de nado, sino también habilidades acuáticas, confianza en uno mismo y conciencia del cuidado del cuerpo.</p>
-                    </div>
-                    
-                    <div class="text-center mt-xl">
-                        <a href="../auth/login.html" class="btn btn-primary btn-lg">¡Inscríbete ya!</a>
-                        <p class="mt-md" style="font-style: italic;">Ofrece a tus hijos una experiencia educativa completa y enriquecedora</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Horarios -->
-    <section class="welcome-section">
-        <div class="container">
-            <h2 class="section-title text-center">Horarios y Modalidades</h2>
-            
-            <div class="row">
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa-solid fa-sun"></i> Turno Mañana</h3>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: var(--text-2xl); font-weight: 700; color: var(--primary-color); text-align: center; margin: var(--spacing-lg) 0;">
-                                8:00 - 12:00hs
-                            </p>
-                            <p>Ideal para actividades en horario matinal.</p>
-                        </div>
-                    </div>
-                </div>
-                
-
-                
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa-solid fa-sun"></i> Jornada Completa</h3>
-                        </div>
-                        <div class="card-body">
-                            <p style="font-size: var(--text-2xl); font-weight: 700; color: var(--primary-color); text-align: center; margin: var(--spacing-lg) 0;">
-                                8:00 - 15:00hs
-                            </p>
-                            <p><strong>Opcional.</strong> Incluye almuerzo y actividades extendidas.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Inscripción -->
-    <section class="noticias-section">
-        <div class="container">
-            <h2 class="section-title text-center">Información de Inscripción</h2>
-            
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Requisitos</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul>
-                                <li>DNI del alumno</li>
-                                <li>DNI de ambos padres/tutores</li>
-                                <li>Certificado de nacimiento</li>
-                                <li>Constancia de domicilio</li>
-                                <li>Carnet de vacunación completo</li>
-                                <li>2 fotos 4x4</li>
-                                <li>Apto médico</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title"><i class="fa-solid fa-phone"></i> Contacto</h3>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Período de inscripción:</strong><br>
-                            Septiembre a Diciembre</p>
-                            
-                            <p><strong>Secretaría:</strong><br>
-                            Lunes a Viernes: 8:00 - 18:00hs</p>
-                            <p><strong>Telefono:</strong></p>
-                            <p><i class="fa-solid fa-phone"></i> 
-                            <a href="tel:+542664431659" style="color: inherit;">
-                            +54 (266) 4431659
-                            </a>
-                            <p><strong>Email:</strong><br>
-                            <p><i class="fa-solid fa-envelope"></i> 
-                            <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">
-                            institutosanmarino.direccion@gmail.com
-                            </a>
-                            
-                            <a href="#" class="btn btn-primary btn-block mt-md" onclick="enviarWhatsAppInicial(); return false;">Solicitar entrevista</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- INSCRIPCIONES -->
-    <section class="section">
-        <div class="container" style="text-align: center;">
-            <h2 class="section-title">¡Inscribí a tu hijo/a!</h2>
-            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
-                Completá el formulario de WhatsApp y nos pondremos en contacto a la brevedad.
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="#" class="btn btn-contacto" onclick="enviarWhatsAppInicial(); return false;">
-                    <i class="fab fa-whatsapp"></i> Solicitar Entrevista
+    <header class="fixed top-0 w-full z-50 transition-all duration-500 py-3 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html" aria-label="Inicio">
+                    <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="h-14 w-14 drop-shadow-sm clickable-image" onclick="window.location.href='../../index.html'">
                 </a>
-                <a href="#" class="btn btn-entrevista" onclick="enviarWhatsAppInicial(); return false;">
-                    <i class="fas fa-calendar-check"></i> Contactar
-                </a>
+                <div class="block leading-tight">
+                    <h1 class="font-heading font-extrabold text-institucional text-xl tracking-tight leading-none">SAN MARINO</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-dorado font-bold">Nivel Inicial</p>
+                </div>
+            </div>
+
+            <div class="header-controls flex items-center gap-3">
+                <button id="themeToggle" class="theme-toggle" aria-label="Cambiar modo oscuro o claro" title="Cambiar tema"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+                    <span class="menu-bar bar-1"></span><span class="menu-bar bar-2"></span><span class="menu-bar bar-3"></span>
+                </button>
+            </div>
+
+            <nav id="mainNav" class="lg:flex lg:items-center lg:gap-8 lg:font-semibold lg:text-institucional/80 lg:text-sm">
+                <a href="../../index.html" class="nav-link hover:text-dorado transition-colors">Inicio</a>
+                <a href="../noticias.html" class="nav-link hover:text-dorado transition-colors">Noticias</a>
+                <div class="nav-item dropdown" id="nivelesDropdown">
+                    <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">Niveles</button>
+                    <div class="dropdown-menu" id="nivelesMenu">
+                        <a href="inicial.html" class="dropdown-link active-level">Inicial</a>
+                        <a href="primario.html" class="dropdown-link">Primario</a>
+                        <a href="secundario.html" class="dropdown-link">Secundario</a>
+                    </div>
+                </div>
+                <a href="../../reglamento.html" class="nav-link hover:text-dorado transition-colors">Reglamento</a>
+                <a href="../auth/login.html" class="login-link nav-link bg-institucional text-white px-6 py-2 rounded-full font-heading hover:bg-dorado transition-all shadow-md text-center">Ingresar</a>
+
+                <div class="social-group flex gap-3 lg:ml-4 lg:border-l lg:pl-6 lg:border-gray-200">
+                    <a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/institutosanmarino.sl" class="icon-chip" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="icon-chip" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="relative min-h-[78vh] flex items-center justify-center overflow-hidden">
+        <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772256361/DIA_DE_LA_BANDERA_-_ISM_21_gflfuk.jpg" alt="Nivel Inicial" class="absolute inset-0 w-full h-full object-cover clickable-image" onclick="window.location.href='#propuesta'">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, var(--hero-overlay), var(--hero-overlay-2));"></div>
+
+        <div class="relative z-10 text-center px-4" data-aos="fade-up" data-aos-duration="1300">
+            <div class="hero-title-box max-w-4xl mx-auto">
+                <h2 class="text-white font-heading font-extrabold text-4xl md:text-6xl mb-5" style="text-shadow: 0 6px 24px rgba(0,0,0,.55);">Nivel Inicial</h2>
+                <p class="text-white/95 text-lg md:text-2xl font-light mb-8" style="text-shadow: 0 4px 16px rgba(0,0,0,.5);">Sala de 3, 4 y 5 años con educación temprana, afectiva y personalizada.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#propuesta" class="bg-dorado text-white px-8 py-3 rounded-full font-heading font-bold hover:opacity-90 transition-all">Nuestra propuesta</a>
+                    <a href="#inscripcion" class="bg-white/15 border border-white/35 text-white px-8 py-3 rounded-full font-heading font-bold hover:bg-white/25 transition-all">Inscripción</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Instituto San Marino</h3>
-                    <p>Educación de excelencia desde 1985</p>
+    <section id="propuesta" class="py-24 px-4 section-main">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-start">
+            <div data-aos="fade-right">
+                <h3 class="text-4xl font-heading font-bold text-institucional mb-6">Nuestro Nivel Inicial</h3>
+                <p class="text-soft text-lg leading-relaxed mb-5">Nuestra propuesta académica para el Nivel Inicial ofrece un cuerpo docente especializado en todas las áreas, con enseñanza personalizada para potenciar el desarrollo integral de cada niño.</p>
+                <p class="text-soft text-lg leading-relaxed mb-8">Integramos huerta educativa, inglés, computación, música, expresión corporal, educación física y educación vial, en un entorno seguro y estimulante.</p>
+                <h4 class="text-2xl font-heading font-bold text-institucional mb-4">Pilares de nuestra educación</h4>
+                <div class="card-surface rounded-2xl p-6">
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Cuerpo docente especializado</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Enseñanza personalizada</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Huerta educativa</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Inglés y computación</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Música y expresión corporal</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Educación física como pilar fundamental</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Educación vial</span></div>
+                    <div class="check-item"><i class="fa-solid fa-circle-check"></i><span>Jornada extendida opcional (8:00 a 15:00)</span></div>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <a href="../../index.html">Inicio</a><br>
-                    <a href="inicial.html">Nivel Inicial</a><br>
-                    <a href="primario.html">Nivel Primario</a><br>
-                    <a href="secundario.html">Nivel Secundario</a><br>
-                    <a href="reglamento.html">Reglamento</a><br>
-                    <a href="../../index.html#contacto">Contacto</a>
+            </div>
+            <div class="space-y-6" data-aos="fade-left">
+                <img src="https://res.cloudinary.com/dlacbkpaf/image/upload/v1772255190/DSC07205_blp6eh.jpg" alt="Estudiantes de nivel inicial" class="w-full h-[320px] object-cover rounded-2xl shadow-xl clickable-image" onclick="window.location.href='#jornada'">
+                <div class="grid sm:grid-cols-3 gap-4">
+                    <article class="sala-card card-surface rounded-2xl p-5"><h4 class="font-heading font-bold text-institucional mb-2">Sala de 3</h4><p class="text-sm text-soft">Primera experiencia escolar con juego y socialización.</p></article>
+                    <article class="sala-card card-surface rounded-2xl p-5"><h4 class="font-heading font-bold text-institucional mb-2">Sala de 4</h4><p class="text-sm text-soft">Desarrollo de autonomía y habilidades básicas.</p></article>
+                    <article class="sala-card card-surface rounded-2xl p-5"><h4 class="font-heading font-bold text-institucional mb-2">Sala de 5</h4><p class="text-sm text-soft">Preparación para primaria: lectoescritura y matemática.</p></article>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Contacto</h3>
-                    <p><i class="fa-solid fa-location-dot"></i> 
-                        <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">
-                            Colon 168, San Luis
-                        </a>
-                    </p>
-                    <p><i class="fa-solid fa-phone"></i> 
-                        <a href="tel:+542664431659" style="color: inherit;">
-                            +54 (266) 4431659
-                        </a>
-                    </p>
-                    <p><i class="fa-solid fa-envelope"></i> 
-                        <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">
-                            institutosanmarino.direccion@gmail.com
-                        </a>
-                    </p>
-                </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
             </div>
         </div>
+    </section>
+
+    <section class="py-24 section-alt">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-center text-4xl font-heading font-extrabold text-institucional mb-12" data-aos="fade-down">Actividades Curriculares</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up"><i class="fa-solid fa-seedling text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Huerta Educativa</h4><p class="text-soft text-sm">Conexión con la naturaleza mediante actividades prácticas.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="60"><i class="fa-solid fa-language text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Inglés</h4><p class="text-soft text-sm">Introducción lúdica y natural al idioma.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="120"><i class="fa-solid fa-computer text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Computación</h4><p class="text-soft text-sm">Primer acercamiento a la tecnología educativa.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="180"><i class="fa-solid fa-music text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Música</h4><p class="text-soft text-sm">Desarrollo rítmico, auditivo y creativo.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="240"><i class="fa-solid fa-masks-theater text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Expresión Corporal</h4><p class="text-soft text-sm">Movimiento, creatividad y expresión artística.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300"><i class="fa-solid fa-futbol text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Educación Física</h4><p class="text-soft text-sm">Desarrollo motor y hábitos saludables.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="360"><i class="fa-solid fa-traffic-light text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Educación Vial</h4><p class="text-soft text-sm">Formación en seguridad y convivencia vial.</p></article>
+                <article class="activity-card card-surface rounded-2xl p-6" data-aos="fade-up" data-aos-delay="420"><i class="fa-solid fa-palette text-dorado text-2xl"></i><h4 class="font-heading font-bold text-institucional mt-3 mb-2">Arte</h4><p class="text-soft text-sm">Expresión plástica y sensibilidad estética.</p></article>
+            </div>
+        </div>
+    </section>
+
+    <section id="jornada" class="py-24 section-main">
+        <div class="max-w-6xl mx-auto px-4">
+            <h3 class="text-center text-4xl font-heading font-extrabold text-institucional mb-4">Jornada Extendida</h3>
+            <p class="text-center text-soft mb-10 text-lg">Opcional, de lunes a jueves, de 8:00 a 15:00. Inicio: lunes 8 de abril.</p>
+            <div class="info-card card-surface rounded-3xl p-8 md:p-10">
+                <h4 class="font-heading text-2xl font-bold text-institucional mb-6"><i class="fa-solid fa-calendar-days text-dorado"></i> Actividades incluidas</h4>
+                <div class="grid md:grid-cols-2 gap-5 text-sm md:text-base">
+                    <div><strong><i class="fa-solid fa-futbol text-dorado"></i> Deportes:</strong> Trabajo en equipo, disciplina y superación personal.</div>
+                    <div><strong><i class="fa-solid fa-book-open text-dorado"></i> Apoyo escolar:</strong> Refuerzo de aprendizajes con enfoque lúdico.</div>
+                    <div><strong><i class="fa-solid fa-utensils text-dorado"></i> Cocina:</strong> Creatividad, autonomía y hábitos saludables.</div>
+                    <div><strong><i class="fa-solid fa-paint-brush text-dorado"></i> Arte:</strong> Expresión personal y apreciación estética.</div>
+                    <div class="md:col-span-2"><strong><i class="fa-solid fa-swimmer text-dorado"></i> Natación:</strong> Una vez por semana para fortalecer habilidades acuáticas y confianza.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="inscripcion" class="py-24 section-alt">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-center text-4xl font-heading font-extrabold text-institucional mb-12">Información de Inscripción</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <article class="card-surface rounded-2xl p-7">
+                    <h4 class="font-heading text-2xl font-bold text-institucional mb-5"><i class="fa-solid fa-list-check text-dorado"></i> Requisitos</h4>
+                    <ul class="space-y-2 text-soft"><li>DNI del alumno/a</li><li>DNI de ambos padres o tutores</li><li>Certificado de nacimiento</li><li>Constancia de domicilio</li><li>Carnet de vacunación completo</li><li>2 fotos 4x4</li><li>Apto médico</li></ul>
+                </article>
+                <article class="card-surface rounded-2xl p-7">
+                    <h4 class="font-heading text-2xl font-bold text-institucional mb-5"><i class="fa-solid fa-phone text-dorado"></i> Contacto</h4>
+                    <p class="text-soft mb-4"><strong>Período de inscripción:</strong> septiembre a diciembre.</p>
+                    <p class="text-soft mb-6"><strong>Secretaría:</strong> lunes a viernes de 8:00 a 18:00.</p>
+                    <div class="space-y-2 mb-6">
+                        <p><a href="tel:+542664431659" class="text-institucional hover:text-dorado"><i class="fa-solid fa-phone"></i> +54 (266) 4431659</a></p>
+                        <p><a href="mailto:institutosanmarino.direccion@gmail.com" class="text-institucional hover:text-dorado"><i class="fa-solid fa-envelope"></i> institutosanmarino.direccion@gmail.com</a></p>
+                        <p><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" rel="noopener noreferrer" class="text-institucional hover:text-dorado"><i class="fa-solid fa-location-dot"></i> Colón 168, San Luis</a></p>
+                    </div>
+                    <a href="#" onclick="enviarWhatsAppInicial(); return false;" class="inline-flex items-center justify-center w-full py-3 rounded-xl font-bold text-white" style="background: var(--wa);"><i class="fab fa-whatsapp mr-2"></i> Solicitar entrevista</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-institucional text-white/80 py-16 px-4 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2"><img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-20 mb-6" alt="Logo IPSM"><p class="max-w-sm mb-6">Educación de excelencia con valores que trascienden el aula. Formando líderes desde 1990.</p><div class="flex gap-4"><a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a><a href="https://www.facebook.com/institutosanmarino.sl" class="icon-chip" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="icon-chip" aria-label="Spotify"><i class="fab fa-spotify"></i></a></div></div>
+            <div><h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Navegación</h4><ul class="space-y-4 text-sm"><li><a href="../../index.html" class="hover:text-dorado">Inicio</a></li><li><a href="inicial.html" class="hover:text-dorado">Nivel Inicial</a></li><li><a href="primario.html" class="hover:text-dorado">Nivel Primario</a></li><li><a href="secundario.html" class="hover:text-dorado">Nivel Secundario</a></li><li><a href="../../reglamento.html" class="hover:text-dorado">Reglamento</a></li></ul></div>
+            <div><h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Contacto</h4><p class="text-sm mb-2"><a href="mailto:institutosanmarino.direccion@gmail.com" class="hover:text-dorado">institutosanmarino.direccion@gmail.com</a></p><p class="text-sm"><a href="tel:+542664431659" class="hover:text-dorado">+54 (266) 4431659</a></p><p class="text-sm mt-4 text-gray-300"><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" rel="noopener noreferrer" class="hover:text-dorado">Colon 168, San Luis, Argentina</a></p></div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center text-[10px] uppercase tracking-widest">&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</div>
     </footer>
 
-        <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/5492664004015" class="whatsapp-float" target="_blank" aria-label="Chat en WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/5492664004015?text=Hola%20%F0%9F%91%8B" target="_blank" class="wa-float fixed bottom-10 right-10 z-50 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl" aria-label="Chat en WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
-    <!-- Scripts -->
-    <script src="../../js/config.js"></script>
-    <script src="../../js/api.js"></script>
-    <script src="../../js/home.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
         function enviarWhatsAppInicial() {
-            const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor).
-
-Solicito una entrevista para mi hijo/a:
-- Nombre completo del niño/a: ___________
-- DNI del niño/a: ___________
-- Fecha de nacimiento: ___________
-- Nivel solicitado: Inicial (Sala de 3 / Sala de 4 / Sala de 5)
-- Turno preferido: ___________ (Normal / Jornada Completa)
-
-Contacto:
-- Teléfono: ___________
-- Email: ___________
-
-Muchas gracias.`;
-
-            const numeroWhatsApp = '5492664004015'; 
-            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor).\n\nSolicito una entrevista para mi hijo/a:\n- Nombre completo del niño/a: ___________\n- DNI del niño/a: ___________\n- Fecha de nacimiento: ___________\n- Nivel solicitado: Inicial (Sala de 3 / Sala de 4 / Sala de 5)\n- Turno preferido: ___________ (Normal / Jornada Completa)\n\nContacto:\n- Teléfono: ___________\n- Email: ___________\n\nMuchas gracias.`;
+            const urlWhatsApp = `https://wa.me/5492664004015?text=${encodeURIComponent(mensaje)}`;
             window.open(urlWhatsApp, '_blank');
         }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        function applyTheme(mode) {
+            const isDark = mode === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('ipsm_theme', mode);
+        }
+        applyTheme(localStorage.getItem('ipsm_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        themeToggle.addEventListener('click', () => applyTheme(document.body.classList.contains('dark-theme') ? 'light' : 'dark'));
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const dropdown = document.getElementById('nivelesDropdown');
+        const nivelesBtn = document.getElementById('nivelesBtn');
+
+        function closeAllMenus() {
+            mainNav?.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            dropdown?.classList.remove('open');
+        }
+
+        menuToggle?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mainNav.classList.toggle('active');
+            document.body.classList.toggle('menu-open', mainNav.classList.contains('active'));
+        });
+
+        nivelesBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (dropdown && !dropdown.contains(e.target)) dropdown.classList.remove('open');
+            if (window.innerWidth <= 900 && mainNav?.classList.contains('active') && !mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+                closeAllMenus();
+            }
+        });
+
+        mainNav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+            if (window.innerWidth <= 900) closeAllMenus();
+        }));
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900) {
+                mainNav?.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (!nav) return;
+            if (window.scrollY > 100) {
+                nav.classList.add('shadow-xl');
+                nav.style.padding = '10px 0';
+            } else {
+                nav.classList.remove('shadow-xl');
+                nav.style.padding = '12px 0';
+            }
+        });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

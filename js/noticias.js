@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JavaScript para Página de Noticias
  * Instituto Privado San Marino
  */
@@ -36,19 +36,30 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
+    const nivelesDropdown = document.getElementById('nivelesDropdown');
+    const nivelesBtn = document.getElementById('nivelesBtn');
     
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', function() {
             const isOpen = mainNav.classList.toggle('active');
             document.body.classList.toggle('menu-open', isOpen);
         });
-        
+
+        if (nivelesBtn && nivelesDropdown) {
+            nivelesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                nivelesDropdown.classList.toggle('open');
+            });
+        }
+
         // Cerrar menú al hacer clic en un enlace
-        const navLinks = mainNav.querySelectorAll('.nav-link');
+        const navLinks = mainNav.querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-link');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 mainNav.classList.remove('active');
                 document.body.classList.remove('menu-open');
+                if (nivelesDropdown) nivelesDropdown.classList.remove('open');
             });
         });
         
@@ -57,6 +68,17 @@ function initMobileMenu() {
             if (!mainNav.contains(event.target) && !menuToggle.contains(event.target)) {
                 mainNav.classList.remove('active');
                 document.body.classList.remove('menu-open');
+            }
+            if (nivelesDropdown && !nivelesDropdown.contains(event.target)) {
+                nivelesDropdown.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                mainNav.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                if (nivelesDropdown) nivelesDropdown.classList.remove('open');
             }
         });
     }
@@ -107,7 +129,7 @@ function mostrarNoticiaDestacada(noticia) {
             <div class="noticia-destacada" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
                 <div class="noticia-destacada-imagen">
                     <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
-                    <div class="badge-destacada">⭐ Destacada</div>
+                    <div class="badge-destacada"><i class="fa-solid fa-star"></i> Destacada</div>
                 </div>
                 <div class="noticia-destacada-contenido">
                     <div class="noticia-destacada-meta">
@@ -397,3 +419,4 @@ function hideLoader() {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.remove('active');
 }
+

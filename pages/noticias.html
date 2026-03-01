@@ -1,180 +1,645 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Noticias y novedades del Instituto Privado San Marino">
     <title>Noticias - Instituto Privado San Marino</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos -->
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/noticias.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { institucional: '#002855', dorado: '#C5A059' },
+                    fontFamily: { sans: ['Lato', 'sans-serif'], heading: ['Montserrat', 'sans-serif'] }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-alt: #ffffff;
+            --text-main: #1f2937;
+            --text-soft: #5b6472;
+            --card-bg: #ffffff;
+            --card-border: #dbe4f0;
+            --icon-bg: #eef2ff;
+            --icon-color: #002855;
+            --hero-overlay: rgba(0, 40, 85, 0.72);
+            --hero-overlay-2: rgba(2, 6, 23, 0.62);
+            --wa: #22c55e;
+            --wa-hover: #16a34a;
+        }
+
+        body.dark-theme {
+            --bg-main: #0b1220;
+            --bg-alt: #111827;
+            --text-main: #e5e7eb;
+            --text-soft: #cbd5e1;
+            --card-bg: #1f2937;
+            --card-border: #374151;
+            --icon-bg: #1e293b;
+            --icon-color: #f8fafc;
+            --hero-overlay: rgba(2, 6, 23, 0.88);
+            --hero-overlay-2: rgba(15, 23, 42, 0.72);
+            --wa: #16a34a;
+            --wa-hover: #15803d;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Lato', sans-serif;
+            transition: background-color .35s ease, color .35s ease;
+            padding-top: 84px;
+        }
+
+        .section-main { background: var(--bg-main); }
+        .section-alt { background: var(--bg-alt); }
+        .text-soft { color: var(--text-soft); }
+        .text-institucional { color: #002855; }
+        .text-dorado { color: #C5A059; }
+
+        body.dark-theme .text-institucional,
+        body.dark-theme h1.text-institucional,
+        body.dark-theme h2.text-institucional,
+        body.dark-theme h3.text-institucional,
+        body.dark-theme h4.text-institucional { color: #f8fafc !important; }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 40, 85, 0.12);
+        }
+
+        body.dark-theme .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+        }
+
+        .nav-link { color: #002855; font-weight: 700; transition: color .2s ease; }
+        .nav-link:hover { color: #C5A059; }
+        body.dark-theme .nav-link { color: #e5e7eb; }
+        body.dark-theme .nav-link:hover { color: #C5A059; }
+
+        .theme-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.38);
+            background: rgba(255, 255, 255, 0.85);
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #002855;
+            font-size: 1rem;
+        }
+
+        body.dark-theme .theme-toggle { background: rgba(30, 41, 59, 0.92); color: #f8fafc; }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: transparent;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0;
+        }
+
+        .menu-bar {
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            border-radius: 2px;
+            background: #002855;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform .28s ease, opacity .2s ease;
+        }
+
+        .menu-bar.bar-1 { transform: translate(-50%, calc(-50% - 7px)); }
+        .menu-bar.bar-3 { transform: translate(-50%, calc(-50% + 7px)); }
+        body.dark-theme .menu-bar { background: #f8fafc; }
+        body.menu-open .menu-bar.bar-1 { transform: translate(-50%, -50%) rotate(45deg); }
+        body.menu-open .menu-bar.bar-2 { opacity: 0; }
+        body.menu-open .menu-bar.bar-3 { transform: translate(-50%, -50%) rotate(-45deg); }
+
+        .icon-chip {
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 9999px;
+            background: var(--icon-bg);
+            color: var(--icon-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .icon-chip:hover { transform: translateY(-2px); background: #C5A059; color: #fff; }
+
+        .dropdown { position: relative; }
+        .dropdown-toggle::after { content: '\25BE'; font-size: .72rem; margin-left: .4rem; transition: transform .25s ease; }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 220px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: .9rem;
+            box-shadow: 0 14px 30px rgba(2, 6, 23, .18);
+            padding: .5rem;
+            opacity: 0;
+            transform: translateY(10px) scale(.98);
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity .28s ease, transform .28s ease;
+        }
+
+        .dropdown.open .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        .dropdown-link {
+            display: block;
+            border-radius: .65rem;
+            padding: .58rem .72rem;
+            font-weight: 700;
+            color: #002855;
+        }
+
+        .dropdown-link:hover { background: rgba(197, 160, 89, .18); }
+        body.dark-theme .dropdown-link { color: #e5e7eb; }
+
+        .hero-noticias {
+            position: relative;
+            min-height: 52vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: url('https://live.staticflickr.com/65535/55085914955_42208f8219_b.jpg') center/cover no-repeat;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, var(--hero-overlay), var(--hero-overlay-2));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            background: rgba(2, 6, 23, 0.36);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 1rem;
+            padding: 1.75rem 1.25rem;
+            animation: rise-in .65s ease both;
+        }
+
+        .hero-title {
+            margin: 0 0 .75rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #fff;
+            font-size: clamp(1.9rem, 4vw, 3.4rem);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: clamp(1rem, 2vw, 1.3rem);
+        }
+
+        .filtros-section { padding: 2rem 1rem; }
+        .container { width: min(1200px, 100% - 2rem); margin-inline: auto; }
+        .filtros-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .08);
+            animation: rise-in .6s ease both;
+            animation-delay: .06s;
+        }
+
+        .filtro-label { display: block; font-weight: 700; margin-bottom: .45rem; color: var(--text-main); }
+        .filtro-select, .filtro-input {
+            width: 100%;
+            border: 1px solid var(--card-border);
+            border-radius: .7rem;
+            padding: .7rem .85rem;
+            background: var(--bg-alt);
+            color: var(--text-main);
+        }
+
+        .noticia-destacada-section,
+        .noticias-grid-section { padding: 1rem 1rem 2rem; }
+
+        .noticia-destacada {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 0;
+            border: 1px solid var(--card-border);
+            border-radius: 1.15rem;
+            overflow: hidden;
+            background: var(--card-bg);
+            box-shadow: 0 12px 30px rgba(2, 6, 23, .1);
+            cursor: pointer;
+            animation: rise-in .55s ease both;
+        }
+
+        .noticia-destacada-imagen { position: relative; min-height: 330px; }
+        .noticia-destacada-imagen img { width: 100%; height: 100%; object-fit: cover; }
+        .badge-destacada {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #C5A059;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: .35rem .75rem;
+            font-size: .8rem;
+        }
+
+        .noticia-destacada-contenido { padding: 1.35rem; }
+        .noticia-destacada-meta { display: flex; gap: .9rem; flex-wrap: wrap; color: var(--text-soft); font-size: .9rem; }
+        .noticia-destacada-titulo { margin: .75rem 0 .6rem; font-family: 'Montserrat', sans-serif; font-size: 1.55rem; color: var(--text-main); }
+        .noticia-destacada-resumen { margin: 0 0 1rem; color: var(--text-soft); }
+        .noticia-categorias, .noticia-etiquetas { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+        .categoria-badge, .etiqueta-badge {
+            border-radius: 999px;
+            padding: .32rem .62rem;
+            font-size: .76rem;
+            font-weight: 700;
+            background: rgba(197, 160, 89, .2);
+            color: #8b6a2f;
+        }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; border-radius: 999px; font-weight: 700; }
+        .btn-primary { background: #002855; color: #fff; padding: .72rem 1.05rem; }
+        .btn-primary:hover { background: #C5A059; }
+        .btn-lg { padding: .8rem 1.25rem; }
+
+        .noticias-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .noticia-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(2, 6, 23, .08);
+            cursor: pointer;
+            transition: transform .22s ease;
+            animation: rise-in .45s ease both;
+        }
+
+        .noticia-card:hover { transform: translateY(-4px); }
+        .noticia-card-imagen { position: relative; height: 200px; }
+        .noticia-card-imagen img { width: 100%; height: 100%; object-fit: cover; }
+        .noticia-card-categoria {
+            position: absolute;
+            bottom: .8rem;
+            left: .8rem;
+            background: rgba(2, 6, 23, .76);
+            color: #fff;
+            border-radius: 999px;
+            padding: .3rem .65rem;
+            font-size: .74rem;
+            font-weight: 700;
+        }
+
+        .noticia-card-contenido { padding: .95rem; }
+        .noticia-card-fecha, .noticia-card-autor { color: var(--text-soft); font-size: .84rem; }
+        .noticia-card-titulo { margin: .55rem 0; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; color: var(--text-main); }
+        .noticia-card-resumen { margin: 0; color: var(--text-soft); font-size: .94rem; }
+        .noticia-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: .7rem; }
+        .noticia-card-leer-mas { color: #C5A059; font-weight: 700; }
+
+        .load-more-container { text-align: center; margin-top: 1.1rem; }
+        .no-results { text-align: center; padding: 2rem .75rem; }
+        .no-results-icon { font-size: 2rem; color: #C5A059; }
+
+        .footer {
+            background: #002855;
+            color: rgba(255, 255, 255, .83);
+            padding: 3rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .footer-grid {
+            width: min(1200px, 100% - 2rem);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .footer h4 { color: #fff; margin: 0 0 .9rem; text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; }
+        .footer a { color: inherit; text-decoration: none; }
+        .footer a:hover { color: #C5A059; }
+
+        .whatsapp-float {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.55rem;
+            color: #fff;
+            background: var(--wa);
+            z-index: 70;
+            box-shadow: 0 10px 24px rgba(34, 197, 94, .45);
+        }
+
+        .whatsapp-float:hover { background: var(--wa-hover); }
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loader.active { display: flex; }
+        .loader-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(255,255,255,.35);
+            border-top-color: #C5A059;
+            border-radius: 9999px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes rise-in {
+            from { opacity: 0; transform: translateY(14px) scale(.985); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: inline-flex; }
+            #mainNav {
+                position: fixed;
+                top: 84px;
+                right: 1rem;
+                left: 1rem;
+                background: var(--bg-alt);
+                border-radius: 1rem;
+                box-shadow: 0 15px 35px rgba(2, 6, 23, 0.24);
+                border: 1px solid var(--card-border);
+                padding: 1rem;
+                display: flex !important;
+                flex-direction: column;
+                gap: .9rem;
+                z-index: 60;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(-10px) scale(.98);
+                transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+            }
+
+            #mainNav.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0) scale(1);
+            }
+
+            .dropdown-menu {
+                position: static;
+                min-width: 100%;
+                margin-top: .55rem;
+                max-height: 0;
+                padding: 0 .5rem;
+                opacity: 0;
+                transform: translateY(-6px);
+                overflow: hidden;
+                box-shadow: none;
+            }
+
+            .dropdown.open .dropdown-menu {
+                max-height: 260px;
+                padding: .5rem;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .noticia-destacada { grid-template-columns: 1fr; }
+            .noticias-grid { grid-template-columns: 1fr; }
+            .filtros-wrapper { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 901px) {
+            .menu-toggle { display: none !important; }
+            #mainNav {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                display: flex !important;
+                align-items: center;
+                gap: 2rem;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <a href="../index.html" class="logo-link">
-                        <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
-                    </a>
-                    <div>
-                        <h1 class="site-title">Instituto Privado San Marino</h1>
-                        <p class="site-subtitle">Educación con valores desde 1990</p>
+    <header class="fixed top-0 w-full z-50 transition-all duration-500 py-3 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="../index.html">
+                    <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-14 w-14" alt="Logo">
+                </a>
+                <div class="block leading-tight">
+                    <h1 class="font-heading font-extrabold text-institucional text-xl leading-none">SAN MARINO</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-dorado font-bold">Noticias</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 ml-auto">
+                <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                    <span class="menu-bar bar-1"></span>
+                    <span class="menu-bar bar-2"></span>
+                    <span class="menu-bar bar-3"></span>
+                </button>
+            </div>
+
+            <nav id="mainNav" class="lg:flex lg:items-center lg:gap-8 lg:font-semibold lg:text-institucional/80 lg:text-sm">
+                <a href="../index.html" class="nav-link">Inicio</a>
+                <a href="noticias.html" class="nav-link text-dorado font-bold">Noticias</a>
+                <div class="nav-item dropdown" id="nivelesDropdown">
+                    <button class="nav-link dropdown-toggle" id="nivelesBtn" type="button">Niveles</button>
+                    <div class="dropdown-menu" id="nivelesMenu">
+                        <a href="niveles/inicial.html" class="dropdown-link">Inicial</a>
+                        <a href="niveles/primario.html" class="dropdown-link">Primario</a>
+                        <a href="niveles/secundario.html" class="dropdown-link">Secundario</a>
                     </div>
                 </div>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-                    ☰
-                </button>
-                
-                <nav class="nav" id="mainNav">
-                    <a href="../index.html" class="nav-link">Inicio</a>
-                    <a href="../index.html#noticias" class="nav-link active">Noticias</a>
-                    <a href="../index.html#niveles" class="nav-link">Niveles</a>
-                    <a href="../reglamento.html" class="nav-link">Reglamento</a>
-                    <a href="../index.html#contacto" class="nav-link">Contacto</a>
-                    <a href="auth/login.html" class="nav-link btn btn-accent">Ingresar</a>
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/institutosanmarino.sl" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@institutosanmarino.sl" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="https://www.facebook.com/institutosanmarino.sl" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="social-icon" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-                    </div>
-                </nav>
-            </div>
+                <a href="../reglamento.html" class="nav-link">Reglamento</a>
+                <a href="../index.html#contacto" class="nav-link">Contacto</a>
+                <a href="auth/login.html" class="nav-link bg-institucional text-white px-6 py-2 rounded-full font-heading">Ingresar</a>
+                <div class="social-group flex gap-3 lg:ml-4 lg:border-l lg:pl-6 lg:border-gray-200">
+                    <a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/institutosanmarino.sl" class="icon-chip" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://open.spotify.com/show/0cFF7gZs7ijkTa3QYoYKnr?si=304f072a8ae74031" class="icon-chip" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero hero-noticias">
+    <section class="hero-noticias">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">Noticias y Novedades</h1>
-            <p class="hero-subtitle">Mantente informado sobre todo lo que sucede en nuestra comunidad educativa</p>
+            <p class="hero-subtitle">Mantente informado sobre todo lo que sucede en nuestra comunidad educativa.</p>
         </div>
     </section>
 
-    <!-- Filtros -->
-    <section class="filtros-section">
+    <section class="filtros-section section-main">
         <div class="container">
             <div class="filtros-wrapper">
                 <div class="filtro-item">
-                    <label for="filtroCategoria" class="filtro-label">
-                        <i class="fas fa-filter"></i> Categoría
-                    </label>
+                    <label for="filtroCategoria" class="filtro-label"><i class="fas fa-filter"></i> Categoria</label>
                     <select id="filtroCategoria" class="filtro-select">
                         <option value="">Todas</option>
-                        <option value="academico">Académico</option>
+                        <option value="academico">Academico</option>
                         <option value="deportes">Deportes</option>
                         <option value="eventos">Eventos</option>
                         <option value="institucional">Institucional</option>
                     </select>
                 </div>
-                
+
                 <div class="filtro-item">
-                    <label for="filtroBusqueda" class="filtro-label">
-                        <i class="fas fa-search"></i> Buscar
-                    </label>
+                    <label for="filtroBusqueda" class="filtro-label"><i class="fas fa-search"></i> Buscar</label>
                     <input type="text" id="filtroBusqueda" class="filtro-input" placeholder="Buscar noticia...">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Noticia Destacada -->
-    <section class="noticia-destacada-section" id="noticiaDestacadaSection">
-        <!-- Se carga dinámicamente -->
-    </section>
+    <section class="noticia-destacada-section section-main" id="noticiaDestacadaSection"></section>
 
-    <!-- Grid de Noticias -->
-    <section class="noticias-grid-section">
+    <section class="noticias-grid-section section-alt">
         <div class="container">
-            <div class="noticias-grid" id="noticiasGrid">
-                <!-- Se cargan dinámicamente -->
-            </div>
-            
-            <!-- Botón Cargar Más -->
+            <div class="noticias-grid" id="noticiasGrid"></div>
             <div class="load-more-container" id="loadMoreContainer">
-                <button class="btn btn-primary btn-lg" id="btnLoadMore">
-                    <i class="fas fa-plus-circle"></i> Cargar más noticias
-                </button>
+                <button class="btn btn-primary btn-lg" id="btnLoadMore"><i class="fas fa-plus-circle"></i> Cargar mas noticias</button>
             </div>
-            
-            <!-- Mensaje Sin Resultados -->
             <div class="no-results" id="noResults" style="display: none;">
                 <div class="no-results-icon"><i class="fa-solid fa-newspaper"></i></div>
                 <h3>No se encontraron noticias</h3>
-                <p>Intenta con otros filtros de búsqueda</p>
+                <p>Intenta con otros filtros de busqueda</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Instituto San Marino</h3>
-                    <p>Educación de excelencia desde 1990</p>
-                    <p>Formando ciudadanos responsables y comprometidos con la sociedad</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <a href="../index.html">Inicio</a><br>
-                    <a href="noticias.html">Noticias</a><br>
-                    <a href="../index.html#niveles">Niveles</a><br>
-                    <a href="../index.html#contacto">Contacto</a><br>
-                    <a href="../reglamento.html">Reglamento</a><br>
-                    <a href="auth/login.html">Acceso Sistema</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Niveles</h3>
-                    <a href="niveles/inicial.html">Nivel Inicial</a><br>
-                    <a href="niveles/primario.html">Nivel Primario</a><br>
-                    <a href="niveles/secundario.html">Nivel Secundario</a>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contacto</h3>
-                    <p><i class="fa-solid fa-location-dot"></i> <a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" style="color: inherit;">Colon 168, San Luis</a></p>
-                    <p><i class="fa-solid fa-phone"></i> <a href="tel:+542664431659" style="color: inherit;">+54 (266) 4431659</a></p>
-                    <p><i class="fa-solid fa-envelope"></i> <a href="mailto:institutosanmarino.direccion@gmail.com" style="color: inherit;">institutosanmarino.direccion@gmail.com</a></p>
-                </div>
+        <div class="footer-grid">
+            <div>
+                <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-20 mb-6" alt="Logo IPSM">
+                <p>Educacion de excelencia con valores que trascienden el aula.</p>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Instituto Privado San Marino. Todos los derechos reservados.</p>
+            <div>
+                <h4>Navegacion</h4>
+                <p><a href="../index.html">Inicio</a></p>
+                <p><a href="noticias.html">Noticias</a></p>
+                <p><a href="../reglamento.html">Reglamento</a></p>
+                <p><a href="auth/login.html">Sistema academico</a></p>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <p><a href="mailto:institutosanmarino.direccion@gmail.com">institutosanmarino.direccion@gmail.com</a></p>
+                <p><a href="tel:+542664431659">+54 (266) 4431659</a></p>
+                <p><a href="https://maps.app.goo.gl/iVvAK9wUZAnNaFoJ9" target="_blank" rel="noopener noreferrer">Colon 168, San Luis, Argentina</a></p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/5492664004015?text=Hola%20%F0%9F%91%8B" class="whatsapp-float" target="_blank" aria-label="Chat en WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
-    </div>
+    <div class="loader" id="loader"><div class="loader-spinner"></div></div>
 
-    <!-- Scripts -->
     <script src="../js/config.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/noticias.js"></script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+function applyTheme(mode) {
+            const isDark = mode === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('ipsm_theme', mode);
+        }
+
+        const storedTheme = localStorage.getItem('ipsm_theme');
+        if (storedTheme) applyTheme(storedTheme);
+        else applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        themeToggle.addEventListener('click', () => {
+            applyTheme(document.body.classList.contains('dark-theme') ? 'light' : 'dark');
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (!nav) return;
+            nav.classList.toggle('shadow-xl', window.scrollY > 90);
+            nav.style.padding = window.scrollY > 90 ? '10px 0' : '12px 0';
+        });
+    </script>
 </body>
 </html>
+
+
