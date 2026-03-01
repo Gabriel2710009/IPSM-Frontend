@@ -20,7 +20,7 @@
 
     
 
-    <link rel="stylesheet" href="../../css/tailwind.css">
+    <link rel="stylesheet" href="../../css/utilities.css">
 
     <style>
         :root {
@@ -56,6 +56,7 @@
             color: var(--text-main);
             font-family: 'Lato', sans-serif;
             transition: background-color .35s ease, color .35s ease;
+            padding-top: 84px;
         }
         .section-main { background: var(--bg-main); }
         .section-alt { background: var(--bg-alt); }
@@ -226,6 +227,7 @@
         .clickable-image { cursor: pointer; }
 
         @media (max-width: 900px) {
+            body { padding-top: 78px; }
             .menu-toggle { display: inline-flex; }
             #mainNav {
                 position: fixed;
@@ -267,6 +269,9 @@
                 border-left: none;
                 padding-left: 0;
                 margin-left: 0;
+            }
+            .max-w-7xl.mx-auto.px-4.grid.lg\\:grid-cols-2.gap-14.items-start {
+                grid-template-columns: 1fr !important;
             }
         }
 
@@ -604,6 +609,7 @@ body.dark-theme .icon-chip { color: #f8fafc !important; }
     </script>
 </body>
 </html>
+
 
 
 

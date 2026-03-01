@@ -17,7 +17,7 @@
 
     
 
-    <link rel="stylesheet" href="../css/tailwind.css">
+    <link rel="stylesheet" href="../css/utilities.css">
 
     <style>
         :root {
@@ -56,6 +56,7 @@
             transition: background-color .35s ease, color .35s ease;
             padding-top: 84px;
         }
+        .bg-institucional { background: #002855; }
 
         .glass-nav {
             background: rgba(255, 255, 255, 0.88);
@@ -80,7 +81,9 @@
 
         .nav-link { color: #002855; font-weight: 700; transition: color .2s ease; }
         .nav-link:hover { color: #C5A059; }
+        .nav-link.bg-institucional { color: #fff !important; }
         body.dark-theme .nav-link { color: #e5e7eb; }
+        body.dark-theme .nav-link.bg-institucional { color: #fff !important; }
 
         .theme-toggle {
             border: 1px solid rgba(148, 163, 184, 0.38);
@@ -109,6 +112,7 @@
             position: relative;
             padding: 0;
         }
+        .header-controls { display: inline-flex; align-items: center; gap: .75rem; }
 
         .menu-bar {
             position: absolute;
@@ -460,8 +464,10 @@
         }
 
         @media (min-width: 901px) {
+            .header-controls { margin-left: auto; order: 3; }
             .menu-toggle { display: none !important; }
             #mainNav {
+                order: 2;
                 position: static !important;
                 opacity: 1 !important;
                 visibility: visible !important;
@@ -489,7 +495,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 ml-auto">
+            <div class="header-controls flex items-center gap-3 ml-auto">
                 <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
                 <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
                     <span class="menu-bar bar-1"></span>
@@ -612,6 +618,7 @@ function applyTheme(mode) {
     </script>
 </body>
 </html>
+
 
 
 

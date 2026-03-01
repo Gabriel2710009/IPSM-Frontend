@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="stylesheet" href="css/utilities.css">
 
     <style>
         :root {
@@ -100,8 +100,10 @@
         }
 
         .nav-link:hover { color: #C5A059; }
+        .nav-link.bg-institucional { color: #fff !important; }
         body.dark-theme .nav-link { color: #e5e7eb; }
         body.dark-theme .nav-link:hover { color: #C5A059; }
+        body.dark-theme .nav-link.bg-institucional { color: #fff !important; }
 
         .hero-title-box {
             background: rgba(2, 6, 23, 0.4);
@@ -159,6 +161,7 @@
             position: relative;
             padding: 0;
         }
+        .header-controls { display: inline-flex; align-items: center; gap: .75rem; margin-left: auto; }
 
         .menu-bar {
             position: absolute;
@@ -482,12 +485,17 @@
             .pdf-search input {
                 min-width: 120px;
             }
+            .pdf-viewer-wrap { padding: 8px; min-height: 62vh; }
+            .pdf-canvas-frame { min-height: 60vh; max-height: 65vh; padding: 6px; }
+            .pdf-canvas { width: 100% !important; height: auto !important; }
         }
 
         @media (min-width: 901px) {
+            .header-controls { order: 3; }
             .menu-toggle { display: none !important; }
 
             #mainNav {
+                order: 2;
                 position: static !important;
                 opacity: 1 !important;
                 visibility: visible !important;
@@ -517,7 +525,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 ml-auto">
+            <div class="header-controls flex items-center gap-3 ml-auto">
                 <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
@@ -589,12 +597,12 @@
                     <div class="pdf-toolbar">
                         <div class="pdf-toolbar-left">
                             <span class="pdf-toolbar-title">Visor</span>
-                            <span class="pdf-page-chip" id="pageLabel">PÃ¡gina 1 / 1</span>
+                            <span class="pdf-page-chip" id="pageLabel">Página 1 / 1</span>
                             <span class="text-xs font-bold px-2 py-1 rounded-md bg-dorado/20 text-dorado" id="zoomLabel">Zoom 115%</span>
                         </div>
                         <div class="pdf-toolbar-right">
-                            <button class="pdf-tool-btn" type="button" id="prevPageBtn" title="PÃ¡gina anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button class="pdf-tool-btn" type="button" id="nextPageBtn" title="PÃ¡gina siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="prevPageBtn" title="Página anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="pdf-tool-btn" type="button" id="nextPageBtn" title="Página siguiente"><i class="fa-solid fa-chevron-right"></i></button>
                             <button class="pdf-tool-btn" type="button" id="zoomOutBtn"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                             <button class="pdf-tool-btn" type="button" id="zoomResetBtn">Reset</button>
                             <button class="pdf-tool-btn" type="button" id="zoomInBtn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
@@ -631,15 +639,15 @@
             <div class="grid md:grid-cols-3 gap-7">
                 <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="100">
                     <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-gavel text-dorado mr-2"></i>Normas de Convivencia</h4>
-                    <p class="text-soft">Reglas claras para sostener un clima de respeto, diÃ¡logo y trabajo colaborativo.</p>
+                    <p class="text-soft">Reglas claras para sostener un clima de respeto, diálogo y trabajo colaborativo.</p>
                 </article>
                 <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="220">
                     <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-shield-alt text-dorado mr-2"></i>Derechos y Deberes</h4>
                     <p class="text-soft">Marco institucional para estudiantes, familias y personal docente y no docente.</p>
                 </article>
                 <article class="card-surface p-7" data-aos="fade-up" data-aos-delay="340">
-                    <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-clipboard-check text-dorado mr-2"></i>EvaluaciÃ³n y PromociÃ³n</h4>
-                    <p class="text-soft">Criterios transparentes para seguimiento pedagÃ³gico y acreditaciÃ³n por nivel.</p>
+                    <h4 class="font-heading font-bold text-institucional text-xl mb-3"><i class="fas fa-clipboard-check text-dorado mr-2"></i>Evaluación y Promoción</h4>
+                    <p class="text-soft">Criterios transparentes para seguimiento pedagógico y acreditación por nivel.</p>
                 </article>
             </div>
         </div>
@@ -649,7 +657,7 @@
         <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
                 <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" class="h-20 mb-6" alt="Logo IPSM">
-                <p class="max-w-sm mb-6">EducaciÃ³n de excelencia con valores que trascienden el aula.</p>
+                <p class="max-w-sm mb-6">Educación de excelencia con valores que trascienden el aula.</p>
                 <div class="flex gap-4">
                     <a href="https://www.instagram.com/institutosanmarino.sl" class="icon-chip" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.tiktok.com/@institutosanmarino.sl" class="icon-chip" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
@@ -658,7 +666,7 @@
                 </div>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">NavegaciÃ³n</h4>
+                <h4 class="text-white font-bold mb-6 uppercase text-sm tracking-widest">Navegación</h4>
                 <ul class="space-y-4 text-sm">
                     <li><a href="index.html" class="hover:text-dorado">Inicio</a></li>
                     <li><a href="pages/niveles/inicial.html" class="hover:text-dorado">Nivel Inicial</a></li>
@@ -721,7 +729,7 @@
 
         function updateToolbar() {
             zoomLabel.textContent = `Zoom ${Math.round(zoomFactor * 100)}%`;
-            pageLabel.textContent = `PÃ¡gina ${currentPage} / ${totalPages || 1}`;
+            pageLabel.textContent = `Página ${currentPage} / ${totalPages || 1}`;
             prevPageBtn.disabled = currentPage <= 1;
             nextPageBtn.disabled = currentPage >= totalPages;
         }
@@ -767,8 +775,8 @@
                 pdfNativeFallback.style.display = 'block';
                 pdfNativeFallback.src = PDF_PATH;
                 pdfLoading.classList.add('hidden');
-                pageLabel.textContent = 'PÃ¡gina - / -';
-                searchStatus.textContent = 'Modo local file://: visor bÃ¡sico activo. Para buscador y pÃ¡ginas, abrÃ­ con http://localhost.';
+                pageLabel.textContent = 'Página - / -';
+                searchStatus.textContent = 'Modo local file://: visor básico activo. Para buscador y páginas, abrí con http://localhost.';
                 prevPageBtn.disabled = true;
                 nextPageBtn.disabled = true;
                 searchBtn.disabled = true;
@@ -805,7 +813,7 @@
                 const pageText = content.items.map((item) => item.str).join(' ').toLowerCase();
                 textIndex.push(pageText);
             }
-            searchStatus.textContent = 'Ãndice listo.';
+            searchStatus.textContent = 'Índice listo.';
         }
 
         async function executeSearch(goNext = true) {
@@ -813,7 +821,7 @@
             if (!query) {
                 searchMatches = [];
                 currentMatchIndex = -1;
-                searchStatus.textContent = 'EscribÃ­ un texto para buscar.';
+                searchStatus.textContent = 'Escribí un texto para buscar.';
                 return;
             }
 
@@ -838,7 +846,7 @@
             }
 
             const targetPage = searchMatches[currentMatchIndex];
-            searchStatus.textContent = `Coincidencia ${currentMatchIndex + 1} de ${searchMatches.length} (pÃ¡gina ${targetPage}).`;
+            searchStatus.textContent = `Coincidencia ${currentMatchIndex + 1} de ${searchMatches.length} (página ${targetPage}).`;
             await renderPage(targetPage);
         }
 
@@ -960,7 +968,7 @@
             if (!nivelesDropdown.contains(e.target)) {
                 nivelesDropdown.classList.remove('open');
             }
-            if (window.innerWidth <= 1024 && mainNav.classList.contains('active') && !mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+            if (window.innerWidth <= 900 && mainNav.classList.contains('active') && !mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
                 closeMenu();
             }
         });
@@ -971,7 +979,7 @@
 
         mainNav.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', () => {
-                if (window.innerWidth <= 1024) closeMenu();
+                if (window.innerWidth <= 900) closeMenu();
             });
         });
 
@@ -989,5 +997,7 @@
     </script>
 </body>
 </html>
+
+
 
 
