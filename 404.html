@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pagina no encontrada - Instituto Privado San Marino">
+    <title>404 - Instituto Privado San Marino</title>
+
+    <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/utilities.css">
+
+    <style>
+        :root {
+            --bg-main: #f7fafc;
+            --bg-alt: #ffffff;
+            --text-main: #1f2937;
+            --text-soft: #5b6472;
+            --card-bg: rgba(255, 255, 255, 0.78);
+            --card-border: rgba(0, 40, 85, 0.16);
+            --institucional: #002855;
+            --institucional-button: #002855;
+            --dorado: #c5a059;
+            --halo: rgba(197, 160, 89, 0.26);
+        }
+
+        body.dark-theme {
+            --bg-main: #08111f;
+            --bg-alt: #111827;
+            --text-main: #e5e7eb;
+            --text-soft: #cbd5e1;
+            --card-bg: rgba(15, 23, 42, 0.72);
+            --card-border: rgba(148, 163, 184, 0.28);
+            --institucional: #f8fafc;
+            --institucional-button: #c5a059;
+            --dorado: #d4b06b;
+            --halo: rgba(212, 176, 107, 0.22);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Lato', sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(600px 340px at 8% 12%, rgba(0, 40, 85, 0.16), transparent 65%),
+                radial-gradient(520px 320px at 92% 88%, var(--halo), transparent 64%),
+                linear-gradient(160deg, var(--bg-main), var(--bg-alt));
+            transition: background-color .3s ease, color .3s ease;
+            overflow-x: hidden;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            backdrop-filter: blur(12px);
+            background: color-mix(in srgb, var(--bg-alt) 86%, transparent);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .nav-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: .8rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            text-decoration: none;
+            color: var(--institucional);
+        }
+
+        .brand img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+
+        .brand h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            line-height: 1.1;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: .02em;
+        }
+
+        .brand p {
+            margin: 0;
+            color: var(--dorado);
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .18em;
+            font-weight: 700;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 1px solid var(--card-border);
+            color: var(--institucional);
+            background: color-mix(in srgb, var(--bg-alt) 88%, transparent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .2s ease, border-color .2s ease;
+        }
+
+        .theme-toggle:hover { transform: translateY(-1px); border-color: var(--dorado); }
+
+        .page {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 7rem 1rem 2rem;
+        }
+
+        .card {
+            width: min(960px, 100%);
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            border-radius: 1.25rem;
+            box-shadow: 0 18px 44px rgba(2, 6, 23, 0.16);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 0;
+        }
+
+        .left {
+            padding: 2rem;
+        }
+
+        .code {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(4rem, 14vw, 8.2rem);
+            line-height: .9;
+            margin: 0;
+            letter-spacing: .04em;
+            color: var(--institucional);
+            text-shadow: 0 10px 24px rgba(2, 6, 23, 0.18);
+        }
+
+        .code span { color: var(--dorado); }
+
+        .title {
+            margin: .9rem 0 .65rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.35rem, 3.6vw, 2rem);
+            font-weight: 800;
+            color: var(--institucional);
+        }
+
+        .text {
+            margin: 0 0 1.4rem;
+            color: var(--text-soft);
+            line-height: 1.65;
+            max-width: 62ch;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .7rem;
+        }
+
+        .btn {
+            text-decoration: none;
+            border-radius: 999px;
+            padding: .68rem 1rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            font-size: .88rem;
+            border: 1px solid transparent;
+            transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: var(--institucional-button);
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(0, 40, 85, 0.35);
+        }
+
+        .btn-primary:hover { background: var(--dorado); box-shadow: 0 10px 24px rgba(197, 160, 89, 0.35); }
+
+        .btn-secondary {
+            color: var(--institucional);
+            border-color: color-mix(in srgb, var(--institucional) 24%, transparent);
+            background: color-mix(in srgb, var(--bg-alt) 92%, transparent);
+        }
+
+        .right {
+            border-left: 1px solid var(--card-border);
+            padding: 2rem;
+            background: linear-gradient(180deg, color-mix(in srgb, var(--institucional) 8%, transparent), transparent);
+        }
+
+        .quick-title {
+            margin: 0 0 .9rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--institucional);
+        }
+
+        .quick-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: .6rem;
+        }
+
+        .quick-links a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .6rem;
+            border: 1px solid var(--card-border);
+            border-radius: .8rem;
+            padding: .72rem .8rem;
+            color: var(--text-main);
+            background: color-mix(in srgb, var(--ins) 90%, transparent);
+            transition: border-color .2s ease, transform .2s ease;
+        }
+
+        .quick-links a:hover { border-color: var(--dorado); background-color: #c5a059; transform: translateX(5px); }
+
+        .helper {
+            margin-top: 1rem;
+            font-size: .9rem;
+            color: var(--text-soft);
+            line-height: 1.55;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-soft);
+            font-size: .75rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            border-top: 1px solid var(--card-border);
+        }
+
+        @media (max-width: 920px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .right { border-left: 0; border-top: 1px solid var(--card-border); }
+        }
+
+        @media (max-width: 560px) {
+            .left, .right { padding: 1.25rem; }
+            .actions .btn { width: 100%; justify-content: center; }
+            .brand p { letter-spacing: .12em; }
+        }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="nav-wrap">
+            <a class="brand" href="index.html" aria-label="Volver al inicio">
+                <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino">
+                <div>
+                    <h1>INSTITUTO SAN MARINO</h1>
+                    <p>404...</p>
+                </div>
+            </a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema" title="Modo oscuro / claro">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="card" aria-labelledby="errorTitle">
+            <div class="card-grid">
+                <div class="left">
+                    <p class="code"><span>4</span>0<span>4</span></p>
+                    <h2 class="title" id="errorTitle">Ups... esta pagina se fue de excursión</h2>
+                    <p class="text">
+                        La ruta que buscaste no existe o cambio de lugar. Volve al inicio o entra directo al nivel que necesites.
+                    </p>
+                    <div class="actions">
+                        <a class="btn btn-primary" href="index.html"><i class="fa-solid fa-house"></i> Ir al inicio</a>
+                        <a class="btn btn-secondary" href="pages/noticias.html"><i class="fa-solid fa-newspaper"></i> Ver noticias</a>
+                        <a class="btn btn-secondary" href="reglamento.html"><i class="fa-solid fa-scale-balanced"></i> Reglamento</a>
+                    </div>
+                </div>
+
+                <aside class="right" aria-label="Accesos rapidos">
+                    <h3 class="quick-title">Accesos rapidos</h3>
+                    <ul class="quick-links">
+                        <li><a href="pages/niveles/inicial.html"><span>Nivel Inicial</span><i class="fa-solid fa-arrow-right"></i></a></li>
+                        <li><a href="pages/niveles/primario.html"><span>Nivel Primario</span><i class="fa-solid fa-arrow-right"></i></a></li>
+                        <li><a href="pages/niveles/secundario.html"><span>Nivel Secundario</span><i class="fa-solid fa-arrow-right"></i></a></li>
+                        <li><a href="pages/auth/login.html"><span>Ingresar</span><i class="fa-solid fa-arrow-right"></i></a></li>
+                    </ul>
+                    <p class="helper">
+                        Si llegaste por un enlace viejo, actualiza el marcador y seguinos en redes para novedades institucionales.
+                    </p>
+                </aside>
+            </div>
+            <div class="footer">Instituto Privado San Marino | Error 404</div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const key = 'ipsm_theme';
+
+            function applyTheme(mode) {
+                const isDark = mode === 'dark';
+                document.body.classList.toggle('dark-theme', isDark);
+                themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+                localStorage.setItem(key, mode);
+            }
+
+            const saved = localStorage.getItem(key);
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+
+            themeToggle.addEventListener('click', function () {
+                const next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+                applyTheme(next);
+            });
+        })();
+    </script>
+</body>
+</html>

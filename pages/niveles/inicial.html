@@ -11,8 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/home.css">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -301,7 +301,8 @@
             .py-24 { padding-top: 5.5rem !important; padding-bottom: 5.5rem !important; }
             .hero-title-box h2 { font-size: clamp(2.5rem, 4vw, 3.3rem) !important; }
         }
-    </style>
+    
+</style>
 <style id="ipsm-hotfix-v2">
 /* Hotfix visual + menu mobile */
 .text-dorado { color: #C5A059 !important; }
@@ -376,6 +377,37 @@ footer.bg-institucional { background: #002855 !important; color: rgba(255,255,25
 body.dark-theme .dropdown-link { color: #e5e7eb !important; }
 .icon-chip { color: var(--icon-color, #002855) !important; }
 body.dark-theme .icon-chip { color: #f8fafc !important; }
+
+/* Responsive patch 2026-03 */
+html, body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  #mainNav { max-height: calc(100vh - 96px); overflow-y: auto; }
+  .hero-title-box .flex { gap: .75rem !important; }
+  .hero-title-box a { padding: .72rem 1rem !important; }
+  .wa-float { width: 56px !important; height: 56px !important; font-size: 1.45rem !important; right: 1rem !important; bottom: 1rem !important; }
+}
+
+@media (max-width: 767px) {
+  .py-24 { padding-top: 3.9rem !important; padding-bottom: 3.9rem !important; }
+  .text-4xl { font-size: 2rem !important; line-height: 1.2 !important; }
+  .text-2xl { font-size: 1.38rem !important; line-height: 1.25 !important; }
+  .h-14.w-14 { width: 46px !important; height: 46px !important; }
+  .theme-toggle, .menu-toggle { width: 40px; height: 40px; }
+  .header-controls { gap: .45rem !important; }
+}
+
+@media (max-width: 480px) {
+  body { padding-top: 74px; }
+  .hero-title-box { padding: 1rem .85rem; }
+  .hero-title-box h2 { line-height: 1.12; }
+  .hero-title-box p { line-height: 1.38; }
+  .hero-title-box a { width: 100%; justify-content: center; }
+  .hero-title-box .flex { gap: .6rem !important; }
+  footer .max-w-7xl { text-align: center; }
+  footer .flex.gap-4 { justify-content: center; }
+  .icon-chip { width: 2.35rem; height: 2.35rem; }
+}
 </style>
 </head>
 <body>
@@ -609,6 +641,7 @@ body.dark-theme .icon-chip { color: #f8fafc !important; }
     </script>
 </body>
 </html>
+
 
 
 
