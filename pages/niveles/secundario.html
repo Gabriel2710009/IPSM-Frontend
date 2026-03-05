@@ -31,6 +31,15 @@
       footer.bg-institucional { background: #002855 !important; color: rgba(255,255,255,.85) !important; }
       /* Header controls alignment */
       .header-controls { display: inline-flex; align-items: center; gap: .75rem; }
+      html, body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      header, section, footer {
+        width: 100%;
+        max-width: 100%;
+      }
       .menu-toggle {
         background: transparent !important;
         line-height: 0;
@@ -119,6 +128,11 @@
         }
         #mainNav .social-group {
           order: 60;
+        }
+        [data-aos] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
         }
       }
       /* Dropdown + icon colors consistency */
@@ -531,7 +545,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
     </script>
     <script>
-      AOS.init();function enviarWhatsAppInicial(){const m=`Hola, soy ___________ (nombre del padre/madre/tutor).\n\nSolicito una entrevista para mi hijo/a:\n- Nombre completo del niño/a: ___________\n- DNI del niño/a: ___________\n- Fecha de nacimiento: ___________\n- Nivel solicitado: Secundario\n- Año solicitado: ___________ (1° / 2° / 3° / 4° / 5° / 6°)\n\nContacto:\n- Teléfono: ___________\n- Email: ___________\n\nMuchas gracias.`;window.open(`https://wa.me/5492664004015?text=${encodeURIComponent(m)}`,'_blank');}const t=document.getElementById('themeToggle'),i=document.getElementById('themeIcon');function a(m){const d=m==='dark';document.body.classList.toggle('dark-theme',d);i.className=d?'fa-solid fa-sun':'fa-solid fa-moon';localStorage.setItem('ipsm_theme',m);}a(localStorage.getItem('ipsm_theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));t.addEventListener('click',()=>a(document.body.classList.contains('dark-theme')?'light':'dark'));const mt=document.getElementById('menuToggle'),mn=document.getElementById('mainNav'),dd=document.getElementById('nivelesDropdown'),nb=document.getElementById('nivelesBtn');function c(){mn?.classList.remove('active');document.body.classList.remove('menu-open');dd?.classList.remove('open')}mt?.addEventListener('click',(e)=>{e.stopPropagation();mn.classList.toggle('active');document.body.classList.toggle('menu-open',mn.classList.contains('active'));});nb?.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();dd.classList.toggle('open');});document.addEventListener('click',(e)=>{if(dd&&!dd.contains(e.target))dd.classList.remove('open');if(window.innerWidth<=900&&mn?.classList.contains('active')&&!mn.contains(e.target)&&!mt.contains(e.target))c();});mn?.querySelectorAll('a').forEach((l)=>l.addEventListener('click',()=>{if(window.innerWidth<=900)c();}));
+      if (window.AOS && typeof AOS.init === 'function') { AOS.init(); }function enviarWhatsAppInicial(){const m=`Hola, soy ___________ (nombre del padre/madre/tutor).\n\nSolicito una entrevista para mi hijo/a:\n- Nombre completo del niño/a: ___________\n- DNI del niño/a: ___________\n- Fecha de nacimiento: ___________\n- Nivel solicitado: Secundario\n- Año solicitado: ___________ (1° / 2° / 3° / 4° / 5° / 6°)\n\nContacto:\n- Teléfono: ___________\n- Email: ___________\n\nMuchas gracias.`;window.open(`https://wa.me/5492664004015?text=${encodeURIComponent(m)}`,'_blank');}const t=document.getElementById('themeToggle'),i=document.getElementById('themeIcon');function a(m){const d=m==='dark';document.body.classList.toggle('dark-theme',d);i.className=d?'fa-solid fa-sun':'fa-solid fa-moon';localStorage.setItem('ipsm_theme',m);}a(localStorage.getItem('ipsm_theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));t.addEventListener('click',()=>a(document.body.classList.contains('dark-theme')?'light':'dark'));const mt=document.getElementById('menuToggle'),mn=document.getElementById('mainNav'),dd=document.getElementById('nivelesDropdown'),nb=document.getElementById('nivelesBtn');function c(){mn?.classList.remove('active');document.body.classList.remove('menu-open');dd?.classList.remove('open')}mt?.addEventListener('click',(e)=>{e.stopPropagation();mn.classList.toggle('active');document.body.classList.toggle('menu-open',mn.classList.contains('active'));});nb?.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();dd.classList.toggle('open');});document.addEventListener('click',(e)=>{if(dd&&!dd.contains(e.target))dd.classList.remove('open');if(window.innerWidth<=900&&mn?.classList.contains('active')&&!mn.contains(e.target)&&!mt.contains(e.target))c();});mn?.querySelectorAll('a').forEach((l)=>l.addEventListener('click',()=>{if(window.innerWidth<=900)c();}));
     </script>
   </body>
 </html>

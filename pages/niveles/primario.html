@@ -39,6 +39,15 @@
       footer.bg-institucional { background: #002855 !important; color: rgba(255,255,255,.85) !important; }
       /* Header controls alignment */
       .header-controls { display: inline-flex; align-items: center; gap: .75rem; }
+      html, body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      header, section, footer {
+        width: 100%;
+        max-width: 100%;
+      }
       .menu-toggle {
         background: transparent !important;
         line-height: 0;
@@ -95,6 +104,11 @@
         }
         #mainNav .social-group {
           order: 60;
+        }
+        [data-aos] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
         }
       }
       /* Dropdown + icon colors consistency */
@@ -539,7 +553,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
     </script>
     <script>
-      AOS.init();
+      if (window.AOS && typeof AOS.init === 'function') {
+        AOS.init();
+      }
       function enviarWhatsAppInicial(){const mensaje=`Hola, soy ___________ (nombre del padre/madre/tutor).\n\nSolicito una entrevista para mi hijo/a:\n- Nombre completo del niño/a: ___________\n- DNI del niño/a: ___________\n- Fecha de nacimiento: ___________\n- Nivel solicitado: Primario\n- Grado solicitado: ___________ (1° a 6° grado)\n- Turno preferido: ___________ (Normal / Jornada Completa)\n\nContacto:\n- Teléfono: ___________\n- Email: ___________\n\nMuchas gracias.`;window.open(`https://wa.me/5492664004015?text=${encodeURIComponent(mensaje)}`,'_blank');}
       const themeToggle=document.getElementById('themeToggle');const themeIcon=document.getElementById('themeIcon');function applyTheme(mode){const isDark=mode==='dark';document.body.classList.toggle('dark-theme',isDark);themeIcon.className=isDark?'fa-solid fa-sun':'fa-solid fa-moon';localStorage.setItem('ipsm_theme',mode);}applyTheme(localStorage.getItem('ipsm_theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));themeToggle.addEventListener('click',()=>applyTheme(document.body.classList.contains('dark-theme')?'light':'dark'));
       const menuToggle=document.getElementById('menuToggle');const mainNav=document.getElementById('mainNav');const dropdown=document.getElementById('nivelesDropdown');const nivelesBtn=document.getElementById('nivelesBtn');function closeAllMenus(){mainNav?.classList.remove('active');document.body.classList.remove('menu-open');dropdown?.classList.remove('open');}menuToggle?.addEventListener('click',(e)=>{e.stopPropagation();mainNav.classList.toggle('active');document.body.classList.toggle('menu-open',mainNav.classList.contains('active'));});nivelesBtn?.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();dropdown.classList.toggle('open');});document.addEventListener('click',(e)=>{if(dropdown&&!dropdown.contains(e.target))dropdown.classList.remove('open');if(window.innerWidth<=1024&&mainNav?.classList.contains('active')&&!mainNav.contains(e.target)&&!menuToggle.contains(e.target)){closeAllMenus();}});mainNav?.querySelectorAll('a').forEach((link)=>link.addEventListener('click',()=>{if(window.innerWidth<=1024)closeAllMenus();}));

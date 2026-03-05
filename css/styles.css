@@ -987,7 +987,7 @@ img {
 
         width: 100%;
         min-width: unset; /* ⛔ clave */
-        margin-left: 50px;   /* ⛔ clave */
+        margin-left: 0 !important;
 
         max-height: 0;
         overflow: hidden;

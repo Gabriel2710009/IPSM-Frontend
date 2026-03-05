@@ -11,8 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css">
-    <link rel="stylesheet" href="../../css/home.css">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -314,17 +312,25 @@
 footer.bg-institucional { background: #002855 !important; color: rgba(255,255,255,.85) !important; }
 /* Header controls alignment */
 .header-controls { display: inline-flex; align-items: center; gap: .75rem; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+header, section, footer {
+  width: 100%;
+  max-width: 100%;
+}
 .menu-toggle {
-  background: rgba(255,255,255,0.85) !important;
-  line-height: 1;
+  background: transparent !important;
+  line-height: 0;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  transition: background-color .2s ease;
+  position: relative !important;
+  z-index: 80 !important;
 }
-body.dark-theme .menu-toggle {
-  background: rgba(30, 41, 59, 0.92) !important;
-}
+.menu-toggle .menu-bar { display: block !important; }
 @media (min-width: 901px) {
   .header-controls { margin-left: auto; order: 3; }
   .menu-toggle { display: none !important; }
@@ -346,45 +352,25 @@ body.dark-theme .menu-toggle {
 }
 /* Mobile nav: smooth open/close + alignments */
 @media (max-width: 900px) {
-  #mainNav .nav-item.dropdown,
-  #mainNav .dropdown {
-    position: static !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100%;
-  }
-  #mainNav .dropdown-menu {
-    position: static !important;
-    inset: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    left: 0 !important;
-    right: auto !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    transform-origin: top center;
-  }
-  #mainNav .dropdown.open .dropdown-menu {
-    transform: translateY(0) !important;
+  .menu-toggle {
+    display: inline-flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   body.menu-open .menu-toggle {
     position: relative !important;
     top: auto !important;
     right: auto !important;
     transform: none !important;
-    z-index: auto !important;
-    background: rgba(255,255,255,0.85) !important;
+    z-index: 80 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
-  body.dark-theme.menu-open .menu-toggle {
-    background: rgba(30, 41, 59, 0.92) !important;
-  }
+  #themeToggle,
   body.menu-open #themeToggle {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(.92);
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
   }
   #mainNav {
     display: flex !important;
@@ -393,7 +379,8 @@ body.dark-theme .menu-toggle {
     pointer-events: none;
     transform: translateY(-10px) scale(.98);
     transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
-    overflow-x: hidden;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
   }
   #mainNav.active {
     opacity: 1;
@@ -407,12 +394,61 @@ body.dark-theme .menu-toggle {
     opacity: 1 !important;
     transform: none !important;
   }
+  #mainNav .nav-link {
+    width: auto !important;
+    padding: 0 !important;
+    font-size: 1rem !important;
+  }
+  #mainNav .nav-item.dropdown,
+  #mainNav .dropdown {
+    position: static !important;
+    width: 100%;
+  }
   #mainNav .dropdown-toggle {
     width: 100%;
     text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    padding: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+  }
+  #mainNav .dropdown-menu {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    margin-top: .55rem;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-height: 0;
+    padding: 0 .5rem;
+    opacity: 0;
+    transform: translateY(-6px);
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  #mainNav .dropdown.open .dropdown-menu {
+    max-height: 260px;
+    padding: .5rem;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+  #mainNav .dropdown-link {
+    font-size: .95rem !important;
+    padding: .58rem .72rem !important;
   }
   #mainNav .login-link,
   #mainNav .nav-link.bg-institucional,
@@ -429,6 +465,14 @@ body.dark-theme .menu-toggle {
   #mainNav .social-group {
     order: 60;
   }
+  body.menu-open .menu-bar.bar-1 { top: 21px !important; transform: rotate(45deg) !important; }
+  body.menu-open .menu-bar.bar-2 { opacity: 0 !important; }
+  body.menu-open .menu-bar.bar-3 { top: 21px !important; transform: rotate(-45deg) !important; }
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 /* Dropdown + icon colors consistency */
 .dropdown-link { color: #002855 !important; }
@@ -436,14 +480,16 @@ body.dark-theme .dropdown-link { color: #e5e7eb !important; }
 .icon-chip { color: var(--icon-color, #002855) !important; }
 body.dark-theme .icon-chip { color: #f8fafc !important; }
 
-/* Responsive patch 2026-03 */
-html, body { overflow-x: hidden; }
-
 @media (max-width: 900px) {
-  #mainNav { max-height: calc(100vh - 96px); overflow-y: auto; }
   .hero-title-box .flex { gap: .75rem !important; }
   .hero-title-box a { padding: .72rem 1rem !important; }
-  .wa-float { width: 56px !important; height: 56px !important; font-size: 1.45rem !important; right: 1rem !important; bottom: 1rem !important; }
+  .wa-float {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 1.45rem !important;
+    right: 1rem !important;
+    bottom: 1rem !important;
+  }
 }
 
 @media (max-width: 767px) {
@@ -626,7 +672,9 @@ html, body { overflow-x: hidden; }
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
+        if (window.AOS && typeof AOS.init === 'function') {
+            AOS.init();
+        }
         function enviarWhatsAppInicial() {
             const mensaje = `Hola, soy ___________ (nombre del padre/madre/tutor).\n\nSolicito una entrevista para mi hijo/a:\n- Nombre completo del niño/a: ___________\n- DNI del niño/a: ___________\n- Fecha de nacimiento: ___________\n- Nivel solicitado: Inicial (Sala de 3 / Sala de 4 / Sala de 5)\n- Turno preferido: ___________ (Normal / Jornada Completa)\n\nContacto:\n- Teléfono: ___________\n- Email: ___________\n\nMuchas gracias.`;
             const urlWhatsApp = `https://wa.me/5492664004015?text=${encodeURIComponent(mensaje)}`;
