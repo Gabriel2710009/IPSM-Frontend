@@ -13,7 +13,7 @@
 
   <link rel="stylesheet" href="../../../css/styles.css">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
-  <link rel="stylesheet" href="./editor.css?v=20260307b">
+  <link rel="stylesheet" href="./editor.css?v=20260307c">
 </head>
 <body>
   <header class="header editor-header">
@@ -109,21 +109,17 @@
     </section>
 
     <section class="editor-card">
-      <h2><i class="fas fa-eye"></i> Preview</h2>
-      <article class="preview-article">
-        <p id="previewCategoria" class="preview-category"></p>
-        <h3 id="previewTitulo">Titulo de noticia</h3>
-        <p id="previewMeta" class="preview-meta"></p>
-        <img id="previewImagen" class="preview-image" alt="" hidden>
-        <p id="previewResumen" class="preview-summary"></p>
-        <div id="previewContenido" class="preview-content"></div>
-      </article>
+      <h2><i class="fas fa-eye"></i> Preview con noticia-detalle.html <a id="openPreviewWindow" href="../../noticia-detalle.html?preview=1" target="_blank" rel="noopener noreferrer">Abrir en pestaña</a></h2>
+      <div class="preview-frame-wrap">
+        <iframe id="previewFrame" class="preview-frame" src="../../noticia-detalle.html?preview=1" title="Preview noticia" loading="lazy"></iframe>
+      </div>
     </section>
   </main>
 
   <script src="../../../js/config.js"></script>
   <script src="../../../js/api.js"></script>
   <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-  <script src="./editor.js?v=20260307b"></script>
+  <script src="./editor.js?v=20260307c"></script>
 </body>
 </html>
+
