@@ -17,6 +17,23 @@
   <link rel="stylesheet" href="./editor.css">
 </head>
 <body>
+  <header class="header editor-topbar">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo-container">
+          <a href="../../../index.html" class="logo-link">
+            <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
+          </a>
+          <span class="site-title">Editor de Noticias</span>
+        </div>
+        <div class="editor-nav-actions">
+          <a href="../dashboard.html" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver a Admin</a>
+          <a href="../../../index.html" class="btn btn-accent btn-sm"><i class="fas fa-home"></i> Ir al Inicio</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <main class="layout">
     <section class="panel">
       <header class="panel-header">
@@ -81,10 +98,10 @@
         </div>
 
         <div class="actions">
-          <button type="button" id="btnDraft"><i class="fas fa-save"></i> Guardar borrador</button>
-          <button type="button" id="btnUploadNews" class="primary"><i class="fas fa-cloud-upload-alt"></i> Subir noticia</button>
-          <button type="button" id="btnSchedule" class="secondary"><i class="fas fa-clock"></i> Programar publicación</button>
-          <button type="button" id="btnUpdate" class="secondary" disabled><i class="fas fa-pen"></i> Actualizar noticia</button>
+          <button type="button" id="btnDraft" class="btn btn-secondary"><i class="fas fa-save"></i> Guardar borrador</button>
+          <button type="button" id="btnUploadNews" class="btn btn-accent"><i class="fas fa-cloud-upload-alt"></i> Subir noticia</button>
+          <button type="button" id="btnSchedule" class="btn btn-primary"><i class="fas fa-clock"></i> Programar publicación</button>
+          <button type="button" id="btnUpdate" class="btn btn-outline-dark" disabled><i class="fas fa-pen"></i> Actualizar noticia</button>
         </div>
 
         <p id="status" class="status" aria-live="polite"></p>
