@@ -257,11 +257,33 @@ function renderBloques(bloques) {
 }
 
 /**
- * Render hibrido: bloques si existen, si no contenido legacy.
+ * Detecta si el contenido HTML de Quill tiene texto/elementos reales.
+ */
+function tieneContenidoQuill(contenido) {
+    if (!contenido) return false;
+
+    const html = String(contenido).trim();
+    if (!html || html === '<p><br></p>') return false;
+
+    const soloTexto = html
+        .replace(/<br\s*\/?>/gi, '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/gi, ' ')
+        .trim();
+
+    const tieneMedia = /<(img|iframe|video)\b/i.test(html);
+    return Boolean(soloTexto) || tieneMedia;
+}
+
+/**
+ * Render hibrido con prioridad Quill: primero contenido HTML, luego bloques.
  */
 async function renderNoticiaCompleta(noticia) {
-    const bloques = await obtenerBloques(noticia.id);
+    if (tieneContenidoQuill(noticia && noticia.contenido)) {
+        return formatearContenido(noticia.contenido);
+    }
 
+    const bloques = await obtenerBloques(noticia && noticia.id);
     if (bloques.length > 0) {
         const htmlBloques = renderBloques(bloques);
         if (htmlBloques.trim()) {
@@ -269,7 +291,7 @@ async function renderNoticiaCompleta(noticia) {
         }
     }
 
-    return formatearContenido(noticia.contenido);
+    return formatearContenido(noticia && noticia.contenido);
 }
 
 /**
