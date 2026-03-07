@@ -3,57 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMS Noticias - Editor</title>
+  <title>Editor de Noticias - CMS</title>
   <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <link rel="stylesheet" href="../../../css/styles.css">
-  <link rel="stylesheet" href="../../../css/home.css">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
-  <link rel="stylesheet" href="./editor.css">
+  <link rel="stylesheet" href="./editor.css?v=20260307b">
 </head>
 <body>
-  <header class="header editor-topbar">
-    <div class="container">
-      <div class="header-content">
-        <div class="logo-container">
-          <a href="../../../index.html" class="logo-link">
-            <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo Instituto San Marino" class="logo">
-          </a>
-          <span class="site-title">Editor de Noticias</span>
+  <header class="header editor-header">
+    <div class="container editor-header-inner">
+      <div class="editor-brand">
+        <img src="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico" alt="Logo San Marino" class="editor-logo">
+        <div>
+          <h1>Editor de Noticias</h1>
+          <p id="modeLabel">Modo: Crear noticia</p>
         </div>
-        <div class="editor-nav-actions">
-          <a href="../dashboard.html" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver a Admin</a>
-          <a href="../../../index.html" class="btn btn-accent btn-sm"><i class="fas fa-home"></i> Ir al Inicio</a>
-        </div>
+      </div>
+      <div class="editor-nav">
+        <a href="../dashboard.html" class="nav-btn nav-btn-outline"><i class="fas fa-arrow-left"></i> Volver a Admin</a>
+        <a href="../../../index.html" class="nav-btn nav-btn-accent"><i class="fas fa-home"></i> Ir al Inicio</a>
       </div>
     </div>
   </header>
 
-  <main class="layout">
-    <section class="panel">
-      <header class="panel-header">
-        <h1><i class="fas fa-newspaper"></i> Editor CMS de Noticias</h1>
-        <p id="modeLabel">Modo: Crear noticia</p>
-      </header>
+  <main class="editor-layout container">
+    <section class="editor-card">
+      <h2><i class="fas fa-pen-to-square"></i> Editor CMS de Noticias</h2>
 
-      <form id="newsForm" class="news-form">
-        <div class="grid">
+      <form id="newsForm" class="editor-form">
+        <div class="fields-grid">
           <label>
-            <span>Título</span>
+            <span>Titulo</span>
             <input id="titulo" type="text" maxlength="255" required>
           </label>
 
           <label>
-            <span>Categoría</span>
+            <span>Categoria</span>
             <select id="categoria" required>
               <option value="">Seleccionar...</option>
               <option value="institucional">Institucional</option>
-              <option value="academico">Académico</option>
+              <option value="academico">Academico</option>
               <option value="deportes">Deportes</option>
               <option value="cultural">Cultural</option>
               <option value="comunidad">Comunidad</option>
@@ -63,7 +58,7 @@
 
           <label>
             <span>Autor</span>
-            <input id="autor" type="text" maxlength="100" placeholder="Instituto San Marino">
+            <input id="autor" type="text" maxlength="100" placeholder="IPSM">
           </label>
 
           <label>
@@ -73,10 +68,10 @@
 
           <label>
             <span>Imagen ALT</span>
-            <input id="imagen_alt" type="text" maxlength="200" placeholder="Descripción accesible de imagen">
+            <input id="imagen_alt" type="text" maxlength="200" placeholder="Descripcion accesible">
           </label>
 
-          <label class="checkbox">
+          <label class="checkbox-inline">
             <input id="publicada" type="checkbox">
             <span>Publicada</span>
           </label>
@@ -88,38 +83,47 @@
         </label>
 
         <label>
-          <span>Programar publicación</span>
+          <span>Programar publicacion</span>
           <input id="fecha_programada" type="datetime-local">
         </label>
 
-        <div>
-          <span class="field-title">Contenido</span>
-          <div id="editor"></div>
+        <div class="content-header">
+          <span>Contenido</span>
+          <div class="content-tools">
+            <button type="button" id="btnInsertImageUrl" class="tool-btn"><i class="fas fa-image"></i> Imagen por URL</button>
+            <button type="button" id="btnInsertEmbed" class="tool-btn"><i class="fas fa-video"></i> Embed YouTube</button>
+          </div>
         </div>
 
-        <div class="actions">
-          <button type="button" id="btnDraft" class="btn btn-secondary"><i class="fas fa-save"></i> Guardar borrador</button>
-          <button type="button" id="btnUploadNews" class="btn btn-accent"><i class="fas fa-cloud-upload-alt"></i> Subir noticia</button>
-          <button type="button" id="btnSchedule" class="btn btn-primary"><i class="fas fa-clock"></i> Programar publicación</button>
-          <button type="button" id="btnUpdate" class="btn btn-outline-dark" disabled><i class="fas fa-pen"></i> Actualizar noticia</button>
+        <div id="editor"></div>
+
+        <div class="actions-grid">
+          <button type="button" id="btnDraft" class="editor-btn btn-secondary"><i class="fas fa-floppy-disk"></i> Guardar borrador</button>
+          <button type="button" id="btnUploadNews" class="editor-btn btn-accent"><i class="fas fa-cloud-arrow-up"></i> Subir noticia</button>
+          <button type="button" id="btnSchedule" class="editor-btn btn-primary"><i class="fas fa-clock"></i> Programar publicacion</button>
+          <button type="button" id="btnUpdate" class="editor-btn btn-outline" disabled><i class="fas fa-pen"></i> Actualizar noticia</button>
         </div>
 
         <p id="status" class="status" aria-live="polite"></p>
       </form>
     </section>
 
-    <section class="panel preview-panel">
-      <header class="panel-header preview-head">
-        <h2><i class="fas fa-eye"></i> Preview con noticia-detalle.html</h2>
-        <a id="btnOpenPreview" class="btn-link" href="../../noticia-detalle.html?preview=1" target="_blank" rel="noopener">Abrir en pestaña</a>
-      </header>
-      <iframe id="previewFrame" src="../../noticia-detalle.html?preview=1" title="Preview noticia"></iframe>
+    <section class="editor-card">
+      <h2><i class="fas fa-eye"></i> Preview</h2>
+      <article class="preview-article">
+        <p id="previewCategoria" class="preview-category"></p>
+        <h3 id="previewTitulo">Titulo de noticia</h3>
+        <p id="previewMeta" class="preview-meta"></p>
+        <img id="previewImagen" class="preview-image" alt="" hidden>
+        <p id="previewResumen" class="preview-summary"></p>
+        <div id="previewContenido" class="preview-content"></div>
+      </article>
     </section>
   </main>
 
   <script src="../../../js/config.js"></script>
   <script src="../../../js/api.js"></script>
   <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-  <script src="./editor.js"></script>
+  <script src="./editor.js?v=20260307b"></script>
 </body>
 </html>
