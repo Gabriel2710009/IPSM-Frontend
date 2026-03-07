@@ -195,6 +195,28 @@ function escapeHTML(value) {
 }
 
 /**
+ * Ajusta blockquote de Quill: "texto | autor" => cita estilizada.
+ */
+function transformarCitasQuill(html) {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+
+    wrapper.querySelectorAll('blockquote').forEach((node) => {
+        const raw = (node.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!raw) return;
+
+        const parts = raw.split('|');
+        const quoteText = (parts[0] || '').trim();
+        const quoteAuthor = parts.slice(1).join('|').trim();
+
+        node.classList.add('nota-quote');
+        node.innerHTML = `<p class="quote-text">“${escapeHTML(quoteText)}”</p>${quoteAuthor ? `<cite class="quote-author">| ${escapeHTML(quoteAuthor)}</cite>` : ''}`;
+    });
+
+    return wrapper.innerHTML;
+}
+
+/**
  * Formatea contenido Quill HTML (sin fallback a editor viejo).
  */
 function formatearContenido(contenido) {
@@ -205,8 +227,7 @@ function formatearContenido(contenido) {
         return '<p>Contenido no disponible.</p>';
     }
 
-    // Quill guarda HTML. Se renderiza directo.
-    return contenidoStr;
+    return transformarCitasQuill(contenidoStr);
 }
 
 /**

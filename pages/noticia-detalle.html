@@ -283,6 +283,26 @@
         .noticia-cuerpo em { font-style: italic; }
         .noticia-cuerpo u { text-decoration: underline; }
         .noticia-cuerpo s, .noticia-cuerpo strike { text-decoration: line-through; }
+        .noticia-cuerpo blockquote.nota-quote {
+            margin: 1rem 0;
+            padding: .95rem 1rem;
+            border-left: 4px solid #C5A059;
+            background: rgba(197, 160, 89, .1);
+            border-radius: .7rem;
+        }
+        .noticia-cuerpo blockquote.nota-quote .quote-text {
+            margin: 0;
+            font-style: italic;
+            font-size: 1.06rem;
+            line-height: 1.55;
+            color: var(--text-main);
+        }
+        .noticia-cuerpo blockquote.nota-quote .quote-author {
+            display: block;
+            margin-top: .45rem;
+            font-weight: 700;
+            color: var(--text-soft);
+        }
 
         .noticia-cuerpo p { line-height: 1.72; margin: 0 0 .95rem; }
         .noticia-cuerpo ul,
@@ -676,6 +696,7 @@ function applyTheme(mode) {
     </script>
 </body>
 </html>
+
 
 
 
