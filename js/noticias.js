@@ -126,7 +126,7 @@ function mostrarNoticiaDestacada(noticia) {
     
     const html = `
         <div class="container">
-            <div class="noticia-destacada" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
+            <div class="noticia-destacada" onclick="verNoticia('${encodeURIComponent(noticia.titulo || '')}')">
                 <div class="noticia-destacada-imagen">
                     <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
                     <div class="badge-destacada"><i class="fa-solid fa-star"></i> Destacada</div>
@@ -151,7 +151,7 @@ function mostrarNoticiaDestacada(noticia) {
                         </div>
                     ` : ''}
                     
-                    <a href="#" class="btn btn-primary btn-lg" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}'); return false;">
+                    <a href="#" class="btn btn-primary btn-lg" onclick="verNoticia('${encodeURIComponent(noticia.titulo || '')}'); return false;">
                         Leer noticia completa <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -211,7 +211,7 @@ function mostrarNoticias(page = 1) {
  */
 function createNoticiaCard(noticia) {
     return `
-        <div class="noticia-card" onclick="verNoticia('${slugify(noticia.titulo)}', '${noticia.id}')">
+        <div class="noticia-card" onclick="verNoticia('${encodeURIComponent(noticia.titulo || '')}')">
             <div class="noticia-card-imagen">
                 <img src="${noticia.imagen || getDefaultNewsImage()}" alt="${noticia.titulo}">
                 ${noticia.categorias && noticia.categorias[0] ? 
@@ -352,9 +352,10 @@ function aplicarFiltros() {
 /**
  * Redirige a la página de detalle de noticia con URL amigable
  */
-function verNoticia(slug, id) {
-    // URL amigable: /pages/noticia-detalle.html?slug=titulo-de-la-noticia
-    window.location.href = `noticia-detalle.html?slug=${slug}&id=${id}`;
+function verNoticia(encodedTitulo) {
+    // URL amigable por titulo: /pages/noticia-detalle.html?Titulo%20de%20la%20noticia
+    const q = (encodedTitulo || '').trim();
+    window.location.href = `noticia-detalle.html?${q}`;
 }
 
 /**

@@ -1,9 +1,18 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CMS Noticias - Editor</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dvdik8dux/image/upload/v1770605599/logo-nuevo-San-Marino-fondo-blanco_skhsnn.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <link rel="stylesheet" href="../../../css/home.css">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
   <link rel="stylesheet" href="./editor.css">
 </head>
@@ -11,7 +20,7 @@
   <main class="layout">
     <section class="panel">
       <header class="panel-header">
-        <h1>Editor de Noticias</h1>
+        <h1><i class="fas fa-newspaper"></i> Editor CMS de Noticias</h1>
         <p id="modeLabel">Modo: Crear noticia</p>
       </header>
 
@@ -24,7 +33,15 @@
 
           <label>
             <span>Categoría</span>
-            <input id="categoria" type="text" maxlength="50" placeholder="Institucional, Académico, Deportes...">
+            <select id="categoria" required>
+              <option value="">Seleccionar...</option>
+              <option value="institucional">Institucional</option>
+              <option value="academico">Académico</option>
+              <option value="deportes">Deportes</option>
+              <option value="cultural">Cultural</option>
+              <option value="comunidad">Comunidad</option>
+              <option value="eventos">Eventos</option>
+            </select>
           </label>
 
           <label>
@@ -53,15 +70,21 @@
           <textarea id="resumen" rows="3" placeholder="Resumen breve"></textarea>
         </label>
 
+        <label>
+          <span>Programar publicación</span>
+          <input id="fecha_programada" type="datetime-local">
+        </label>
+
         <div>
           <span class="field-title">Contenido</span>
           <div id="editor"></div>
         </div>
 
         <div class="actions">
-          <button type="button" id="btnDraft">Guardar borrador</button>
-          <button type="button" id="btnPublish" class="primary">Publicar</button>
-          <button type="button" id="btnUpdate" class="secondary" disabled>Actualizar noticia</button>
+          <button type="button" id="btnDraft"><i class="fas fa-save"></i> Guardar borrador</button>
+          <button type="button" id="btnPublishNow" class="primary"><i class="fas fa-bullhorn"></i> Publicar ahora</button>
+          <button type="button" id="btnSchedule" class="secondary"><i class="fas fa-clock"></i> Programar publicación</button>
+          <button type="button" id="btnUpdate" class="secondary" disabled><i class="fas fa-pen"></i> Actualizar noticia</button>
         </div>
 
         <p id="status" class="status" aria-live="polite"></p>
@@ -69,16 +92,11 @@
     </section>
 
     <section class="panel preview-panel">
-      <header class="panel-header">
-        <h2>Preview</h2>
+      <header class="panel-header preview-head">
+        <h2><i class="fas fa-eye"></i> Preview con `noticia-detalle.html`</h2>
+        <a id="btnOpenPreview" class="btn-link" href="../../noticia-detalle.html?preview=1" target="_blank" rel="noopener">Abrir en pestaña</a>
       </header>
-      <article class="preview-card">
-        <p class="preview-category" id="previewCategoria"></p>
-        <h3 id="previewTitulo">Título de la noticia</h3>
-        <p id="previewResumen"></p>
-        <img id="previewImagen" alt="" hidden>
-        <div id="previewContenido"></div>
-      </article>
+      <iframe id="previewFrame" src="../../noticia-detalle.html?preview=1" title="Preview noticia"></iframe>
     </section>
   </main>
 
@@ -86,4 +104,3 @@
   <script src="./editor.js"></script>
 </body>
 </html>
-

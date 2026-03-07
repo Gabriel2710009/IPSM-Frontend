@@ -120,7 +120,7 @@ async function loadNoticias() {
 
         if (noticias && noticias.length > 0) {
             noticiasContainer.innerHTML = noticias.map((noticia) => `
-                <article class="noticia-card" onclick="verNoticia('${noticia.id}')">
+                <article class="noticia-card" onclick="verNoticia('${encodeURIComponent(noticia.titulo || '')}')">
                     <img src="${noticia.imagen_url || noticia.imagen || fallbackImage}" alt="${noticia.titulo}" onerror="this.src='${fallbackImage}'">
                     <div class="noticia-content">
                         <h3>${noticia.titulo}</h3>
@@ -139,7 +139,7 @@ async function loadNoticias() {
 
 function createNoticiaCard(noticia) {
     return `
-        <div class="noticia-card" onclick="verNoticia('${noticia.id}')">
+        <div class="noticia-card" onclick="verNoticia('${encodeURIComponent(noticia.titulo || '')}')">
             <img src="${noticia.imagen || noticia.imagen_url || (CONFIG && CONFIG.ASSETS && CONFIG.ASSETS.DEFAULT_NEWS_IMAGE) || 'images/noticias/default.jpg'}" alt="${noticia.titulo}" class="noticia-image">
             <div class="noticia-content">
                 <div class="noticia-fecha">${Utils.formatDate(noticia.fecha_publicacion || noticia.fecha)}</div>
@@ -151,8 +151,9 @@ function createNoticiaCard(noticia) {
     `;
 }
 
-function verNoticia(noticiaId) {
-    window.location.href = `pages/noticia-detalle.html?id=${noticiaId}`;
+function verNoticia(encodedTitulo) {
+    const q = (encodedTitulo || '').trim();
+    window.location.href = `pages/noticia-detalle.html?${q}`;
 }
 
 function initContactForm() {
