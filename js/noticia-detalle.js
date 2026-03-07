@@ -195,123 +195,25 @@ function escapeHTML(value) {
 }
 
 /**
- * Obtiene bloques editoriales desde backend publico.
- */
-async function obtenerBloques(noticiaId) {
-    if (!noticiaId) return [];
-
-    try {
-        const endpoint = `${CONFIG.ENDPOINTS.PUBLICO.NOTICIAS}/${noticiaId}/bloques`;
-        const data = await API.get(endpoint, false);
-        return Array.isArray(data) ? data : [];
-    } catch (error) {
-        console.error('Error al obtener bloques:', error);
-        return [];
-    }
-}
-
-/**
- * Renderiza bloques editoriales semanticos.
- */
-function renderBloques(bloques) {
-    if (!Array.isArray(bloques) || bloques.length === 0) {
-        return '';
-    }
-
-    return bloques.map((bloque) => {
-        if (!bloque || typeof bloque !== 'object') return '';
-
-        const tipo = (bloque.tipo || '').toLowerCase().trim();
-        const contenido = escapeHTML(bloque.contenido || '');
-        const caption = escapeHTML(bloque.caption || '');
-        const imagenUrl = bloque.imagen_url || '';
-
-        if (tipo === 'parrafo') {
-            if (!contenido) return '';
-            return `<p class="nota-parrafo">${contenido}</p>`;
-        }
-
-        if (tipo === 'subtitulo') {
-            if (!contenido) return '';
-            return `<h2 class="nota-subtitulo">${contenido}</h2>`;
-        }
-
-        if (tipo === 'imagen') {
-            if (!imagenUrl) return '';
-            const alt = caption || 'Imagen de la noticia';
-            return `
-                <figure class="nota-figure">
-                    <img src="${imagenUrl}" alt="${alt}" loading="lazy">
-                    ${caption ? `<figcaption>${caption}</figcaption>` : ''}
-                </figure>
-            `;
-        }
-
-        if (tipo === 'quote') {
-            if (!contenido) return '';
-            return `<blockquote class="nota-quote"><p>${contenido}</p></blockquote>`;
-        }
-
-        return '';
-    }).join('');
-}
-
-/**
- * Detecta si el contenido HTML de Quill tiene texto/elementos reales.
- */
-function tieneContenidoQuill(contenido) {
-    if (!contenido) return false;
-
-    const html = String(contenido).trim();
-    if (!html || html === '<p><br></p>') return false;
-
-    const soloTexto = html
-        .replace(/<br\s*\/?>/gi, '')
-        .replace(/<[^>]+>/g, '')
-        .replace(/&nbsp;/gi, ' ')
-        .trim();
-
-    const tieneMedia = /<(img|iframe|video)\b/i.test(html);
-    return Boolean(soloTexto) || tieneMedia;
-}
-
-/**
- * Render hibrido con prioridad Quill: primero contenido HTML, luego bloques.
- */
-async function renderNoticiaCompleta(noticia) {
-    if (tieneContenidoQuill(noticia && noticia.contenido)) {
-        return formatearContenido(noticia.contenido);
-    }
-
-    const bloques = await obtenerBloques(noticia && noticia.id);
-    if (bloques.length > 0) {
-        const htmlBloques = renderBloques(bloques);
-        if (htmlBloques.trim()) {
-            return htmlBloques;
-        }
-    }
-
-    return formatearContenido(noticia && noticia.contenido);
-}
-
-/**
- * Formatea contenido legacy.
+ * Formatea contenido Quill HTML (sin fallback a editor viejo).
  */
 function formatearContenido(contenido) {
     if (!contenido) return '<p>Contenido no disponible.</p>';
 
-    const contenidoStr = String(contenido);
-    const pareceHTML = /<[a-z][\s\S]*>/i.test(contenidoStr);
-
-    if (pareceHTML) {
-        return contenidoStr;
+    const contenidoStr = String(contenido).trim();
+    if (!contenidoStr || contenidoStr === '<p><br></p>') {
+        return '<p>Contenido no disponible.</p>';
     }
 
-    return contenidoStr
-        .split('\n\n')
-        .filter(p => p && p.trim())
-        .map(p => `<p>${escapeHTML(p.trim())}</p>`)
-        .join('');
+    // Quill guarda HTML. Se renderiza directo.
+    return contenidoStr;
+}
+
+/**
+ * Render exclusivo Quill: solo usa campo contenido.
+ */
+async function renderNoticiaCompleta(noticia) {
+    return formatearContenido(noticia && noticia.contenido);
 }
 
 /**

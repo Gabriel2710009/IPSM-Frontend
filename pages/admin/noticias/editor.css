@@ -206,7 +206,7 @@ select:focus {
 #editor {
   background: #fff;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid var(--gray-300);
 }
 
@@ -474,3 +474,13 @@ select:focus {
     height: 610px;
   }
 }
+
+
+.editor-card, .editor-form, #editor, .ql-toolbar.ql-snow, .ql-container.ql-snow { overflow: visible; }
+.ql-snow .ql-tooltip { z-index: 1200; }
+.ql-snow .ql-tooltip input[type=text] { width: 170px; }
+@media (max-width: 640px) {
+  .ql-snow .ql-tooltip { left: 8px !important; right: 8px; width: auto; }
+  .ql-snow .ql-tooltip input[type=text] { width: 100% !important; }
+}
+
