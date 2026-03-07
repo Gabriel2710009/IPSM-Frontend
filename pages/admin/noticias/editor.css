@@ -96,15 +96,20 @@ input:focus, textarea:focus, select:focus {
 #editor { background: #fff; min-height: 290px; }
 
 .actions {
-  display: flex;
+  display: grid;
   gap: 10px;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .actions { grid-template-columns: 1fr; }
 }
 
 button {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 10px 14px;
+  min-height: 42px;
   font-size: 14px;
   cursor: pointer;
   background: #fff;
