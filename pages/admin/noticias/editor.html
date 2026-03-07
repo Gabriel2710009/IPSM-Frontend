@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Noticias - Editor</title>
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+  <link rel="stylesheet" href="./editor.css">
+</head>
+<body>
+  <main class="layout">
+    <section class="panel">
+      <header class="panel-header">
+        <h1>Editor de Noticias</h1>
+        <p id="modeLabel">Modo: Crear noticia</p>
+      </header>
+
+      <form id="newsForm" class="news-form">
+        <div class="grid">
+          <label>
+            <span>Título</span>
+            <input id="titulo" type="text" maxlength="255" required>
+          </label>
+
+          <label>
+            <span>Categoría</span>
+            <input id="categoria" type="text" maxlength="50" placeholder="Institucional, Académico, Deportes...">
+          </label>
+
+          <label>
+            <span>Autor</span>
+            <input id="autor" type="text" maxlength="100" placeholder="Instituto San Marino">
+          </label>
+
+          <label>
+            <span>Imagen URL</span>
+            <input id="imagen_url" type="url" placeholder="https://...">
+          </label>
+
+          <label>
+            <span>Imagen ALT</span>
+            <input id="imagen_alt" type="text" maxlength="200" placeholder="Descripción accesible de imagen">
+          </label>
+
+          <label class="checkbox">
+            <input id="publicada" type="checkbox">
+            <span>Publicada</span>
+          </label>
+        </div>
+
+        <label>
+          <span>Resumen</span>
+          <textarea id="resumen" rows="3" placeholder="Resumen breve"></textarea>
+        </label>
+
+        <div>
+          <span class="field-title">Contenido</span>
+          <div id="editor"></div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="btnDraft">Guardar borrador</button>
+          <button type="button" id="btnPublish" class="primary">Publicar</button>
+          <button type="button" id="btnUpdate" class="secondary" disabled>Actualizar noticia</button>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel preview-panel">
+      <header class="panel-header">
+        <h2>Preview</h2>
+      </header>
+      <article class="preview-card">
+        <p class="preview-category" id="previewCategoria"></p>
+        <h3 id="previewTitulo">Título de la noticia</h3>
+        <p id="previewResumen"></p>
+        <img id="previewImagen" alt="" hidden>
+        <div id="previewContenido"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  <script src="./editor.js"></script>
+</body>
+</html>
+
