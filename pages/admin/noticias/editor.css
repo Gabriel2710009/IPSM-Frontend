@@ -484,3 +484,14 @@ select:focus {
   .ql-snow .ql-tooltip input[type=text] { width: 100% !important; }
 }
 
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+  margin: .6rem 0 .35rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.ql-editor h1 { font-size: 2rem; }
+.ql-editor h2 { font-size: 1.6rem; }
+.ql-editor h3 { font-size: 1.3rem; }
+
