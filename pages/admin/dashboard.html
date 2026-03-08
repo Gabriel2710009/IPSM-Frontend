@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -39,7 +39,7 @@
                         <span class="user-role">Administrador</span>
                     </div>
                     <button class="btn btn-sm btn-outline" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Cerrar SesiÃ³n
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                     </button>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 </a>
                 <a href="#" class="sidebar-link" data-section="gestion-usuarios">
                     <span class="sidebar-icon"><i class="fas fa-users-cog"></i></span>
-                    <span>GestiÃ³n de Usuarios</span>
+                    <span>Gestión de Usuarios</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="config-cuotas">
                     <span class="sidebar-icon"><i class="fas fa-cog"></i></span>
@@ -93,12 +93,12 @@
 
         <!-- Contenido Principal -->
         <main class="dashboard-content">
-            <!-- SecciÃ³n Inicio -->
+            <!-- Sección Inicio -->
             <div class="content-section active" id="section-inicio">
-                <h1 class="page-title">Panel de AdministraciÃ³n</h1>
+                <h1 class="page-title">Panel de Administración</h1>
                 
                 <div class="welcome-message">
-                    <h2>Â¡Bienvenido/a, <span id="welcomeName">Administrador</span>!</h2>
+                    <h2>¡Bienvenido/a, <span id="welcomeName">Administrador</span>!</h2>
                     <p>Gestiona el sistema educativo desde este panel centralizado.</p>
                 </div>
 
@@ -112,7 +112,7 @@
                         <div class="admin-stat-value" id="statPendientes">-</div>
                         <div class="admin-stat-label">Usuarios Pendientes</div>
                         <div class="admin-stat-footer">
-                            <i class="fas fa-exclamation-circle"></i> Requieren aprobaciÃ³n
+                            <i class="fas fa-exclamation-circle"></i> Requieren aprobación
                         </div>
                     </div>
 
@@ -156,7 +156,7 @@
                     </div>
                 </div>
 
-                <!-- Resumen RÃ¡pido -->
+                <!-- Resumen Rápido -->
                 <div class="row mt-xl">
                     <div class="col-6">
                         <div class="card">
@@ -165,7 +165,7 @@
                             </div>
                             <div class="card-body">
                                 <div id="accionesPendientesContainer">
-                                    <!-- Se carga dinÃ¡micamente -->
+                                    <!-- Se carga dinámicamente -->
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                             </div>
                             <div class="card-body">
                                 <div id="actividadRecienteContainer">
-                                    <!-- Se carga dinÃ¡micamente -->
+                                    <!-- Se carga dinámicamente -->
                                 </div>
                             </div>
                         </div>
@@ -186,10 +186,10 @@
                 </div>
             </div>
 
-            <!-- SecciÃ³n Usuarios Pendientes -->
+            <!-- Sección Usuarios Pendientes -->
             <div class="content-section" id="section-usuarios-pendientes">
                 <h1 class="page-title">
-                    <i class="fas fa-user-clock"></i> Usuarios Pendientes de AprobaciÃ³n
+                    <i class="fas fa-user-clock"></i> Usuarios Pendientes de Aprobación
                 </h1>
 
                 <div class="filters-section">
@@ -201,8 +201,8 @@
                         <div class="filter-group">
                             <label class="filter-label">Ordenar por</label>
                             <select class="filter-select" id="filterPendientesSort">
-                                <option value="fecha_desc">MÃ¡s recientes</option>
-                                <option value="fecha_asc">MÃ¡s antiguos</option>
+                                <option value="fecha_desc">Más recientes</option>
+                                <option value="fecha_asc">Más antiguos</option>
                                 <option value="nombre_asc">Nombre A-Z</option>
                                 <option value="nombre_desc">Nombre Z-A</option>
                             </select>
@@ -211,14 +211,14 @@
                 </div>
                 
                 <div id="pendientesContainer">
-                    <!-- Se carga dinÃ¡micamente -->
+                    <!-- Se carga dinámicamente -->
                 </div>
             </div>
 
-            <!-- SecciÃ³n GestiÃ³n de Usuarios -->
+            <!-- Sección Gestión de Usuarios -->
             <div class="content-section" id="section-gestion-usuarios">
                 <h1 class="page-title">
-                    <i class="fas fa-users-cog"></i> GestiÃ³n de Usuarios
+                    <i class="fas fa-users-cog"></i> Gestión de Usuarios
                 </h1>
 
                 <div class="mb-lg">
@@ -256,19 +256,19 @@
                 </div>
                 
                 <div id="gestionUsuariosContainer">
-                    <!-- Se carga dinÃ¡micamente -->
+                    <!-- Se carga dinámicamente -->
                 </div>
             </div>
 
-            <!-- SecciÃ³n ConfiguraciÃ³n de Cuotas -->
+            <!-- Sección Configuración de Cuotas -->
             <div class="content-section" id="section-config-cuotas">
                 <h1 class="page-title">
-                    <i class="fas fa-cog"></i> ConfiguraciÃ³n de Cuotas
+                    <i class="fas fa-cog"></i> Configuración de Cuotas
                 </h1>
 
                 <div class="mb-lg">
                     <button class="btn btn-primary" onclick="abrirModalNuevaConfig()">
-                        <i class="fas fa-plus"></i> Nueva ConfiguraciÃ³n
+                        <i class="fas fa-plus"></i> Nueva Configuración
                     </button>
                 </div>
 
@@ -351,7 +351,7 @@
                 </div>
             </div>
 
-            <!-- SecciÃ³n Validar Cuotas -->
+            <!-- Sección Validar Cuotas -->
             <div class="content-section" id="section-cuotas">
                 <h1 class="page-title">
                     <i class="fas fa-money-check-alt"></i> Validar Cuotas
@@ -362,7 +362,7 @@
                         <div class="filter-group">
                             <label class="filter-label">Estado</label>
                             <select class="filter-select" id="filterCuotasEstado">
-                                <option value="pendiente">Pendientes de validaciÃ³n</option>
+                                <option value="pendiente">Pendientes de validación</option>
                                 <option value="todos">Todos</option>
                                 <option value="validado">Validados</option>
                                 <option value="rechazado">Rechazados</option>
@@ -390,14 +390,14 @@
                 </div>
                 
                 <div id="cuotasContainer">
-                    <!-- Se carga dinÃ¡micamente -->
+                    <!-- Se carga dinámicamente -->
                 </div>
             </div>
 
-            <!-- SecciÃ³n Cursos -->
+            <!-- Sección Cursos -->
             <div class="content-section" id="section-cursos">
                 <h1 class="page-title">
-                    <i class="fas fa-chalkboard-teacher"></i> GestiÃ³n de Cursos
+                    <i class="fas fa-chalkboard-teacher"></i> Gestión de Cursos
                 </h1>
 
                 <div class="mb-lg">
@@ -418,7 +418,7 @@
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">AÃ±o</label>
+                            <label class="filter-label">Año</label>
                             <select class="filter-select" id="filterCursosAnio">
                                 <option value="">Todos</option>
                             </select>
@@ -427,7 +427,7 @@
                             <label class="filter-label">Turno</label>
                             <select class="filter-select" id="filterCursosTurno">
                                 <option value="">Todos</option>
-                            <option value="MaÃ±ana">MaÃ±ana</option>
+                            <option value="Mañana">Mañana</option>
                                 <option value="tarde">Tarde</option>
                             </select>
                         </div>
@@ -435,14 +435,14 @@
                 </div>
                 
                 <div id="cursosContainer">
-                    <!-- Se carga dinÃ¡micamente -->
+                    <!-- Se carga dinámicamente -->
                 </div>
             </div>
 
-            <!-- SecciÃ³n Noticias -->
+            <!-- Sección Noticias -->
             <div class="content-section" id="section-noticias">
                 <h1 class="page-title">
-                    <i class="fas fa-newspaper"></i> GestiÃ³n de Noticias
+                    <i class="fas fa-newspaper"></i> Gestión de Noticias
                 </h1>
 
                 <div class="mb-lg">
@@ -452,11 +452,11 @@
                 </div>
                 
                 <div id="noticiasContainer">
-                    <!-- Se carga dinÃ¡micamente -->
+                    <!-- Se carga dinámicamente -->
                 </div>
             </div>
 
-            <!-- SecciÃ³n Mensajes -->
+            <!-- Sección Mensajes -->
             <div class="content-section" id="section-mensajes">
                 <h1 class="page-title">
                     <i class="fas fa-envelope"></i> Mensajes
@@ -487,14 +487,14 @@
                                             <option value="todos">Todos los usuarios</option>
                                             <option value="rol">Por rol</option>
                                             <option value="nivel">Por nivel educativo</option>
-                                            <option value="individual">Usuario especÃ­fico</option>
+                                            <option value="individual">Usuario específico</option>
                                         </select>
                                     </div>
                                     
                                     <div class="form-group" id="destinatarioDetalleGroup" style="display: none;">
                                         <label class="form-label" id="destinatarioDetalleLabel">Seleccionar</label>
                                         <select class="form-control" id="destinatarioDetalle">
-                                            <!-- Se carga dinÃ¡micamente -->
+                                            <!-- Se carga dinámicamente -->
                                         </select>
                                     </div>
                                 </div>
@@ -557,7 +557,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">ContraseÃ±a</label>
+                        <label class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="nuevoPassword" required minlength="8">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
@@ -846,17 +846,17 @@
         </div>
     </div>
 
-    <!-- Modal Nueva ConfiguraciÃ³n de Cuota -->
+    <!-- Modal Nueva Configuración de Cuota -->
     <div id="nuevaConfigModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="configModalTitle"><i class="fas fa-cog"></i> Nueva ConfiguraciÃ³n de Cuota</h3>
+                <h3 id="configModalTitle"><i class="fas fa-cog"></i> Nueva Configuración de Cuota</h3>
                 <button class="modal-close" onclick="cerrarModal('nuevaConfigModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="nuevaConfigForm">
                     <div class="form-group">
-                        <label class="form-label">Ciclo lectivo (AÃ±o)</label>
+                        <label class="form-label">Ciclo lectivo (Año)</label>
                         <input type="number" class="form-control" id="configCicloLectivoAnio" required min="2000" max="2100">
                     </div>
                     <div class="form-group">
@@ -873,7 +873,7 @@
                         <input type="number" class="form-control" id="configMonto" required min="0" step="0.01">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">DÃ­a de vencimiento</label>
+                        <label class="form-label">Día de vencimiento</label>
                         <input type="number" class="form-control" id="configDiaVencimiento" required min="1" max="31" value="10">
                     </div>
                     <div class="form-group">
@@ -885,7 +885,7 @@
                         <input type="date" class="form-control" id="configFechaInicio" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" id="configSubmitBtn">
-                        <i class="fas fa-save"></i> Crear ConfiguraciÃ³n
+                        <i class="fas fa-save"></i> Crear Configuración
                     </button>
                 </form>
             </div>
@@ -903,7 +903,7 @@
                 <form id="noticiaForm">
                     <input type="hidden" id="noticiaId">
                     <div class="form-group">
-                        <label class="form-label">TÃ­tulo</label>
+                        <label class="form-label">Título</label>
                         <input type="text" class="form-control" id="noticiaTitulo" required maxlength="255">
                     </div>
                     <div class="form-group">
@@ -923,11 +923,11 @@
                         <input type="text" class="form-control" id="noticiaImagenAlt" maxlength="200">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">CategorÃ­a</label>
+                        <label class="form-label">Categoría</label>
                         <select class="form-control" id="noticiaCategoria">
                             <option value="">Seleccionar...</option>
                             <option value="institucional">Institucional</option>
-                            <option value="academico">AcadÃ©mico</option>
+                            <option value="academico">Académico</option>
                             <option value="deportes">Deportes</option>
                             <option value="cultural">Cultural</option>
                             <option value="comunidad">Comunidad</option>
@@ -959,7 +959,7 @@
                 <form id="cursoForm">
                     <input type="hidden" id="cursoId">
                     <div class="form-group">
-                        <label class="form-label">Ciclo lectivo (AÃ±o)</label>
+                        <label class="form-label">Ciclo lectivo (Año)</label>
                         <input type="number" class="form-control" id="cursoCicloLectivoAnio" required min="2000" max="2100">
                     </div>
                     <div class="form-group">
@@ -972,27 +972,27 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">AÃ±o</label>
+                        <label class="form-label">Año</label>
                         <input type="number" class="form-control" id="cursoAnio" required min="1" max="6">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">DivisiÃ³n</label>
+                        <label class="form-label">División</label>
                         <input type="text" class="form-control" id="cursoDivision" required maxlength="1">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Turno</label>
                         <select class="form-control" id="cursoTurno" required>
                             <option value="">Seleccionar...</option>
-                            <option value="MaÃ±ana">MaÃ±ana</option>
+                            <option value="Mañana">Mañana</option>
                             <option value="Tarde">Tarde</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">OrientaciÃ³n (opcional)</label>
+                        <label class="form-label">Orientación (opcional)</label>
                         <input type="text" class="form-control" id="cursoOrientacion">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Capacidad mÃ¡xima</label>
+                        <label class="form-label">Capacidad máxima</label>
                         <input type="number" class="form-control" id="cursoCapacidad" min="1" max="50" value="30">
                     </div>
                     <div class="form-group">
@@ -1020,7 +1020,7 @@
         </div>
     </div>
 
-    <!-- Modal AsignaciÃƒÂ³n Curso -->
+    <!-- Modal Asignaci³n Curso -->
     <div id="cursoAsignacionModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
