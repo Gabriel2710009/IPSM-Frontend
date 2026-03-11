@@ -36,6 +36,7 @@ function initLoginForm() {
     // Manejar envío del formulario
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        e.stopPropagation();
         
         const dni = dniInput.value.trim();
         const password = passwordInput.value;
@@ -113,7 +114,14 @@ async function performLogin(dni, password) {
             }
         }
         
-        Utils.showError(errorMessage);
+                for (const store of [localStorage, sessionStorage]) {
+            store.removeItem('access_token');
+            store.removeItem('refresh_token');
+            store.removeItem('token_type');
+            store.removeItem('user_data');
+        }
+
+        Utils.showError(errorMessage, 3000);
         
         // Limpiar contraseña por seguridad
         document.getElementById('password').value = '';
@@ -189,6 +197,7 @@ function initForgotPassword() {
     
     forgotLink.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         
         // Mostrar modal o redirigir a página de recuperación
         window.location.href = 'forgot-password.html';
@@ -267,6 +276,7 @@ function initRegistroForm() {
     // Manejar envío del formulario
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        e.stopPropagation();
         await handleRegistro();
     });
 }
@@ -366,7 +376,14 @@ async function handleRegistro() {
             }
         }
         
-        Utils.showError(errorMessage);
+                for (const store of [localStorage, sessionStorage]) {
+            store.removeItem('access_token');
+            store.removeItem('refresh_token');
+            store.removeItem('token_type');
+            store.removeItem('user_data');
+        }
+
+        Utils.showError(errorMessage, 3000);
         
     } finally {
         Utils.hideLoader();
@@ -475,6 +492,7 @@ function initRegistroForm() {
     // Manejar envío del formulario
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        e.stopPropagation();
         await handleRegistro();
     });
 }
@@ -574,7 +592,14 @@ async function handleRegistro() {
             }
         }
         
-        Utils.showError(errorMessage);
+                for (const store of [localStorage, sessionStorage]) {
+            store.removeItem('access_token');
+            store.removeItem('refresh_token');
+            store.removeItem('token_type');
+            store.removeItem('user_data');
+        }
+
+        Utils.showError(errorMessage, 3000);
         
     } finally {
         Utils.hideLoader();
@@ -597,3 +622,4 @@ function validatePassword(password) {
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return re.test(password);
 }
+

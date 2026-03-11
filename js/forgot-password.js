@@ -27,6 +27,8 @@ async function handleResetRequest() {
         return;
     }
 
+    Utils.showLoader();
+
     try {
         const response = await API.post('/api/v1/auth/password-reset/request', { dni }, false);
         console.log('Reset request response:', response);
@@ -41,6 +43,8 @@ async function handleResetRequest() {
     } catch (error) {
         console.error('Error requesting reset:', error);
         Utils.showError(error.message || 'No se pudo enviar el enlace. Intente nuevamente.');
+    } finally {
+        Utils.hideLoader();
     }
 }
 

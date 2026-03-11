@@ -53,6 +53,8 @@ async function handlePasswordReset() {
         return;
     }
 
+    Utils.showLoader();
+
     try {
         const response = await API.post('/api/v1/auth/password-reset/confirm', {
             token: resetToken,
@@ -72,6 +74,8 @@ async function handlePasswordReset() {
     } catch (error) {
         console.error('Error confirming reset:', error);
         Utils.showError(error.message || 'No se pudo actualizar la contrasena.');
+    } finally {
+        Utils.hideLoader();
     }
 }
 
