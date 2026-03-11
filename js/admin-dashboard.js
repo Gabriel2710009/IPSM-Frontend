@@ -21,7 +21,7 @@ let asignacionCursoTipo = null;
 let modalCursoData = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar autenticaciÃ³n
+    // Verificar autenticación
     if (!Auth.isAuthenticated()) {
         window.location.href = '../../pages/auth/login.html';
         return;
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verificar que sea admin
     const user = Auth.getUser();
     if (!user || user.role !== 'admin') {
-        Utils.showError('No tiene permisos para acceder a esta secciÃ³n');
+        Utils.showError('No tiene permisos para acceder a esta sección');
         setTimeout(() => {
             Auth.logout();
         }, 2000);
@@ -63,7 +63,7 @@ function initDashboard() {
 }
 
 /**
- * Inicializa la navegaciÃ³n entre secciones
+ * Inicializa la navegación entre secciones
  */
 function initNavigation() {
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -104,7 +104,7 @@ async function changeSection(sectionName) {
 }
 
 /**
- * Carga datos especÃ­ficos de cada secciÃ³n
+ * Carga datos especÃ­ficos de cada sección
  */
 async function loadSectionData(sectionName) {
     switch(sectionName) {
@@ -161,7 +161,7 @@ function initLogout() {
     
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            if (confirm('Â¿EstÃ¡ seguro que desea cerrar sesiÃ³n?')) {
+            if (confirm('¿Esta seguro que desea cerrar sesion?')) {
                 Auth.logout();
             }
         });
@@ -310,7 +310,7 @@ async function loadAccionesPendientes() {
         if (pendientesCount.pending_count > 0) {
             acciones.push({
                 icon: 'fa-user-clock',
-                texto: `${pendientesCount.pending_count} usuario(s) pendiente(s) de aprobaciÃ³n`,
+                texto: `${pendientesCount.pending_count} usuario(s) pendiente(s) de aprobación`,
                 section: 'usuarios-pendientes'
             });
         }
@@ -321,7 +321,7 @@ async function loadAccionesPendientes() {
             if (pagosPendientesCount.pending_count > 0) {
                 acciones.push({
                     icon: 'fa-money-check-alt',
-                    texto: `${pagosPendientesCount.pending_count} pago(s) pendiente(s) de validaciÃ³n`,
+                    texto: `${pagosPendientesCount.pending_count} pago(s) pendiente(s) de validación`,
                     section: 'cuotas'
                 });
             }
@@ -352,17 +352,17 @@ async function loadActividadReciente() {
     const container = document.getElementById('actividadRecienteContainer');
     if (!container) return;
     
-    // TODO: Implementar cuando estÃ© disponible el endpoint
+    // TODO: Implementar cuando esté disponible el endpoint
     container.innerHTML = `
         <p class="text-center text-muted">
             <i class="fas fa-info-circle"></i> 
-            PrÃ³ximamente disponible
+            Próximamente disponible
         </p>
     `;
 }
 
 /**
- * Carga usuarios pendientes de aprobaciÃ³n - INTEGRADO
+ * Carga usuarios pendientes de aprobación - INTEGRADO
  */
 async function loadUsuariosPendientes() {
     const container = document.getElementById('pendientesContainer');
@@ -385,8 +385,8 @@ async function loadUsuariosPendientes() {
             container.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon"><i class="fas fa-check-circle"></i></div>
-                    <h3>Â¡Todo al dÃ­a!</h3>
-                    <p>No hay usuarios pendientes de aprobaciÃ³n</p>
+                    <h3>¡Todo al día!</h3>
+                    <p>No hay usuarios pendientes de aprobación</p>
                 </div>
             `;
         } else {
@@ -462,7 +462,7 @@ async function aprobarUsuario(userId, userName) {
     const padreSelect = document.getElementById(`rel-padre-${userId}`);
     const hijoSelect = document.getElementById(`rel-hijo-${userId}`);
     
-    if (!confirm(`Â¿Confirmar aprobaciÃ³n de ${userName} como ${selectedRole}?`)) {
+    if (!confirm(`¿Confirmar aprobación de ${userName} como ${selectedRole}?`)) {
         return;
     }
     
@@ -501,7 +501,7 @@ async function aprobarUsuario(userId, userName) {
  * Rechaza un usuario pendiente - INTEGRADO
  */
 async function rechazarUsuario(userId, userName) {
-    if (!confirm(`Â¿Confirmar rechazo de ${userName}?\nEsta acciÃ³n no se puede deshacer.`)) {
+    if (!confirm(`¿Confirmar rechazo de ${userName}?\nEsta acción no se puede deshacer.`)) {
         return;
     }
     
@@ -574,7 +574,7 @@ document.addEventListener('change', function(e) {
 });
 
 /**
- * GestiÃ³n de Usuarios
+ * Gestión de Usuarios
  */
 async function loadUsuarios() {
     const container = document.getElementById('usuariosContainer');
@@ -587,8 +587,8 @@ async function loadUsuarios() {
         container.innerHTML = `
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-users"></i></div>
-                <h3>GestiÃ³n de usuarios</h3>
-                <p>Esta funcionalidad estarÃ¡ disponible prÃ³ximamente</p>
+                <h3>Gestión de usuarios</h3>
+                <p>Esta funcionalidad estará disponible próximamente</p>
             </div>
         `;
         
@@ -610,7 +610,7 @@ function abrirModalNuevoUsuario() {
 }
 
 /**
- * Maneja la creaciÃ³n de nuevo usuario - INTEGRADO
+ * Maneja la creación de nuevo usuario - INTEGRADO
  */
 async function handleNuevoUsuario(e) {
     e.preventDefault();
@@ -656,7 +656,7 @@ async function handleNuevoUsuario(e) {
 }
 
 /**
- * ConfiguraciÃ³n de Cuotas - INTEGRADO
+ * Configuración de Cuotas - INTEGRADO
  */
 async function loadConfiguracionesCuotas() {
     try {
@@ -703,7 +703,7 @@ function renderConfiguraciones(containerId, configs) {
                 <div class="empty-state-icon"><i class="fas fa-cog"></i></div>
                 <p>No hay configuraciones para este nivel</p>
                 <button class="btn btn-primary mt-md" onclick="abrirModalNuevaConfig()">
-                    <i class="fas fa-plus"></i> Crear ConfiguraciÃ³n
+                    <i class="fas fa-plus"></i> Crear Configuración
                 </button>
             </div>
         `;
@@ -718,7 +718,7 @@ function renderConfiguraciones(containerId, configs) {
 }
 
 /**
- * Crea una tarjeta de configuraciÃ³n
+ * Crea una tarjeta de configuración
  */
 function createConfigCard(config) {
     const isActive = config.activo;
@@ -768,7 +768,7 @@ function createConfigCard(config) {
 }
 
 /**
- * Abre modal para nueva configuraciÃ³n
+ * Abre modal para nueva configuración
  */
 function abrirModalNuevaConfig() {
     const modal = document.getElementById('nuevaConfigModal');
@@ -786,13 +786,13 @@ function abrirModalNuevaConfig() {
         cicloInput.value = getCurrentYear();
         cicloInput.disabled = false;
     }
-    if (title) title.textContent = 'Nueva ConfiguraciÃ³n de Cuota';
-    if (submitBtn) submitBtn.textContent = 'Crear ConfiguraciÃ³n';
+    if (title) title.textContent = 'Nueva Configuración de Cuota';
+    if (submitBtn) submitBtn.textContent = 'Crear Configuración';
     modal.classList.add('active');
 }
 
 /**
- * Maneja la creaciÃ³n de nueva configuraciÃ³n - INTEGRADO
+ * Maneja la creación de nueva configuración - INTEGRADO
  */
 async function handleNuevaConfig(e) {
     e.preventDefault();
@@ -804,12 +804,12 @@ async function handleNuevaConfig(e) {
     const porcentajeRecargo = parseFloat(document.getElementById('configRecargo').value);
 
     if (Number.isNaN(cicloLectivoAnio)) {
-        Utils.showError('Ingrese un aÃ±o de ciclo lectivo vÃ¡lido');
+        Utils.showError('Ingrese un aÃ±o de ciclo lectivo válido');
         return;
     }
 
     if (Number.isNaN(montoBase)) {
-        Utils.showError('Ingrese un monto vÃ¡lido');
+        Utils.showError('Ingrese un monto válido');
         return;
     }
 
@@ -831,7 +831,7 @@ async function handleNuevaConfig(e) {
             };
 
             await API.put(`/api/v1/admin/cuotas/configuracion/${editingConfigId}`, updateData, true);
-            Utils.showSuccess('ConfiguraciÃ³n actualizada correctamente');
+            Utils.showSuccess('Configuración actualizada correctamente');
         } else {
             const formData = {
                 ciclo_lectivo_anio: cicloLectivoAnio,
@@ -843,22 +843,22 @@ async function handleNuevaConfig(e) {
             };
 
             await API.post('/api/v1/admin/cuotas/configuracion', formData, true);
-            Utils.showSuccess('ConfiguraciÃ³n creada correctamente');
+            Utils.showSuccess('Configuración creada correctamente');
         }
         
         cerrarModal('nuevaConfigModal');
         await loadConfiguracionesCuotas();
         
     } catch (error) {
-        console.error('Error al crear configuraciÃ³n:', error);
-        Utils.showError(error.message || 'Error al crear la configuraciÃ³n');
+        console.error('Error al crear configuración:', error);
+        Utils.showError(error.message || 'Error al crear la configuración');
     } finally {
         Utils.hideLoader();
     }
 }
 
 /**
- * Editar configuraciÃ³n
+ * Editar configuración
  */
 async function editarConfig(configId) {
     const modal = document.getElementById('nuevaConfigModal');
@@ -869,7 +869,7 @@ async function editarConfig(configId) {
 
     const config = (configuracionesCuotas || []).find(c => c.id === configId);
     if (!config) {
-        Utils.showError('ConfiguraciÃ³n no encontrada');
+        Utils.showError('Configuración no encontrada');
         return;
     }
 
@@ -906,17 +906,17 @@ async function editarConfig(configId) {
         fechaInput.value = `${yyyy}-${mm}-${dd}`;
     }
 
-    if (title) title.textContent = 'Editar ConfiguraciÃ³n de Cuota';
+    if (title) title.textContent = 'Editar Configuración de Cuota';
     if (submitBtn) submitBtn.textContent = 'Guardar Cambios';
 
     if (modal) modal.classList.add('active');
 }
 
 /**
- * Eliminar configuraciÃ³n - INTEGRADO
+ * Eliminar configuración - INTEGRADO
  */
 async function eliminarConfig(configId) {
-    if (!confirm('Â¿EstÃ¡ seguro de eliminar esta configuraciÃ³n?\nEsta acciÃ³n no se puede deshacer.')) {
+    if (!confirm('¿Está seguro de eliminar esta configuración?\nEsta acción no se puede deshacer.')) {
         return;
     }
     
@@ -925,19 +925,19 @@ async function eliminarConfig(configId) {
         
         await API.delete(`/api/v1/admin/cuotas/configuracion/${configId}`, true);
         
-        Utils.showSuccess('ConfiguraciÃ³n eliminada');
+        Utils.showSuccess('Configuración eliminada');
         await loadConfiguracionesCuotas();
         
     } catch (error) {
-        console.error('Error al eliminar configuraciÃ³n:', error);
-        Utils.showError('Error al eliminar la configuraciÃ³n');
+        console.error('Error al eliminar configuración:', error);
+        Utils.showError('Error al eliminar la configuración');
     } finally {
         Utils.hideLoader();
     }
 }
 
 /**
- * ValidaciÃ³n de Cuotas/Pagos - INTEGRADO
+ * Validación de Cuotas/Pagos - INTEGRADO
  */
 async function loadCuotasValidacion() {
     const container = document.getElementById('cuotasContainer');
@@ -955,7 +955,7 @@ async function loadCuotasValidacion() {
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-money-check-alt"></i></div>
                 <h3>Error al cargar pagos</h3>
-                <p>Intente nuevamente mÃ¡s tarde</p>
+                <p>Intente nuevamente más tarde</p>
             </div>
         `;
     } finally {
@@ -1001,7 +1001,7 @@ function createPagoCard(pago) {
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
                 <p><strong>MÃ©todo:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
-                ${pago.numero_operacion ? `<p><strong>OperaciÃ³n:</strong> ${pago.numero_operacion}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDateTime(pago.fecha_pago)}</p>
 
                 <div class="action-buttons mt-md">
@@ -1022,7 +1022,7 @@ function createPagoCard(pago) {
 }
 
 async function aprobarPago(pagoId) {
-    if (!confirm('Â¿Confirmar aprobaciÃ³n del pago?')) return;
+    if (!confirm('¿Confirmar aprobación del pago?')) return;
     const observaciones = prompt('Observaciones (opcional):') || null;
 
     try {
@@ -1046,7 +1046,7 @@ async function aprobarPago(pagoId) {
 }
 
 async function rechazarPago(pagoId) {
-    if (!confirm('Â¿Confirmar rechazo del pago?')) return;
+    if (!confirm('¿Confirmar rechazo del pago?')) return;
     const observaciones = prompt('Motivo de rechazo (opcional):') || null;
 
     try {
@@ -1095,7 +1095,7 @@ function abrirModalPagoDetalle(pago) {
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
                 <p><strong>MÃ©todo:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
-                ${pago.numero_operacion ? `<p><strong>OperaciÃ³n:</strong> ${pago.numero_operacion}</p>` : ''}
+                ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p><strong>Fecha de pago:</strong> ${Utils.formatDateTime(pago.fecha_pago)}</p>
                 <p><strong>Estado:</strong> ${getEstadoPagoLabel(pago.estado)}</p>
                 ${pago.comprobante_url ? `<p><strong>Comprobante:</strong> <a href="${pago.comprobante_url}" target="_blank" rel="noopener">Ver comprobante</a></p>` : ''}
@@ -1107,7 +1107,7 @@ function abrirModalPagoDetalle(pago) {
 }
 
 /**
- * GestiÃ³n de Cursos - INTEGRADO
+ * Gestión de Cursos - INTEGRADO
  */
 async function loadCursos() {
     const container = document.getElementById('cursosContainer');
@@ -1138,7 +1138,7 @@ async function loadCursos() {
             <div class="empty-state">
                 <div class="empty-state-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                 <h3>Error al cargar cursos</h3>
-                <p>Intente nuevamente mÃ¡s tarde</p>
+                <p>Intente nuevamente más tarde</p>
             </div>
         `;
     } finally {
@@ -1178,14 +1178,14 @@ function createCursoCard(curso) {
         <div class="card">
             <div class="card-body">
                 <div class="card-header" style="padding: 0 0 var(--spacing-sm) 0;">
-                    <h3 class="card-title"><i class="fas fa-chalkboard-teacher"></i> ${nivelLabel} - ${curso.anio}Â° ${curso.division}</h3>
+                    <h3 class="card-title"><i class="fas fa-chalkboard-teacher"></i> ${nivelLabel} - ${curso.anio}° ${curso.division}</h3>
                     <span class="badge ${estadoBadge}">${estadoLabel}</span>
                 </div>
                 <p class="text-muted"><i class="fas fa-calendar"></i> Ciclo: ${curso.ciclo_lectivo_nombre || 'N/A'}</p>
                 <p><strong>Turno:</strong> ${turnoLabel}</p>
                 <p><strong>Alumnos:</strong> ${curso.cantidad_alumnos || 0} / ${curso.capacidad_maxima}</p>
                 <p><strong>Docentes:</strong> ${curso.docentes_count != null ? curso.docentes_count : 0}</p>
-                ${curso.orientacion ? `<p><strong>OrientaciÃ³n:</strong> ${curso.orientacion}</p>` : ''}
+                ${curso.orientacion ? `<p><strong>Orientación:</strong> ${curso.orientacion}</p>` : ''}
 
                 <div class="action-buttons mt-md">
                     <button class="btn btn-sm btn-primary" onclick="verAlumnosCurso(${curso.id})">
@@ -1333,7 +1333,7 @@ async function handleCursoSubmit(e) {
 }
 
 async function desactivarCurso(cursoId) {
-    if (!confirm('Â¿Desactivar este curso?')) return;
+    if (!confirm('¿Desactivar este curso?')) return;
 
     try {
         Utils.showLoader();
@@ -1365,7 +1365,7 @@ async function activarCurso(cursoId) {
 }
 
 async function eliminarCurso(cursoId) {
-    if (!confirm('Â¿Eliminar este curso de forma permanente?\nEsta acciÃ³n no se puede deshacer.')) return;
+    if (!confirm('¿Eliminar este curso de forma permanente?\nEsta acción no se puede deshacer.')) return;
 
     try {
         Utils.showLoader();
@@ -1406,7 +1406,7 @@ function abrirModalAlumnosCurso(curso, alumnos, docentes) {
     if (!modal || !container) return;
 
     if (title) {
-        title.textContent = `Alumnos - ${curso.nivel_nombre || ''} ${curso.anio || ''}Â° ${curso.division || ''}`.trim();
+        title.textContent = `Alumnos - ${curso.nivel_nombre || ''} ${curso.anio || ''}° ${curso.division || ''}`.trim();
     }
 
     modalCursoData = {
@@ -1595,7 +1595,7 @@ function filtrarYOrdenarModal(lista, search, sort) {
 }
 
 async function quitarAlumnoCurso(cursoId, alumnoId) {
-    if (!confirm('Â¿Quitar alumno del curso?')) return;
+    if (!confirm('¿Quitar alumno del curso?')) return;
     try {
         Utils.showLoader();
         await API.delete(`/api/v1/admin/cursos/${cursoId}/alumnos`, { alumno_id: alumnoId }, true);
@@ -1611,7 +1611,7 @@ async function quitarAlumnoCurso(cursoId, alumnoId) {
 }
 
 async function quitarDocenteCurso(cursoId, docenteId) {
-    if (!confirm('Â¿Quitar docente del curso?')) return;
+    if (!confirm('¿Quitar docente del curso?')) return;
     try {
         Utils.showLoader();
         await API.delete(`/api/v1/admin/cursos/${cursoId}/docentes`, { docente_id: docenteId }, true);
@@ -1686,7 +1686,7 @@ async function confirmarAsignacionCurso() {
     const selectedId = select ? parseInt(select.value, 10) : null;
 
     if (!asignacionCursoId || !asignacionCursoTipo || !selectedId) {
-        Utils.showError('Seleccione una opciÃƒÂ³n');
+        Utils.showError('Seleccione una opción');
         return;
     }
 
@@ -1755,7 +1755,7 @@ async function abrirModalLibretas(alumnoId, alumnoNombre) {
 }
 
 /**
- * GestiÃ³n de Noticias - INTEGRADO
+ * Gestión de Noticias - INTEGRADO
  */
 async function loadNoticias() {
     const container = document.getElementById('noticiasContainer');
@@ -1828,7 +1828,7 @@ function editarNoticia(noticiaId) {
 }
 
 function eliminarNoticia(noticiaId) {
-    if (!confirm('Â¿EstÃ¡ seguro de eliminar esta noticia?\nEsta acciÃ³n no se puede deshacer.')) {
+    if (!confirm('¿Estás seguro de eliminar esta noticia?\nEsta acción no se puede deshacer.')) {
         return;
     }
 
@@ -1895,7 +1895,7 @@ async function handleNoticiaSubmit(e) {
 }
 
 /**
- * GestiÃ³n de Mensajes
+ * Gestión de Mensajes
  */
 async function loadMensajes() {
     try {
@@ -2223,12 +2223,12 @@ function actualizarFiltroAnios(nivel) {
             break;
         case 'primario':
             for (let i = 1; i <= 6; i++) {
-                opciones += `<option value="${i}">${i}Â° Grado</option>`;
+                opciones += `<option value="${i}">${i}° Grado</option>`;
             }
             break;
         case 'secundario':
             for (let i = 1; i <= 6; i++) {
-                opciones += `<option value="${i}">${i}Â° AÃ±o</option>`;
+                opciones += `<option value="${i}">${i}° Año</option>`;
             }
             break;
         default:
@@ -2310,5 +2310,5 @@ if (typeof Utils !== 'undefined') {
     };
 }
 
-console.log('âœ… Admin Dashboard Module Loaded - INTEGRADO CON BACKEND');
+console.log('œ… Admin Dashboard Module Loaded - INTEGRADO CON BACKEND');
 

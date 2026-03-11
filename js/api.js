@@ -501,44 +501,64 @@ class Auth {
     /**
      * Redirige al dashboard según el rol del usuario
      */
-    static redirectToDashboard() {
+    static async redirectToDashboard() {
         console.log('🔀 Redirecting to dashboard...');
-        
-        const userDataStr = localStorage.getItem('user_data');
-        
-        if (userDataStr) {
+
+        // Prefer sessionStorage when "Recordarme" no está marcado.
+        let userDataStr =
+            sessionStorage.getItem('user_data') ||
+            localStorage.getItem('user_data');
+
+        // Si hay token pero no user_data (p. ej. sesión sin "Recordarme"),
+        // intentar recuperarlo desde /me antes de forzar logout.
+        if (!userDataStr && this.isAuthenticated()) {
             try {
-                const userData = JSON.parse(userDataStr);
-                console.log('📊 User role:', userData.role);
-                
-                // Redirigir según rol
-                switch (userData.role) {
-                    case 'admin':
-                        window.location.href = '../../pages/admin/dashboard.html';
-                        break;
-                    case 'preceptor':
-                        window.location.href = '../../pages/preceptor/dashboard.html';
-                        break;
-                    case 'profesor':
-                    case 'docente':
-                        window.location.href = '../../pages/profesor/dashboard.html';
-                        break;
-                    case 'alumno':
-                        window.location.href = '../../pages/alumno/dashboard.html';
-                        break;
-                    case 'padre':
-                        window.location.href = '../../pages/padre/dashboard.html';
-                        break;
-                    default:
-                        console.warn('⚠️ Unknown role, redirecting to login');
-                        window.location.href = '../../pages/auth/login.html';
+                const fetched = await this.getCurrentUser();
+                const userData = (fetched && fetched.user) ? fetched.user : fetched;
+                if (userData && userData.role) {
+                    const store = sessionStorage.getItem('access_token') ? sessionStorage : localStorage;
+                    store.setItem('user_data', JSON.stringify(userData));
+                    userDataStr = JSON.stringify(userData);
                 }
             } catch (error) {
-                console.error('❌ Error parsing user data:', error);
-                window.location.href = '../../pages/auth/login.html';
+                // Ignorar y seguir al redirect a login
             }
-        } else {
+        }
+
+        if (!userDataStr) {
             console.warn('⚠️ No user data found, redirecting to login');
+            window.location.href = '../../pages/auth/login.html';
+            return;
+        }
+
+        try {
+            const userData = JSON.parse(userDataStr);
+            console.log('📊 User role:', userData.role);
+
+            // Redirigir según rol
+            switch (userData.role) {
+                case 'admin':
+                    window.location.href = '../../pages/admin/dashboard.html';
+                    break;
+                case 'preceptor':
+                    window.location.href = '../../pages/preceptor/dashboard.html';
+                    break;
+                case 'profesor':
+                case 'docente':
+                    window.location.href = '../../pages/profesor/dashboard.html';
+                    break;
+                case 'alumno':
+                    window.location.href = '../../pages/alumno/dashboard.html';
+                    break;
+                case 'padre':
+                    window.location.href = '../../pages/padre/dashboard.html';
+                    break;
+                default:
+                    console.warn('⚠️ Unknown role, redirecting to login');
+                    window.location.href = '../../pages/auth/login.html';
+            }
+        } catch (error) {
+            console.error('❌ Error parsing user data:', error);
             window.location.href = '../../pages/auth/login.html';
         }
     }
