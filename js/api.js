@@ -42,7 +42,7 @@ class API {
                 url: response.url
             });
             
-            return await this.handleResponse(response);
+            return await this.handleResponse(response, endpoint);
         } catch (error) {
             console.error('❌ API GET Error:', {
                 endpoint,
@@ -92,7 +92,7 @@ class API {
                 url: response.url
             });
             
-            return await this.handleResponse(response);
+            return await this.handleResponse(response, endpoint);
         } catch (error) {
             console.error('❌ API POST Error:', {
                 endpoint,
@@ -141,7 +141,7 @@ class API {
                 statusText: response.statusText
             });
             
-            return await this.handleResponse(response);
+            return await this.handleResponse(response, endpoint);
         } catch (error) {
             console.error('❌ API PUT Error:', {
                 endpoint,
@@ -197,7 +197,7 @@ class API {
                 statusText: response.statusText
             });
             
-            return await this.handleResponse(response);
+            return await this.handleResponse(response, endpoint);
         } catch (error) {
             console.error('❌ API DELETE Error:', {
                 endpoint,
@@ -230,29 +230,31 @@ class API {
     /**
      * Maneja la respuesta del servidor
      */
-    static async handleResponse(response) {
+    static async handleResponse(response, endpoint) {
         if (response.status === 204) {
             return null;
         }
 
         const contentType = response.headers.get('content-type');
         const contentLength = response.headers.get('content-length');
-        
-        // Si es 401, el token expiró
+        // Si es 401, el token expiro
         if (response.status === 401) {
-            console.warn('⚠️ Token expirado o inválido - redirigiendo al login');
-            
-            // Limpiar storage
-            [localStorage, sessionStorage].forEach(store => {
-                store.removeItem('access_token');
-                store.removeItem('refresh_token');
-                store.removeItem('user_data');
-            });
-            
-            // Redirigir al login
-            window.location.href = '../../pages/auth/login.html';
-            
-            throw new Error('Token inválido o expirado');
+            const isLoginRequest = endpoint && endpoint.includes('/auth/login');
+            if (!isLoginRequest) {
+                console.warn('?? Token expirado o inv�lido - redirigiendo al login');
+
+                // Limpiar storage
+                [localStorage, sessionStorage].forEach(store => {
+                    store.removeItem('access_token');
+                    store.removeItem('refresh_token');
+                    store.removeItem('user_data');
+                });
+
+                // Redirigir al login
+                window.location.href = '../../pages/auth/login.html';
+
+                throw new Error('Token inv�lido o expirado');
+            }
         }
         
         // Intentar parsear JSON si el content-type es JSON
@@ -688,3 +690,4 @@ console.log('✅ API Module Loaded:', {
     apiBaseUrl: CONFIG.API_BASE_URL,
     timestamp: new Date().toISOString()
 });
+
