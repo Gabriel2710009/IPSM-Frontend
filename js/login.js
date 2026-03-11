@@ -191,7 +191,7 @@ function initForgotPassword() {
         e.preventDefault();
         
         // Mostrar modal o redirigir a página de recuperación
-        Utils.showWarning('Por favor, comuníquese con secretaría para restablecer su contraseña: +54 (266) 4431659', 8000);
+        window.location.href = 'forgot-password.html';
     });
 }
 

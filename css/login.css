@@ -392,3 +392,25 @@
         max-width: 100%;
     }
 }
+
+/* Header logo alineado con el nombre */
+.header-simple .logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-simple .logo {
+    width: 56px;
+    height: auto;
+}
+
+@media (max-width: 640px) {
+    .header-simple .logo {
+        width: 48px;
+    }
+
+    .site-title-simple {
+        font-size: 1.1rem;
+    }
+}

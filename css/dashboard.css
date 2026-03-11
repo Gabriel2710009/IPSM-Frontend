@@ -56,6 +56,7 @@
 .dashboard-layout {
     display: flex;
     min-height: calc(100vh - 70px);
+    align-items: stretch;
 }
 
 /* Sidebar */
@@ -67,6 +68,7 @@
     top: 70px;
     height: calc(100vh - 70px);
     overflow-y: auto;
+    flex: 0 0 260px;
 }
 
 .sidebar-nav {
@@ -118,6 +120,7 @@
     flex: 1;
     padding: var(--spacing-2xl);
     overflow-y: auto;
+    min-width: 0;
 }
 
 .page-title {
@@ -371,7 +374,7 @@
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
     .sidebar {
         width: 80px;
     }

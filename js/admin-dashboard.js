@@ -286,7 +286,7 @@ async function loadEstadisticas() {
             document.getElementById('statCursos').textContent = '-';
         }
 
-        // TODO: Implementar cuando estÃ©n disponibles
+        // TODO: Implementar cuando esten disponibles
         document.getElementById('statUsuarios').textContent = '-';
         document.getElementById('statMensajes').textContent = '-';
         
@@ -416,7 +416,7 @@ function createPendingUserCard(user) {
                     <h3>${user.nombre} ${user.apellido}</h3>
                     <p><span class="info-label">DNI:</span> ${user.dni}</p>
                     <p><span class="info-label">Email:</span> ${user.email}</p>
-                    ${user.telefono ? `<p><span class="info-label">TelÃ©fono:</span> ${user.telefono}</p>` : ''}
+                    ${user.telefono ? `<p><span class="info-label">Teléfono:</span> ${user.telefono}</p>` : ''}
                     <p class="pending-date">
                         <i class="fas fa-calendar"></i>
                         Registrado: ${Utils.formatDateTime(user.fecha_creacion)}
@@ -999,7 +999,7 @@ function createPagoCard(pago) {
                 <p class="text-muted"><i class="fas fa-id-card"></i> DNI: ${pago.alumno_dni}</p>
                 <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
-                <p><strong>MÃ©todo:</strong> ${pago.metodo_pago || '-'}</p>
+                <p><strong>Método:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
                 ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p class="text-muted"><i class="fas fa-calendar"></i> ${Utils.formatDateTime(pago.fecha_pago)}</p>
@@ -1093,7 +1093,7 @@ function abrirModalPagoDetalle(pago) {
                 <p><strong>Alumno:</strong> ${pago.alumno_nombre} (${pago.alumno_dni})</p>
                 <p><strong>Cuota:</strong> ${pago.mes} ${pago.anio}</p>
                 <p><strong>Monto:</strong> $${formatMonto(pago.monto)}</p>
-                <p><strong>MÃ©todo:</strong> ${pago.metodo_pago || '-'}</p>
+                <p><strong>Método:</strong> ${pago.metodo_pago || '-'}</p>
                 ${pago.banco ? `<p><strong>Banco:</strong> ${pago.banco}</p>` : ''}
                 ${pago.numero_operacion ? `<p><strong>Operación:</strong> ${pago.numero_operacion}</p>` : ''}
                 <p><strong>Fecha de pago:</strong> ${Utils.formatDateTime(pago.fecha_pago)}</p>
