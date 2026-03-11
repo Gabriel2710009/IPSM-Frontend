@@ -381,10 +381,10 @@ class Auth {
                 remember_me: rememberMe
             };
             
-            console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/api/v1/auth/login`);
+            console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/auth/login`);
             
             // Login NO requiere auth
-            const data = await API.post('/api/v1/auth/login', requestBody, false);
+            const data = await API.post('/auth/login', requestBody, false);
             
             console.log('✅ Login successful:', {
                 hasToken: !!data.access_token,
