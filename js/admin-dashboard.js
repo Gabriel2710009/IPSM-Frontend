@@ -889,10 +889,10 @@ async function editarConfig(configId) {
     }
 
     const montoInput = document.getElementById('configMonto');
-    if (montoInput) montoInput.value = config.monto_base ? '';
+    if (montoInput) montoInput.value = (config.monto_base ?? '') ;
 
     const recargoInput = document.getElementById('configRecargo');
-    if (recargoInput) recargoInput.value = config.porcentaje_recargo ? 0;
+    if (recargoInput) recargoInput.value = (config.porcentaje_recargo ?? 0);
 
     const diaInput = document.getElementById('configDiaVencimiento');
     if (diaInput && !diaInput.value) diaInput.value = 10;
