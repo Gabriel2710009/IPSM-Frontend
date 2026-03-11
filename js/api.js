@@ -211,7 +211,7 @@ class API {
      * Obtiene los headers de autenticación
      */
     static getAuthHeaders() {
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
         
         console.log('🔒 Getting auth headers:', {
             hasToken: !!token,
@@ -242,10 +242,12 @@ class API {
         if (response.status === 401) {
             console.warn('⚠️ Token expirado o inválido - redirigiendo al login');
             
-            // Limpiar localStorage
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            localStorage.removeItem('user_data');
+            // Limpiar storage
+            [localStorage, sessionStorage].forEach(store => {
+                store.removeItem('access_token');
+                store.removeItem('refresh_token');
+                store.removeItem('user_data');
+            });
             
             // Redirigir al login
             window.location.href = '../../pages/auth/login.html';
@@ -358,7 +360,7 @@ class Auth {
     /**
      * Inicia sesión
      */
-    static async login(dni, password) {
+    static async login(dni, password, rememberMe = false) {
         console.log('🔐 Login attempt:', {
             dni: dni,
             passwordLength: password.length,
@@ -375,7 +377,8 @@ class Auth {
             
             const requestBody = {
                 dni: dni,
-                password: password
+                password: password,
+                remember_me: rememberMe
             };
             
             console.log('📤 Sending login request to:', `${CONFIG.API_BASE_URL}/api/v1/auth/login`);
@@ -388,17 +391,23 @@ class Auth {
                 tokenType: data.token_type
             });
             
-            // Guardar token
+            // Guardar token según preferencia de recordatorio
+            const primaryStore = rememberMe ? localStorage : sessionStorage;
+            const secondaryStore = rememberMe ? sessionStorage : localStorage;
+
+            // limpiar el otro storage para evitar fugas de sesión
+            ['access_token','refresh_token','token_type','user_data'].forEach(k => secondaryStore.removeItem(k));
+
             if (data.access_token) {
-                localStorage.setItem('access_token', data.access_token);
-                localStorage.setItem('token_type', data.token_type || 'bearer');
+                primaryStore.setItem('access_token', data.access_token);
+                primaryStore.setItem('token_type', data.token_type || 'bearer');
                 
                 if (data.refresh_token) {
-                    localStorage.setItem('refresh_token', data.refresh_token);
+                    primaryStore.setItem('refresh_token', data.refresh_token);
                 }
                 
                 if (data.user) {
-                    localStorage.setItem('user_data', JSON.stringify(data.user));
+                    primaryStore.setItem('user_data', JSON.stringify(data.user));
                 }
             }
             
@@ -434,11 +443,13 @@ class Auth {
     static logout() {
         console.log('🚪 Logging out...');
         
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('token_type');
-        localStorage.removeItem('user_dni')
-        localStorage.removeItem('user_data');
+        for (const store of [localStorage, sessionStorage]) {
+            store.removeItem('access_token');
+            store.removeItem('refresh_token');
+            store.removeItem('token_type');
+            store.removeItem('user_dni')
+            store.removeItem('user_data');
+        }
         
         window.location.href = '../../pages/auth/login.html';
     }
@@ -447,7 +458,7 @@ class Auth {
      * Verifica si el usuario está autenticado
      */
     static isAuthenticated() {
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
         const isAuth = !!token;
         
         console.log('🔒 Authentication check:', {
@@ -462,14 +473,14 @@ class Auth {
      * Obtiene el token de acceso
      */
     static getToken() {
-        return localStorage.getItem('access_token');
+        return sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
     }
 
     /**
      * Obtiene los datos del usuario desde localStorage
      */
     static getUser() {
-        const userDataStr = localStorage.getItem('user_data');
+        const userDataStr = sessionStorage.getItem('user_data') || localStorage.getItem('user_data');
         if (!userDataStr) return null;
         try {
             return JSON.parse(userDataStr);

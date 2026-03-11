@@ -68,15 +68,17 @@ async function performLogin(dni, password) {
         console.log('Intentando login con:', { dni, password: '***' });
         console.log('URL de API:', CONFIG.API_BASE_URL);
         
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
         // Llamar a la API de autenticación
-        const response = await Auth.login(dni, password);
+        const response = await Auth.login(dni, password, rememberMe);
         
         console.log('Respuesta de login:', response);
         
         Utils.showSuccess('¡Bienvenido/a al sistema!');
         
         // Guardar datos si "Recordarme" está marcado
-        if (document.getElementById('rememberMe').checked) {
+        if (rememberMe) {
             saveCredentials(dni);
         } else {
             clearCredentials();
