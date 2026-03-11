@@ -179,6 +179,12 @@
     const formData = new FormData();
     formData.append('file', file);
 
+    console.info('[Editor] Subiendo imagen...', {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    });
+
     const response = await fetch(API_BASE + '/api/v1/admin/noticias/upload-image', {
       method: 'POST',
       headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
@@ -186,11 +192,21 @@
     });
 
     if (!response.ok) {
-      throw new Error(`Upload fallo (${response.status})`);
+      let detail = `Upload fallo (${response.status})`;
+      try {
+        const body = await response.json();
+        if (body && body.detail) detail = body.detail;
+      } catch (e) {}
+      console.error('[Editor] Error upload imagen:', detail);
+      throw new Error(detail);
     }
 
     const body = await response.json();
-    if (!body || !body.url) throw new Error('Respuesta de upload invalida');
+    if (!body || !body.url) {
+      console.error('[Editor] Respuesta inv?lida del upload:', body);
+      throw new Error('Respuesta de upload invalida');
+    }
+    console.info('[Editor] Imagen subida OK:', body.url);
     return body.url;
   }
 
@@ -211,6 +227,7 @@
         setStatus('Imagen subida correctamente.');
         syncPreviewFrame();
       } catch (err) {
+        console.error("[Editor] Fall? la subida de imagen:", err);
         setStatus(`No se pudo subir imagen: ${err.message}`, true);
       }
     };
