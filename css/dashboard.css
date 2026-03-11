@@ -390,6 +390,14 @@
 
 @media (max-width: 768px) {
     .dashboard-layout {
+        min-height: auto;
+    }
+
+    .dashboard-content {
+        flex: 0 0 auto;
+    }
+
+    .dashboard-layout {
         flex-direction: column;
     }
     

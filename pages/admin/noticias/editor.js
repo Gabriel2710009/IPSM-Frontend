@@ -33,9 +33,36 @@
     openPreviewWindow: document.getElementById('openPreviewWindow'),
   };
 
-  function ensureAdminAccess() {
-    const token = localStorage.getItem('access_token');
-    const rawUser = localStorage.getItem('user_data');
+  async function ensureAdminAccess() {
+    if (typeof Auth !== 'undefined') {
+      if (!Auth.isAuthenticated()) {
+        window.location.href = '../../auth/login.html';
+        return false;
+      }
+
+      let user = Auth.getUser();
+      if (!user) {
+        try {
+          const fetched = await Auth.getCurrentUser();
+          const resolved = fetched && fetched.user ? fetched.user : fetched;
+          if (resolved && resolved.role) {
+            const store = sessionStorage.getItem('access_token') ? sessionStorage : localStorage;
+            store.setItem('user_data', JSON.stringify(resolved));
+            user = resolved;
+          }
+        } catch (_e) {}
+      }
+
+      if (!user || user.role !== 'admin') {
+        window.location.href = '../dashboard.html';
+        return false;
+      }
+
+      return true;
+    }
+
+    const token = sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
+    const rawUser = sessionStorage.getItem('user_data') || localStorage.getItem('user_data');
 
     if (!token || !rawUser) {
       window.location.href = '../../auth/login.html';
@@ -465,7 +492,7 @@
   }
 
   async function init() {
-    if (!ensureAdminAccess()) return;
+    if (!(await ensureAdminAccess())) return;
 
     initQuill();
     if (!state.quill) return;

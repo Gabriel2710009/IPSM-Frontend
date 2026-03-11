@@ -1,17 +1,6 @@
 /**
  * Estilos específicos para Panel de Administración
  */
-/* Ajuste sidebar admin: evitar espacio en blanco excesivo */
-.dashboard-layout {
-    align-items: flex-start;
-}
-
-.dashboard-layout .sidebar {
-    height: auto;
-    max-height: calc(100vh - 70px);
-    align-self: flex-start;
-}
-
 
 /* Stats Cards Mejorados */
 .admin-stats-grid {
