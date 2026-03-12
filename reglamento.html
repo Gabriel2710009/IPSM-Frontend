@@ -369,17 +369,18 @@
             min-height: 520px;
             border: 2px solid #C5A059;
             border-radius: .9rem;
-            background: linear-gradient(180deg, #f8fafc 0%, #ecf2f8 100%);
+            background: #fff;
             padding: 12px;
         }
 
         body.dark-theme .pdf-canvas-frame {
-            background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+            background: #fff;
         }
 
         .pdf-page-layer {
             position: relative;
             display: inline-block;
+            background: #fff;
         }
 
 
@@ -804,7 +805,7 @@
             const frameStyles = window.getComputedStyle(pdfCanvasFrame);
             const padLeft = parseFloat(frameStyles.paddingLeft) || 0;
             const padRight = parseFloat(frameStyles.paddingRight) || 0;
-            const containerWidth = Math.max(minViewerWidth, pdfCanvasFrame.clientWidth - padLeft - padRight);
+            const containerWidth = Math.max(minViewerWidth, pdfCanvasFrame.clientWidth - padLeft - padRight - 1);
             baseScale = containerWidth / viewportAt1.width;
             const viewport = page.getViewport({ scale: baseScale * zoomFactor });
             if (pdfPageLayer) {
@@ -845,6 +846,7 @@
             pdfTextLayer.style.width = `${Math.floor(viewport.width)}px`;
             pdfTextLayer.style.height = `${Math.floor(viewport.height)}px`;
             pdfTextLayer.style.transformOrigin = '0 0';
+            pdfTextLayer.style.transform = 'none';
 
             const textContent = await page.getTextContent();
             await pdfjsLib.renderTextLayer({
