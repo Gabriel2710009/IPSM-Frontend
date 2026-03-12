@@ -377,8 +377,15 @@
             background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
         }
 
+        .pdf-page-layer {
+            position: relative;
+            display: inline-block;
+        }
+
+
         .pdf-canvas {
             position: relative;
+            display: block;
             z-index: 2;
             width: auto;
             max-width: none;
@@ -392,6 +399,8 @@
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             color: transparent;
             z-index: 3;
@@ -644,8 +653,10 @@
                             <span>Cargando reglamento...</span>
                         </div>
                         <div class="pdf-canvas-frame" id="pdfCanvasFrame">
-                            <canvas id="pdfCanvas" class="pdf-canvas" aria-label="Visor PDF"></canvas>
-                            <div id="pdfTextLayer" class="pdf-text-layer"></div>
+                            <div id="pdfPageLayer" class="pdf-page-layer">
+                                <canvas id="pdfCanvas" class="pdf-canvas" aria-label="Visor PDF"></canvas>
+                                <div id="pdfTextLayer" class="pdf-text-layer"></div>
+                            </div>
                             <iframe id="pdfNativeFallback" class="pdf-native-fallback" title="Reglamento PDF"></iframe>
                         </div>
                     </div>
@@ -727,6 +738,7 @@
 
         const pdfCanvas = document.getElementById('pdfCanvas');
         const pdfCanvasFrame = document.getElementById('pdfCanvasFrame');
+        const pdfPageLayer = document.getElementById('pdfPageLayer');
         const pdfTextLayer = document.getElementById('pdfTextLayer');
         const pdfNativeFallback = document.getElementById('pdfNativeFallback');
         const pdfCtx = pdfCanvas.getContext('2d', { alpha: false });
@@ -764,6 +776,8 @@
         let searchMatches = [];
         let currentMatchIndex = -1;
         let activeQuery = '';
+        let totalMatchCount = 0;
+        let pageMatchCounts = [];
         let renderToken = 0;
         const isFileProtocol = window.location.protocol === 'file:';
 
@@ -790,15 +804,17 @@
             const frameStyles = window.getComputedStyle(pdfCanvasFrame);
             const padLeft = parseFloat(frameStyles.paddingLeft) || 0;
             const padRight = parseFloat(frameStyles.paddingRight) || 0;
-            const padTop = parseFloat(frameStyles.paddingTop) || 0;
-            const padBottom = parseFloat(frameStyles.paddingBottom) || 0;
             const containerWidth = Math.max(minViewerWidth, pdfCanvasFrame.clientWidth - padLeft - padRight);
             baseScale = containerWidth / viewportAt1.width;
-            if (pdfTextLayer) {
-                pdfTextLayer.style.left = `${padLeft}px`;
-                pdfTextLayer.style.top = `${padTop}px`;
-            }
             const viewport = page.getViewport({ scale: baseScale * zoomFactor });
+            if (pdfPageLayer) {
+                pdfPageLayer.style.width = `${Math.floor(viewport.width)}px`;
+                pdfPageLayer.style.height = `${Math.floor(viewport.height)}px`;
+            }
+            if (pdfTextLayer) {
+                pdfTextLayer.style.left = '0';
+                pdfTextLayer.style.top = '0';
+            }
             const dpr = window.devicePixelRatio || 1;
 
             pdfCanvas.width = Math.floor(viewport.width * dpr);
@@ -941,6 +957,19 @@
             searchStatus.textContent = 'Índice listo.';
         }
 
+        function countOccurrences(haystack, needle) {
+            if (!needle) return 0;
+            let count = 0;
+            let pos = 0;
+            while (true) {
+                const idx = haystack.indexOf(needle, pos);
+                if (idx == -1) break;
+                count += 1;
+                pos = idx + needle.length;
+            }
+            return count;
+        }
+
         async function executeSearch(goNext = true) {
             const query = (pdfSearchInput.value || '').trim().toLowerCase();
             if (!query) {
@@ -956,8 +985,15 @@
 
             await buildTextIndex();
             searchMatches = [];
+            totalMatchCount = 0;
+            pageMatchCounts = [];
             textIndex.forEach((pageText, index) => {
-                if (pageText.includes(query)) searchMatches.push(index + 1);
+                const count = countOccurrences(pageText, query);
+                pageMatchCounts.push(count);
+                if (count > 0) {
+                    searchMatches.push(index + 1);
+                    totalMatchCount += count;
+                }
             });
 
             if (!searchMatches.length) {
@@ -975,7 +1011,10 @@
             }
 
             const targetPage = searchMatches[currentMatchIndex];
-            searchStatus.textContent = `Coincidencia ${currentMatchIndex + 1} de ${searchMatches.length} (página ${targetPage}).`;
+            const pageCount = searchMatches.length;
+            const pageLabel = pageCount === 1 ? 'p?gina' : 'p?ginas';
+            const matchLabel = totalMatchCount === 1 ? 'coincidencia' : 'coincidencias';
+            searchStatus.textContent = `Coincidencias: ${totalMatchCount} ${matchLabel} en ${pageCount} ${pageLabel}. Resultado ${currentMatchIndex + 1} de ${pageCount} (p?gina ${targetPage}).`;
             await renderPage(targetPage);
         }
 

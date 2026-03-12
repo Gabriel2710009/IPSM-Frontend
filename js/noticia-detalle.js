@@ -377,9 +377,15 @@ function enhanceMediaEmbeds(container) {
 }
 
 function initMiniPdfViewer({ shell, toolbar, canvas, iframe, url }) {
-    if (typeof pdfjsLib === 'undefined') {
+    function fallbackToIframe(reason) {
+        console.warn('[PDF] Fallback iframe:', reason || 'unknown');
+        canvas.style.display = 'none';
         iframe.style.display = 'block';
         iframe.src = url;
+    }
+
+    if (typeof pdfjsLib === 'undefined') {
+        fallbackToIframe('pdfjs missing');
         return;
     }
 
@@ -389,6 +395,10 @@ function initMiniPdfViewer({ shell, toolbar, canvas, iframe, url }) {
     let pdfDoc = null;
     let pageNum = 1;
     let scale = 1;
+    let rendered = false;
+    const renderTimeout = setTimeout(() => {
+        if (!rendered) fallbackToIframe('render timeout');
+    }, 2500);
 
     function updateLabel() {
         if (pageLabel && pdfDoc) {
@@ -411,21 +421,22 @@ function initMiniPdfViewer({ shell, toolbar, canvas, iframe, url }) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, viewport.width, viewport.height);
         await page.render({ canvasContext: ctx, viewport }).promise;
+        rendered = true;
+        clearTimeout(renderTimeout);
         updateLabel();
     }
 
     pdfjsLib.getDocument(url).promise.then((doc) => {
         pdfDoc = doc;
         updateLabel();
-        renderPage(1);
-    }).catch(() => {
-        iframe.style.display = 'block';
-        iframe.src = url;
+        renderPage(1).catch((err) => fallbackToIframe(err));
+    }).catch((err) => {
+        fallbackToIframe(err);
     });
 
     toolbar.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-action]');
-        if (!btn) return;
+        if (!btn || !pdfDoc) return;
         const action = btn.getAttribute('data-action');
         if (action === 'prev') renderPage(pageNum - 1);
         if (action === 'next') renderPage(pageNum + 1);
