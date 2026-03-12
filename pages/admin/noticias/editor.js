@@ -28,6 +28,8 @@
     btnSchedule: document.getElementById('btnSchedule'),
     btnUpdate: document.getElementById('btnUpdate'),
     btnInsertImageUrl: document.getElementById('btnInsertImageUrl'),
+    btnUploadVideo: document.getElementById('btnUploadVideo'),
+    btnUploadPdf: document.getElementById('btnUploadPdf'),
     btnInsertEmbed: document.getElementById('btnInsertEmbed'),
     previewFrame: document.getElementById('previewFrame'),
     openPreviewWindow: document.getElementById('openPreviewWindow'),
@@ -237,6 +239,108 @@
     return body.url;
   }
 
+  async function uploadEditorFile(file, endpoint, label) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    console.info(`[Editor] Subiendo ${label}...`, {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    });
+
+    const response = await fetch(API_BASE + endpoint, {
+      method: 'POST',
+      headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+      body: formData,
+    });
+
+    if (!response.ok) {
+      let detail = `Upload fallo (${response.status})`;
+      try {
+        const body = await response.json();
+        if (body && body.detail) detail = body.detail;
+      } catch (e) {}
+      console.error(`[Editor] Error upload ${label}:`, detail);
+      throw new Error(detail);
+    }
+
+    const body = await response.json();
+    if (!body || !body.url) {
+      console.error(`[Editor] Respuesta inv?lida upload ${label}:`, body);
+      throw new Error('Respuesta de upload invalida');
+    }
+    console.info(`[Editor] ${label} subido OK:`, body.url);
+    return body.url;
+  }
+
+  async function uploadEditorVideo(file) {
+    return uploadEditorFile(file, '/api/v1/admin/noticias/upload-video', 'video');
+  }
+
+  async function uploadEditorPdf(file) {
+    return uploadEditorFile(file, '/api/v1/admin/noticias/upload-pdf', 'PDF');
+  }
+
+  function insertUploadedVideo(url) {
+    const safeUrl = encodeURI(url);
+    const html = `<video class="video-embed video-embed-upload" controls preload="metadata" src="${safeUrl}"></video>`;
+    state.quill.clipboard.dangerouslyPasteHTML(currentSelectionIndex(), html, 'user');
+    syncPreviewFrame();
+    setStatus('Video insertado.');
+  }
+
+  function insertUploadedPdf(url) {
+    const safeUrl = encodeURI(url);
+    const html = `<p><a class="pdf-embed" href="${safeUrl}" target="_blank" rel="noopener">` +
+      `<i class="fas fa-file-pdf"></i> Ver PDF</a></p>`;
+    state.quill.clipboard.dangerouslyPasteHTML(currentSelectionIndex(), html, 'user');
+    syncPreviewFrame();
+    setStatus('PDF insertado.');
+  }
+
+  function openVideoPicker() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'video/*';
+    fileInput.click();
+
+    fileInput.onchange = async function () {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      try {
+        setStatus('Subiendo video...');
+        const url = await uploadEditorVideo(file);
+        insertUploadedVideo(url);
+      } catch (err) {
+        console.error('[Editor] Fall? la subida de video:', err);
+        setStatus(`No se pudo subir video: ${err.message}`, true);
+      }
+    };
+  }
+
+  function openPdfPicker() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'application/pdf,.pdf';
+    fileInput.click();
+
+    fileInput.onchange = async function () {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      try {
+        setStatus('Subiendo PDF...');
+        const url = await uploadEditorPdf(file);
+        insertUploadedPdf(url);
+      } catch (err) {
+        console.error('[Editor] Fall? la subida de PDF:', err);
+        setStatus(`No se pudo subir PDF: ${err.message}`, true);
+      }
+    };
+  }
+
   function openImagePicker() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -285,7 +389,9 @@
       return;
     }
 
-    state.quill.insertEmbed(currentSelectionIndex(), 'video', embed, 'user');
+    const safeUrl = encodeURI(embed);
+    const html = `<iframe class="video-embed video-embed-youtube" src="${safeUrl}" title="YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    state.quill.clipboard.dangerouslyPasteHTML(currentSelectionIndex(), html, 'user');
     syncPreviewFrame();
     setStatus('Embed de video insertado.');
   }
@@ -312,7 +418,7 @@
 
     const toolbar = state.quill.getModule('toolbar');
     toolbar.addHandler('image', openImagePicker);
-    toolbar.addHandler('video', insertYoutubeEmbed);
+    toolbar.addHandler('video', openVideoPicker);
 
     state.quill.on('text-change', syncPreviewFrame);
   }
@@ -484,6 +590,8 @@
     el.btnUpdate.addEventListener('click', submitUpdate);
 
     el.btnInsertImageUrl.addEventListener('click', insertImageByUrl);
+    el.btnUploadVideo.addEventListener('click', openVideoPicker);
+    el.btnUploadPdf.addEventListener('click', openPdfPicker);
     el.btnInsertEmbed.addEventListener('click', insertYoutubeEmbed);
 
     if (el.previewFrame) {

@@ -495,3 +495,38 @@ select:focus {
 .ql-editor h2 { font-size: 1.6rem; }
 .ql-editor h3 { font-size: 1.3rem; }
 
+
+
+.video-embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: #0b1020;
+  box-shadow: var(--shadow-md);
+}
+
+.video-embed-upload {
+  display: block;
+}
+
+.video-embed-youtube {
+  border: 0;
+}
+
+.pdf-embed {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .7rem;
+  border: 1px solid var(--gray-300);
+  border-radius: .6rem;
+  background: #fff;
+  color: #b91c1c;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pdf-embed:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}

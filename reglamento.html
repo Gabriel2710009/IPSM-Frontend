@@ -359,6 +359,7 @@
         }
 
         .pdf-canvas-frame {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -377,12 +378,30 @@
         }
 
         .pdf-canvas {
-            width: 100%;
-            max-width: 100%;
+            width: auto;
+            max-width: none;
             height: auto;
             background: #fff;
             box-shadow: 0 12px 30px rgba(0, 40, 85, .14);
             border-radius: .3rem;
+        }
+
+        .pdf-text-layer {
+            position: absolute;
+            inset: 12px;
+            pointer-events: none;
+            color: transparent;
+            z-index: 1;
+        }
+
+        .pdf-text-layer span {
+            color: transparent;
+        }
+
+        .pdf-text-layer .highlight {
+            background: rgba(255, 226, 0, 0.45);
+            border-radius: 3px;
+            box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.45);
         }
 
         .pdf-native-fallback {
@@ -487,7 +506,8 @@
             }
             .pdf-viewer-wrap { padding: 8px; min-height: 62vh; }
             .pdf-canvas-frame { min-height: 60vh; max-height: 65vh; padding: 6px; }
-            .pdf-canvas { width: 100% !important; height: auto !important; }
+            .pdf-text-layer { inset: 6px; }
+            .pdf-canvas { max-width: none !important; }
         }
 
         @media (min-width: 901px) {
@@ -622,6 +642,7 @@
                         </div>
                         <div class="pdf-canvas-frame" id="pdfCanvasFrame">
                             <canvas id="pdfCanvas" class="pdf-canvas" aria-label="Visor PDF"></canvas>
+                            <div id="pdfTextLayer" class="pdf-text-layer"></div>
                             <iframe id="pdfNativeFallback" class="pdf-native-fallback" title="Reglamento PDF"></iframe>
                         </div>
                     </div>
@@ -700,6 +721,7 @@
 
         const pdfCanvas = document.getElementById('pdfCanvas');
         const pdfCanvasFrame = document.getElementById('pdfCanvasFrame');
+        const pdfTextLayer = document.getElementById('pdfTextLayer');
         const pdfNativeFallback = document.getElementById('pdfNativeFallback');
         const pdfCtx = pdfCanvas.getContext('2d', { alpha: false });
         const pdfLoading = document.getElementById('pdfLoading');
@@ -725,6 +747,7 @@
         let textIndex = [];
         let searchMatches = [];
         let currentMatchIndex = -1;
+        let activeQuery = '';
         let renderToken = 0;
         const isFileProtocol = window.location.protocol === 'file:';
 
@@ -768,13 +791,53 @@
             }).promise;
 
             if (token !== renderToken) return;
+            await renderTextLayer(page, viewport);
+            if (token !== renderToken) return;
+            highlightMatches(activeQuery);
             pdfLoading.classList.add('hidden');
             updateToolbar();
+        }
+
+        async function renderTextLayer(page, viewport) {
+            if (!pdfTextLayer) return;
+
+            pdfTextLayer.innerHTML = '';
+            pdfTextLayer.style.width = `${Math.floor(viewport.width)}px`;
+            pdfTextLayer.style.height = `${Math.floor(viewport.height)}px`;
+
+            const textContent = await page.getTextContent();
+            await pdfjsLib.renderTextLayer({
+                textContent,
+                container: pdfTextLayer,
+                viewport,
+                textDivs: []
+            }).promise;
+        }
+
+        function highlightMatches(query) {
+            if (!pdfTextLayer) return;
+
+            const q = (query || '').trim().toLowerCase();
+            let first = null;
+            pdfTextLayer.querySelectorAll('span').forEach((span) => {
+                const text = (span.textContent || '').toLowerCase();
+                if (q && text.includes(q)) {
+                    span.classList.add('highlight');
+                    if (!first) first = span;
+                } else {
+                    span.classList.remove('highlight');
+                }
+            });
+
+            if (first) {
+                first.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
+            }
         }
 
         async function loadPdf() {
             if (isFileProtocol) {
                 pdfCanvas.style.display = 'none';
+                if (pdfTextLayer) pdfTextLayer.style.display = 'none';
                 pdfNativeFallback.style.display = 'block';
                 pdfNativeFallback.src = PDF_PATH;
                 pdfLoading.classList.add('hidden');
@@ -794,6 +857,7 @@
 
             pdfLoading.classList.remove('hidden');
             try {
+                if (pdfTextLayer) pdfTextLayer.style.display = 'block';
                 pdfDoc = await pdfjsLib.getDocument(PDF_PATH).promise;
                 totalPages = pdfDoc.numPages;
                 currentPage = 1;
@@ -824,9 +888,13 @@
             if (!query) {
                 searchMatches = [];
                 currentMatchIndex = -1;
+                activeQuery = '';
+                highlightMatches(activeQuery);
                 searchStatus.textContent = 'Escribí un texto para buscar.';
                 return;
             }
+            
+            activeQuery = query;
 
             await buildTextIndex();
             searchMatches = [];
