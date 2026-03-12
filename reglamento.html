@@ -745,7 +745,7 @@
         const pdfTextLayer = document.getElementById('pdfTextLayer');
         if (pdfTextLayer) pdfTextLayer.classList.add('textLayer');
         const pdfNativeFallback = document.getElementById('pdfNativeFallback');
-        const pdfCtx = pdfCanvas.getContext('2d', { alpha: false });
+        const pdfCtx = pdfCanvas.getContext('2d', { alpha: true });
         const pdfLoading = document.getElementById('pdfLoading');
         const pageLabel = document.getElementById('pageLabel');
         const zoomLabel = document.getElementById('zoomLabel');
@@ -828,10 +828,14 @@
 
             pdfCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
             pdfCtx.clearRect(0, 0, viewport.width, viewport.height);
+            // Asegura fondo blanco si el PDF es transparente
+            pdfCtx.fillStyle = '#ffffff';
+            pdfCtx.fillRect(0, 0, viewport.width, viewport.height);
 
             await page.render({
                 canvasContext: pdfCtx,
-                viewport
+                viewport,
+                background: '#ffffff'
             }).promise;
 
             if (token !== renderToken) return;
