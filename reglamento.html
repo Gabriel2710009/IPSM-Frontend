@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/utilities.css">
@@ -369,7 +370,7 @@
             min-height: 520px;
             border: 2px solid #C5A059;
             border-radius: .9rem;
-            background: #fff;
+            background: #fff !important;
             padding: 12px;
         }
 
@@ -381,6 +382,7 @@
             position: relative;
             display: inline-block;
             background: #fff;
+            margin: 0 auto;
         }
 
 
@@ -741,6 +743,7 @@
         const pdfCanvasFrame = document.getElementById('pdfCanvasFrame');
         const pdfPageLayer = document.getElementById('pdfPageLayer');
         const pdfTextLayer = document.getElementById('pdfTextLayer');
+        if (pdfTextLayer) pdfTextLayer.classList.add('textLayer');
         const pdfNativeFallback = document.getElementById('pdfNativeFallback');
         const pdfCtx = pdfCanvas.getContext('2d', { alpha: false });
         const pdfLoading = document.getElementById('pdfLoading');
@@ -843,9 +846,10 @@
             if (!pdfTextLayer) return;
 
             pdfTextLayer.innerHTML = '';
-            pdfTextLayer.style.width = `${Math.floor(viewport.width)}px`;
-            pdfTextLayer.style.height = `${Math.floor(viewport.height)}px`;
+            pdfTextLayer.style.width = pdfCanvas.style.width;
+            pdfTextLayer.style.height = pdfCanvas.style.height;
             pdfTextLayer.style.transformOrigin = '0 0';
+            pdfTextLayer.style.transform = '';
             pdfTextLayer.style.transform = 'none';
 
             const textContent = await page.getTextContent();
