@@ -329,7 +329,7 @@ function aplicarFiltros() {
         
         const matchBusqueda = !busqueda || 
             noticia.titulo.toLowerCase().includes(busqueda) ||
-            noticia.resumen.toLowerCase().includes(busqueda);
+            (noticia.resumen || '').toLowerCase().includes(busqueda);
         
         return matchCategoria && matchBusqueda;
     });

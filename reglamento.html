@@ -378,6 +378,8 @@
         }
 
         .pdf-canvas {
+            position: relative;
+            z-index: 2;
             width: auto;
             max-width: none;
             height: auto;
@@ -392,7 +394,7 @@
             left: 0;
             pointer-events: none;
             color: transparent;
-            z-index: 1;
+            z-index: 3;
         }
 
         .pdf-text-layer span {
@@ -841,16 +843,35 @@
             if (!pdfTextLayer) return;
 
             const q = (query || '').trim().toLowerCase();
+            const spans = Array.from(pdfTextLayer.querySelectorAll('span'));
+            spans.forEach((span) => span.classList.remove('highlight'));
+
+            if (!q) return;
+
             let first = null;
-            pdfTextLayer.querySelectorAll('span').forEach((span) => {
+            let matched = false;
+
+            spans.forEach((span) => {
                 const text = (span.textContent || '').toLowerCase();
-                if (q && text.includes(q)) {
+                if (text && text.includes(q)) {
                     span.classList.add('highlight');
                     if (!first) first = span;
-                } else {
-                    span.classList.remove('highlight');
+                    matched = true;
                 }
             });
+
+            if (!matched) {
+                const tokens = q.split(/\s+/).filter((t) => t.length > 2);
+                if (tokens.length) {
+                    spans.forEach((span) => {
+                        const text = (span.textContent || '').toLowerCase();
+                        if (tokens.some((t) => text.includes(t))) {
+                            span.classList.add('highlight');
+                            if (!first) first = span;
+                        }
+                    });
+                }
+            }
 
             if (first) {
                 first.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });

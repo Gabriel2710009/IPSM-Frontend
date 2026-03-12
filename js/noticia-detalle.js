@@ -308,7 +308,11 @@ function construirArticulo(noticia, contenidoHTML) {
 function enhanceMediaEmbeds(container) {
     if (!container) return;
 
-    const pdfLinks = container.querySelectorAll('a.pdf-embed');
+    const pdfLinks = Array.from(container.querySelectorAll('a')).filter((link) => {
+        const href = (link.getAttribute('href') || '').toLowerCase();
+        return link.classList.contains('pdf-embed') || href.endsWith('.pdf') || href.includes('.pdf?');
+    });
+
     pdfLinks.forEach((link) => {
         const href = link.getAttribute('href');
         if (!href) return;
@@ -323,6 +327,15 @@ function enhanceMediaEmbeds(container) {
 
         wrap.appendChild(frame);
         link.replaceWith(wrap);
+    });
+
+    const videos = container.querySelectorAll('video, iframe.ql-video, iframe.video-embed-youtube');
+    videos.forEach((media) => {
+        media.classList.add('video-embed');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'video-frame';
+        media.parentNode.insertBefore(wrapper, media);
+        wrapper.appendChild(media);
     });
 }
 /**

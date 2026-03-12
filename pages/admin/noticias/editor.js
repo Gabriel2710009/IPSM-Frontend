@@ -28,6 +28,7 @@
     btnSchedule: document.getElementById('btnSchedule'),
     btnUpdate: document.getElementById('btnUpdate'),
     btnInsertImageUrl: document.getElementById('btnInsertImageUrl'),
+    btnUploadImageUrl: document.getElementById('btnUploadImageUrl'),
     btnUploadVideo: document.getElementById('btnUploadVideo'),
     btnUploadPdf: document.getElementById('btnUploadPdf'),
     btnInsertEmbed: document.getElementById('btnInsertEmbed'),
@@ -284,8 +285,9 @@
 
   function insertUploadedVideo(url) {
     const safeUrl = encodeURI(url);
-    const html = `<video class="video-embed video-embed-upload" controls preload="metadata" src="${safeUrl}"></video>`;
-    state.quill.clipboard.dangerouslyPasteHTML(currentSelectionIndex(), html, 'user');
+    const index = currentSelectionIndex();
+    state.quill.insertEmbed(index, 'videoUpload', safeUrl, 'user');
+    state.quill.setSelection(index + 1, 0, 'silent');
     syncPreviewFrame();
     setStatus('Video insertado.');
   }
@@ -401,6 +403,25 @@
       setStatus('Quill no cargo correctamente.', true);
       return;
     }
+
+    const BlockEmbed = Quill.import('blots/block/embed');
+    class VideoUploadBlot extends BlockEmbed {
+      static create(value) {
+        const node = super.create();
+        node.setAttribute('controls', '');
+        node.setAttribute('preload', 'metadata');
+        node.setAttribute('src', value);
+        node.classList.add('video-embed', 'video-embed-upload');
+        return node;
+      }
+
+      static value(node) {
+        return node.getAttribute('src');
+      }
+    }
+    VideoUploadBlot.blotName = 'videoUpload';
+    VideoUploadBlot.tagName = 'video';
+    Quill.register(VideoUploadBlot);
 
     state.quill = new Quill('#editor', {
       theme: 'snow',
@@ -590,6 +611,30 @@
     el.btnUpdate.addEventListener('click', submitUpdate);
 
     el.btnInsertImageUrl.addEventListener('click', insertImageByUrl);
+    if (el.btnUploadImageUrl) {
+      el.btnUploadImageUrl.addEventListener('click', async () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.click();
+
+        fileInput.onchange = async function () {
+          const file = fileInput.files && fileInput.files[0];
+          if (!file) return;
+
+          try {
+            setStatus('Subiendo imagen...');
+            const url = await uploadEditorImage(file);
+            el.imagenUrl.value = url;
+            syncPreviewFrame();
+            setStatus('Imagen cargada en URL.');
+          } catch (err) {
+            console.error('[Editor] Fall? la subida de imagen URL:', err);
+            setStatus(`No se pudo subir imagen: ${err.message}`, true);
+          }
+        };
+      });
+    }
     el.btnUploadVideo.addEventListener('click', openVideoPicker);
     el.btnUploadPdf.addEventListener('click', openPdfPicker);
     el.btnInsertEmbed.addEventListener('click', insertYoutubeEmbed);

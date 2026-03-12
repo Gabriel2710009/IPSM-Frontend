@@ -1805,7 +1805,7 @@ function createNoticiaCard(noticia) {
             <div class="card-body">
                 <h3>${noticia.titulo} ${estadoBadge}</h3>
                 <p class="text-muted"><i class="fas fa-calendar"></i> ${fechaPublicacion}</p>
-                <p>${noticia.resumen || noticia.contenido.substring(0, 150)}...</p>
+                <p>${noticia.resumen || ((noticia.contenido || '').substring(0, 150))}...</p>
                 <div class="action-buttons mt-md">
                     <button class="btn btn-sm btn-outline" onclick="editarNoticia('${noticia.id}')">
                         <i class="fas fa-edit"></i> Editar

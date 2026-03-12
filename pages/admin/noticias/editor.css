@@ -530,3 +530,21 @@ select:focus {
   border-color: #ef4444;
   color: #ef4444;
 }
+
+
+.input-with-action {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+.input-with-action .tool-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .input-with-action {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
