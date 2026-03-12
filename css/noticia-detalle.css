@@ -682,3 +682,75 @@
 .video-frame .video-embed {
   border-radius: 12px;
 }
+
+
+.pdf-mini-shell {
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b1020;
+  box-shadow: 0 14px 28px rgba(2, 8, 23, 0.18);
+}
+
+.pdf-mini-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .6rem .7rem;
+  background: rgba(0, 40, 85, 0.18);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.pdf-mini-toolbar .mini-left,
+.pdf-mini-toolbar .mini-right {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+
+.pdf-mini-btn {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.6);
+  color: #e2e8f0;
+  border-radius: .5rem;
+  padding: .35rem .55rem;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.pdf-mini-btn:hover {
+  border-color: #C5A059;
+  color: #C5A059;
+}
+
+.pdf-mini-canvas-wrap {
+  position: relative;
+  background: #0b1020;
+  padding: 10px;
+}
+
+.pdf-mini-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.pdf-mini-fallback {
+  width: 100%;
+  height: 420px;
+  border: 0;
+  background: #0b1020;
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .pdf-mini-fallback {
+    height: 320px;
+  }
+}

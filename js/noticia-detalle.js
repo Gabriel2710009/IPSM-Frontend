@@ -316,17 +316,42 @@ function enhanceMediaEmbeds(container) {
     pdfLinks.forEach((link) => {
         const href = link.getAttribute('href');
         if (!href) return;
-        const wrap = document.createElement('div');
-        wrap.className = 'pdf-mini-embed';
+        const shell = document.createElement('div');
+        shell.className = 'pdf-mini-shell';
 
-        const frame = document.createElement('iframe');
-        frame.className = 'pdf-mini-frame';
-        frame.loading = 'lazy';
-        frame.src = `../reglamento.html?mini=1&pdf=${encodeURIComponent(href)}`;
-        frame.title = 'Vista previa PDF';
+        const toolbar = document.createElement('div');
+        toolbar.className = 'pdf-mini-toolbar';
+        toolbar.innerHTML = `
+            <div class="mini-left">
+                <span>Visor PDF</span>
+                <span class="pdf-mini-page" data-role="page">P?gina 1 / 1</span>
+            </div>
+            <div class="mini-right">
+                <button class="pdf-mini-btn" data-action="prev" title="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="pdf-mini-btn" data-action="next" title="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="pdf-mini-btn" data-action="zoomOut"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                <button class="pdf-mini-btn" data-action="zoomIn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                <button class="pdf-mini-btn" data-action="open"><i class="fa-solid fa-up-right-from-square"></i></button>
+            </div>
+        `;
 
-        wrap.appendChild(frame);
-        link.replaceWith(wrap);
+        const canvasWrap = document.createElement('div');
+        canvasWrap.className = 'pdf-mini-canvas-wrap';
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-mini-canvas';
+        const iframe = document.createElement('iframe');
+        iframe.className = 'pdf-mini-fallback';
+        iframe.title = 'Vista PDF';
+
+        canvasWrap.appendChild(canvas);
+        canvasWrap.appendChild(iframe);
+
+        shell.appendChild(toolbar);
+        shell.appendChild(canvasWrap);
+
+        link.replaceWith(shell);
+
+        initMiniPdfViewer({ shell, toolbar, canvas, iframe, url: href });
     });
 
     const videos = container.querySelectorAll('video, iframe.ql-video, iframe.video-embed-youtube');
@@ -335,6 +360,13 @@ function enhanceMediaEmbeds(container) {
             if (!media.getAttribute('controls')) media.setAttribute('controls', '');
             if (!media.getAttribute('preload')) media.setAttribute('preload', 'metadata');
             media.setAttribute('playsinline', '');
+            if (!media.querySelector('source') && media.getAttribute('src')) {
+                const src = media.getAttribute('src');
+                const source = document.createElement('source');
+                source.src = src;
+                source.type = src.endsWith('.mp4') ? 'video/mp4' : '';
+                media.appendChild(source);
+            }
         }
         media.classList.add('video-embed');
         const wrapper = document.createElement('div');
@@ -343,6 +375,66 @@ function enhanceMediaEmbeds(container) {
         wrapper.appendChild(media);
     });
 }
+
+function initMiniPdfViewer({ shell, toolbar, canvas, iframe, url }) {
+    if (typeof pdfjsLib === 'undefined') {
+        iframe.style.display = 'block';
+        iframe.src = url;
+        return;
+    }
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const pageLabel = toolbar.querySelector('[data-role="page"]');
+    let pdfDoc = null;
+    let pageNum = 1;
+    let scale = 1;
+
+    function updateLabel() {
+        if (pageLabel && pdfDoc) {
+            pageLabel.textContent = `P?gina ${pageNum} / ${pdfDoc.numPages}`;
+        }
+    }
+
+    async function renderPage(num) {
+        if (!pdfDoc) return;
+        pageNum = Math.min(Math.max(num, 1), pdfDoc.numPages);
+        const page = await pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale });
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, viewport.width, viewport.height);
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        updateLabel();
+    }
+
+    pdfjsLib.getDocument(url).promise.then((doc) => {
+        pdfDoc = doc;
+        updateLabel();
+        renderPage(1);
+    }).catch(() => {
+        iframe.style.display = 'block';
+        iframe.src = url;
+    });
+
+    toolbar.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const action = btn.getAttribute('data-action');
+        if (action === 'prev') renderPage(pageNum - 1);
+        if (action === 'next') renderPage(pageNum + 1);
+        if (action === 'zoomOut') { scale = Math.max(0.7, scale - 0.1); renderPage(pageNum); }
+        if (action === 'zoomIn') { scale = Math.min(2, scale + 0.1); renderPage(pageNum); }
+        if (action === 'open') window.open(url, '_blank');
+    });
+}
+
 /**
  * Carga noticias relacionadas
  */
