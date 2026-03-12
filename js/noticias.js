@@ -24,6 +24,19 @@ function normalizeNoticia(noticia) {
     return { ...noticia, imagen, fecha, categorias };
 }
 
+
+function stripHtml(value) {
+    const div = document.createElement('div');
+    div.innerHTML = value || '';
+    return (div.textContent || div.innerText || '').trim();
+}
+
+function safeExcerpt(value, maxLen = 120) {
+    const clean = stripHtml(value);
+    if (!clean) return '';
+    return clean.length > maxLen ? clean.slice(0, maxLen) + '...' : clean;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     loadNoticias();
@@ -137,7 +150,7 @@ function mostrarNoticiaDestacada(noticia) {
                         <span><i class="fas fa-user"></i> ${noticia.autor || 'Redacción'}</span>
                     </div>
                     <h2 class="noticia-destacada-titulo">${noticia.titulo}</h2>
-                    <p class="noticia-destacada-resumen">${noticia.resumen}</p>
+                    <p class="noticia-destacada-resumen">${safeExcerpt(noticia.resumen || noticia.contenido, 160)}</p>
                     
                     ${noticia.categorias ? `
                         <div class="noticia-categorias">
@@ -224,7 +237,7 @@ function createNoticiaCard(noticia) {
                     ${formatDate(noticia.fecha)}
                 </div>
                 <h3 class="noticia-card-titulo">${noticia.titulo}</h3>
-                <p class="noticia-card-resumen">${truncateText(noticia.resumen, 120)}</p>
+                <p class="noticia-card-resumen">${safeExcerpt(noticia.resumen || noticia.contenido, 120)}</p>
                 <div class="noticia-card-footer">
                     <div class="noticia-card-autor">
                         <i class="fas fa-user"></i>

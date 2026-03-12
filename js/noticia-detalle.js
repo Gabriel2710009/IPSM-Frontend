@@ -331,6 +331,11 @@ function enhanceMediaEmbeds(container) {
 
     const videos = container.querySelectorAll('video, iframe.ql-video, iframe.video-embed-youtube');
     videos.forEach((media) => {
+        if (media.tagName.toLowerCase() === 'video') {
+            if (!media.getAttribute('controls')) media.setAttribute('controls', '');
+            if (!media.getAttribute('preload')) media.setAttribute('preload', 'metadata');
+            media.setAttribute('playsinline', '');
+        }
         media.classList.add('video-embed');
         const wrapper = document.createElement('div');
         wrapper.className = 'video-frame';

@@ -1757,6 +1757,19 @@ async function abrirModalLibretas(alumnoId, alumnoNombre) {
 /**
  * Gestión de Noticias - INTEGRADO
  */
+
+function stripHtml(value) {
+    const div = document.createElement('div');
+    div.innerHTML = value || '';
+    return (div.textContent || div.innerText || '').trim();
+}
+
+function safeExcerpt(value, maxLen = 150) {
+    const clean = stripHtml(value);
+    if (!clean) return '';
+    return clean.length > maxLen ? clean.slice(0, maxLen) + '...' : clean;
+}
+
 async function loadNoticias() {
     const container = document.getElementById('noticiasContainer');
     if (!container) return;

@@ -93,6 +93,19 @@ function initMobileMenu() {
     });
 }
 
+
+function stripHtml(value) {
+    const div = document.createElement('div');
+    div.innerHTML = value || '';
+    return (div.textContent || div.innerText || '').trim();
+}
+
+function safeExcerpt(value, maxLen = 140) {
+    const clean = stripHtml(value);
+    if (!clean) return '';
+    return clean.length > maxLen ? clean.slice(0, maxLen) + '...' : clean;
+}
+
 async function loadNoticias() {
     try {
         const noticiasContainer = document.getElementById('noticiasContainer') || document.getElementById('noticias-container');
@@ -124,7 +137,7 @@ async function loadNoticias() {
                     <img src="${noticia.imagen_url || noticia.imagen || fallbackImage}" alt="${noticia.titulo}" onerror="this.src='${fallbackImage}'">
                     <div class="noticia-content">
                         <h3>${noticia.titulo}</h3>
-                        <p>${noticia.resumen || noticia.contenido?.substring(0, 150) + '...'}</p>
+                        <p>${safeExcerpt(noticia.resumen || noticia.contenido, 150)}</p>
                         <span class="fecha">${new Date(noticia.fecha_publicacion || noticia.fecha).toLocaleDateString('es-AR')}</span>
                     </div>
                 </article>

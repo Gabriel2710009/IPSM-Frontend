@@ -908,8 +908,22 @@
                 await renderPage(currentPage);
                 searchStatus.textContent = 'Documento listo.';
             } catch (error) {
-                searchStatus.textContent = 'No se pudo cargar el PDF.';
                 console.error(error);
+                // Fallback: visor nativo si hay CORS u otro error
+                pdfCanvas.style.display = 'none';
+                if (pdfTextLayer) pdfTextLayer.style.display = 'none';
+                pdfNativeFallback.style.display = 'block';
+                pdfNativeFallback.src = PDF_PATH;
+                searchStatus.textContent = 'Visor b5ico activo (fallback).';
+                prevPageBtn.disabled = true;
+                nextPageBtn.disabled = true;
+                zoomOutBtn.disabled = true;
+                zoomInBtn.disabled = true;
+                zoomResetBtn.disabled = true;
+                searchBtn.disabled = true;
+                searchPrevBtn.disabled = true;
+                searchNextBtn.disabled = true;
+                pdfSearchInput.disabled = true;
             } finally {
                 pdfLoading.classList.add('hidden');
             }
