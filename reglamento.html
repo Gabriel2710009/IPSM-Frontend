@@ -121,7 +121,7 @@
             color: var(--icon-color);
             display: inline-flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             transition: all 0.25s ease;
         }
 
@@ -139,7 +139,7 @@
             border-radius: 9999px;
             display: inline-flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             color: #002855;
             font-size: 1rem;
         }
@@ -157,7 +157,7 @@
             border: 1px solid rgba(148, 163, 184, 0.45);
             background: transparent;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             position: relative;
             padding: 0;
         }
@@ -337,7 +337,7 @@
             inset: 0;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             flex-direction: column;
             gap: .5rem;
             background: rgba(248, 250, 252, 0.8);
@@ -361,7 +361,7 @@
         .pdf-canvas-frame {
             position: relative;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: flex-start;
             width: 100%;
             overflow: auto;
@@ -400,9 +400,10 @@
         }
 
         .pdf-text-layer .highlight {
-            background: rgba(255, 226, 0, 0.45);
+            background: rgba(254, 240, 138, 0.85);
             border-radius: 3px;
-            box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.45);
+            padding: 0 1px;
+            box-shadow: inset 0 -2px 0 rgba(245, 158, 11, 0.7);
         }
 
         .pdf-native-fallback {
@@ -716,7 +717,10 @@
     <script>
         AOS.init();
 
-        const PDF_PATH = 'docs/reglamento.pdf';
+        const qs = new URLSearchParams(window.location.search);
+        const PDF_PATH = qs.get('pdf') || 'docs/reglamento.pdf';
+        const isMini = qs.get('mini') === '1';
+        if (isMini) document.body.classList.add('pdf-mini');
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
         const pdfCanvas = document.getElementById('pdfCanvas');
@@ -780,7 +784,7 @@
             if (token !== renderToken) return;
 
             const viewportAt1 = page.getViewport({ scale: 1 });
-            const minViewerWidth = window.innerWidth <= 900 ? 240 : 320;
+            const minViewerWidth = 0;
             const frameStyles = window.getComputedStyle(pdfCanvasFrame);
             const padLeft = parseFloat(frameStyles.paddingLeft) || 0;
             const padRight = parseFloat(frameStyles.paddingRight) || 0;
@@ -822,6 +826,7 @@
             pdfTextLayer.innerHTML = '';
             pdfTextLayer.style.width = `${Math.floor(viewport.width)}px`;
             pdfTextLayer.style.height = `${Math.floor(viewport.height)}px`;
+            pdfTextLayer.style.transformOrigin = '0 0';
 
             const textContent = await page.getTextContent();
             await pdfjsLib.renderTextLayer({

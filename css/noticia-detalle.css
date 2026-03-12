@@ -613,9 +613,10 @@
 .video-embed {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 12px;
-  background: #0b1020;
-  box-shadow: 0 12px 24px rgba(2, 8, 23, 0.12);
+  border-radius: 14px;
+  background: linear-gradient(140deg, #0b1c3a 0%, #0b1020 100%);
+  border: 2px solid rgba(197, 160, 89, 0.6);
+  box-shadow: 0 16px 36px rgba(0, 40, 85, 0.2);
 }
 
 .video-embed-upload {
@@ -642,4 +643,28 @@
 .pdf-embed:hover {
   border-color: #ef4444;
   color: #ef4444;
+}
+
+
+.pdf-mini-embed {
+  margin: 1rem 0;
+  border-radius: 14px;
+  border: 1px solid rgba(197, 160, 89, 0.35);
+  background: #0b1c3a;
+  box-shadow: 0 14px 28px rgba(2, 8, 23, 0.18);
+  overflow: hidden;
+}
+
+.pdf-mini-frame {
+  width: 100%;
+  height: 420px;
+  border: 0;
+  display: block;
+  background: #0b1020;
+}
+
+@media (max-width: 900px) {
+  .pdf-mini-frame {
+    height: 320px;
+  }
 }

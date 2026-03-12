@@ -179,6 +179,7 @@ async function mostrarNoticia(noticia) {
 
     const contenidoHTML = await renderNoticiaCompleta(noticia);
     articulo.innerHTML = construirArticulo(noticia, contenidoHTML);
+    enhanceMediaEmbeds(articulo);
 }
 
 /**
@@ -302,6 +303,28 @@ function construirArticulo(noticia, contenidoHTML) {
     `;
 }
 
+
+
+function enhanceMediaEmbeds(container) {
+    if (!container) return;
+
+    const pdfLinks = container.querySelectorAll('a.pdf-embed');
+    pdfLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'pdf-mini-embed';
+
+        const frame = document.createElement('iframe');
+        frame.className = 'pdf-mini-frame';
+        frame.loading = 'lazy';
+        frame.src = `../reglamento.html?mini=1&pdf=${encodeURIComponent(href)}`;
+        frame.title = 'Vista previa PDF';
+
+        wrap.appendChild(frame);
+        link.replaceWith(wrap);
+    });
+}
 /**
  * Carga noticias relacionadas
  */
